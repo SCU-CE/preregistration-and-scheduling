@@ -1,0 +1,10 @@
+{
+    "/js/public.js": "/js/public.js",
+    "/css/public.css": "/css/public.css",
+    "/css/student.css": "/css/student.css",
+    "/css/admin.css": "/css/admin.css",
+    "/js/student.js": "/js/student.js",
+    "/js/admin.js": "/js/admin.js",
+    "/js/vendor.js": "/js/vendor.js",
+    "/css/vendor.css": "/css/vendor.css"
+}
