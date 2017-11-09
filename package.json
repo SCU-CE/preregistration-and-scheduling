@@ -13,9 +13,13 @@
         "axios": "^0.17",
         "chart.js": "^2.7.1",
         "cross-env": "^5.1",
+        "hamburgers": "^0.9.1",
         "jquery": "^3.2.1",
         "laravel-mix": "^1.0",
         "lodash": "^4.17.4",
+        "persian-date": "^1.0.1",
+        "persian-datepicker": "^1.0.2",
+        "persianjs": "^0.3.0",
         "semantic-ui": "^2.2.13"
     },
     "dependencies": {}
