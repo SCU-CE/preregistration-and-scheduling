@@ -48,6 +48,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // handle send mail exception
+        if ($exception instanceof \Swift_SwiftException) {
+            return redirect('/password/reset')->with('error',"متاسفانه مشکلی در ارسال لینک بازیابی رمز عبور به وجود آمد.");
+        }
+
+        // handling http exceptions
+        if($this->isHttpException($exception))
+        {
+            switch ($exception->getStatusCode())
+            {
+                // not found
+                case 404:
+                    return redirect('/');
+                    break;
+            }
+        }
+
         return parent::render($request, $exception);
     }
 }

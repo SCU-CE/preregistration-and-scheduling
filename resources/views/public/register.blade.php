@@ -19,24 +19,24 @@
 
                     <div class="ui stacked segment">
 
-                        <div class="field{{ $errors->has('firstName') ? ' error' : '' }}">
+                        <div class="field{{ $errors->has('first_name') ? ' error' : '' }}">
                             <div class="ui left icon large input">
                                 <i class="user icon"></i>
-                                <input type="text" name="firstName" placeholder="نام" value="{{ old('firstName') }}" autofocus>
+                                <input type="text" name="first_name" placeholder="نام" value="{{ old('first_name') }}" autofocus>
                             </div>
                         </div>
 
-                        <div class="field{{ $errors->has('lastName') ? ' error' : '' }}">
+                        <div class="field{{ $errors->has('last_name') ? ' error' : '' }}">
                             <div class="ui left icon large input">
                                 <i class="users icon"></i>
-                                <input type="text" name="lastName" placeholder="نام خانوادگی" value="{{ old('lastName') }}">
+                                <input type="text" name="last_name" placeholder="نام خانوادگی" value="{{ old('last_name') }}">
                             </div>
                         </div>
 
-                        <div class="field{{ $errors->has('studentId') ? ' error' : '' }}">
+                        <div class="field{{ $errors->has('student_id') ? ' error' : '' }}">
                             <div class="ui left icon large input">
                                 <i class="student icon"></i>
-                                <input type="text" name="studentId" placeholder="شماره دانشجویی" value="{{ old('studentId') }}">
+                                <input type="text" name="student_id" placeholder="شماره دانشجویی" value="{{ old('student_id') }}">
                             </div>
                         </div>
 
@@ -61,9 +61,12 @@
                             </div>
                         </div>
 
-                        <div class="field{{ $errors->has('entryYear') ? ' error' : '' }}">
-                            <select name="entryYear" class="ui dropdown" value="{{ old('lastName') }}">
+                        <div class="field{{ $errors->has('entry_year') ? ' error' : '' }}">
+                            <select name="entry_year" class="ui dropdown" value="{{ old('last_name') }}">
                                 <option value="">سال ورود</option>
+                                @for($i = $min_entry_year; $i <= $max_entry_year; $i++)
+                                    <option value="{{ $i }}" {{ $i == old('entry_year') ? 'selected' : '' }}>{{ $i }}</option>
+                                @endfor
                             </select>
                         </div>
 

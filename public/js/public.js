@@ -106,22 +106,22 @@ function login_validation() {
 function register_validation() {
     $('#p_register .ui.form').form({
         fields: {
-            firstName: {
-                identifier: 'firstName',
+            first_name: {
+                identifier: 'first_name',
                 rules: [{
                     type: 'empty',
                     prompt: 'لطفا نام خود را وارد کنید'
                 }]
             },
-            lastName: {
-                identifier: 'lastName',
+            last_name: {
+                identifier: 'last_name',
                 rules: [{
                     type: 'empty',
                     prompt: 'لطفا نام خانوادگی خود را وارد کنید'
                 }]
             },
-            studentId: {
-                identifier: 'studentId',
+            student_id: {
+                identifier: 'student_id',
                 rules: [{
                     type: 'empty',
                     prompt: 'لطفا شماره دانشجویی خود را وارد کنید'
@@ -163,8 +163,8 @@ function register_validation() {
                     prompt: 'در وارد کردن تکرار رمز عبور دقت کنید'
                 }]
             },
-            entryYear: {
-                identifier: 'entryYear',
+            entry_year: {
+                identifier: 'entry_year',
                 rules: [{
                     type: 'empty',
                     prompt: 'لطفا سال ورود خود را انتخاب کنید'
@@ -266,6 +266,9 @@ function panelsInit() {
     }
 
     if (window.$('#p_reset').length != 0) {
+        // Components initialization
+        init_message_dismiss_btns();
+
         vertical_align_panel('#p_reset');
         reset_validation();
     }

@@ -2,27 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('home');
+        if(Auth::check()){
+            if(Auth::user()->isStudent()){
+                return redirect('student/home');
+            }else if(Auth::user()->isAdmin()){
+                return redirect('admin/home');
+            }
+        }
+        return redirect('/login');
+    }
+
+    public function sendFeedback(Request $request)
+    {
+        $this->validate($request, [
+            'mtype' => 'required|in:smile,frown,heart',
+            'message' => 'string|nullable'
+        ]);
+
+        $feedback = Feedback::create([
+            'type' => $request->input('mtype'),
+            'message' => $request->input('message'),
+            'state' => 'inbox'
+        ]);
     }
 }

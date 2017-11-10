@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\Option;
+use App\Models\Student;
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -27,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -41,7 +46,20 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('public.register');
+        $min_entry_year = Option::find(2)->value;
+        $max_entry_year = Option::find(3)->value;
+
+        return view('public.register', compact('min_entry_year', 'max_entry_year'));
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        event(new Registered($user = $this->create($request->all())));
+        $user->student()->save(new Student($request->all()));
+        $this->guard()->login($user);
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 
     /**
@@ -53,9 +71,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'first_name' => 'required|max:255|persian',
+            'last_name' => 'required|max:255|persian',
+            'student_id' => 'required|digits:7|unique:students',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'entry_year' => 'required|digits:4',
         ]);
     }
 
@@ -63,14 +84,15 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Models\User
      */
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'role' => 'student',
+            'last_visit_time' => Carbon::now(),
         ]);
     }
 }

@@ -36,8 +36,8 @@ function register_validation() {
     $('#p_register .ui.form')
         .form({
             fields: {
-                firstName: {
-                    identifier  : 'firstName',
+                first_name: {
+                    identifier  : 'first_name',
                     rules: [
                         {
                             type   : 'empty',
@@ -45,8 +45,8 @@ function register_validation() {
                         }
                     ]
                 },
-                lastName: {
-                    identifier  : 'lastName',
+                last_name: {
+                    identifier  : 'last_name',
                     rules: [
                         {
                             type   : 'empty',
@@ -54,8 +54,8 @@ function register_validation() {
                         }
                     ]
                 },
-                studentId: {
-                    identifier  : 'studentId',
+                student_id: {
+                    identifier  : 'student_id',
                     rules: [
                         {
                             type   : 'empty',
@@ -110,8 +110,8 @@ function register_validation() {
                         }
                     ]
                 },
-                entryYear: {
-                    identifier  : 'entryYear',
+                entry_year: {
+                    identifier  : 'entry_year',
                     rules: [
                         {
                             type   : 'empty',
@@ -192,7 +192,6 @@ function reset_validation() {
     ;
 }
 
-
 function vertical_align_panel(id) {
     const body_height = window.$('body')[0].offsetHeight;
     const p_panel_height = window.$(id)[0].offsetHeight;
@@ -239,6 +238,9 @@ function panelsInit() {
     }
 
     if(window.$('#p_reset').length != 0){
+        // Components initialization
+        init_message_dismiss_btns();
+
         vertical_align_panel('#p_reset');
         reset_validation();
     }
