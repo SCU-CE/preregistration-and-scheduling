@@ -6,44 +6,42 @@
         @include('components.feedback-desktop')
     @endif
 
-    <div id="p_register">
+    <div id="p_reset">
         <div class="ui center aligned container">
-            <div id="register_panel">
+            <div id="reset_panel">
                 <h2 class="ui teal header fw-300">
-                    ثبت نام در سامانه
+                                        بازیابی رمز عبور
                 </h2>
 
-                <form class="ui large form{{ $errors->any() ? ' error' : '' }}" method="POST" action="{{ url('/register') }}">
+                @if (session('status'))
+                    <div class="ui green message">
+                        <i class="close icon"></i>
+                        <div class="header fw-300">
+                            {{ session('status') }}
+                        </div>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="ui red message">
+                        <i class="close icon"></i>
+                        <div class="header fw-300">
+                            {{ session('error') }}
+                        </div>
+                    </div>
+                @endif
+
+                <form class="ui large form{{ $errors->any() ? ' error' : '' }}" method="POST" action="{{ url('/password/reset') }}">
 
                     {{ csrf_field() }}
+                    <input type="hidden" name="token" value="{{ $token }}">
 
                     <div class="ui stacked segment">
 
-                        <div class="field{{ $errors->has('firstName') ? ' error' : '' }}">
-                            <div class="ui left icon large input">
-                                <i class="user icon"></i>
-                                <input type="text" name="firstName" placeholder="نام" value="{{ old('firstName') }}" autofocus>
-                            </div>
-                        </div>
-
-                        <div class="field{{ $errors->has('lastName') ? ' error' : '' }}">
-                            <div class="ui left icon large input">
-                                <i class="users icon"></i>
-                                <input type="text" name="lastName" placeholder="نام خانوادگی" value="{{ old('lastName') }}">
-                            </div>
-                        </div>
-
-                        <div class="field{{ $errors->has('studentId') ? ' error' : '' }}">
-                            <div class="ui left icon large input">
-                                <i class="student icon"></i>
-                                <input type="text" name="studentId" placeholder="شماره دانشجویی" value="{{ old('studentId') }}">
-                            </div>
-                        </div>
-
                         <div class="field{{ $errors->has('email') ? ' error' : '' }}">
                             <div class="ui left icon large input">
-                                <i class="mail icon"></i>
-                                <input type="text" name="email" placeholder="پست الکترونیکی" value="{{ old('email') }}">
+                                <i class="user icon"></i>
+                                <input type="text" name="email" placeholder="پست الکترونیکی" value="{{ $email or old('email') }}" autofocus>
                             </div>
                         </div>
 
@@ -61,13 +59,7 @@
                             </div>
                         </div>
 
-                        <div class="field{{ $errors->has('entryYear') ? ' error' : '' }}">
-                            <select name="entryYear" class="ui dropdown" value="{{ old('lastName') }}">
-                                <option value="">سال ورود</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="ui fluid large green submit button fw-300">ثبت نام در سامانه</button>
+                        <button type="submit" class="ui fluid large yellow submit button fw-300">تغییر رمز عبور</button>
 
                     </div>
 
@@ -87,6 +79,12 @@
                     <div id="login_btn" class="ui segment">
                         <div class="ui horizontal divider fw-300">قبلا ثبت نام کرده اید؟</div>
                         <a href="{{ url('/login') }}" class="ui fluid large teal button fw-300">ورود به سامانه</a>
+                        <div class="ui divider"></div>
+                    </div>
+
+                    <div id="register_btn" class="ui segment">
+                        <div class="ui horizontal divider fw-300">هنوز ثبت نام نکرده اید؟</div>
+                        <a href="{{ url('/register') }}" class="ui fluid large green button fw-300">ثبت نام در سامانه</a>
                         <div class="ui divider"></div>
                     </div>
                 </div>
