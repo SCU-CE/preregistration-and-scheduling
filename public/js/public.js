@@ -60,22 +60,154 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-__webpack_require__(1);
-__webpack_require__(2);
-__webpack_require__(3);
-module.exports = __webpack_require__(4);
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = feedbackInit;
+function feedbackInit() {
+    window.$('#feedback-btn button').on('click', function () {
+        if (window.$('#feedback-btn').hasClass('open') && window.$('#feedback-btn').hasClass('msg')) {
+            window.$(this).blur();
+            window.$('#feedback-panel').animate({ right: '-64px' }, { duration: 250, easing: 'swing', queue: false });
+            window.$('#feedback-type').animate({ right: '-57px' }, { duration: 250, easing: 'swing', queue: false });
+            window.$('#feedback-msg').animate({ right: '-240px' }, 250, 'swing', function () {
+                window.$('#feedback-btn').removeClass('open msg');
+                window.$(document).off('mouseup');
+            });
+        } else if (window.$('#feedback-btn').hasClass('open')) {
+            window.$(this).blur();
+            window.$('#feedback-panel').animate({ right: '-64px' }, 250, 'swing');
+            window.$('#feedback-type').animate({ right: '-57px' }, 250, 'swing', function () {
+                window.$('#feedback-btn').removeClass('open');
+                window.$(document).off('mouseup');
+            });
+        } else {
+            window.$(this).blur();
+            window.$('#feedback-panel').animate({ right: '-9px' }, 250, 'swing');
+            window.$('#feedback-type').animate({ right: '0px' }, 250, 'swing', function () {
+                window.$('#feedback-btn').addClass('open');
+                hideFeedbackPanelWhenClickOutside();
+            });
+        }
+    });
 
+    window.$('.fb-bt.bt1').hover(function () {
+        window.$(this).css('background-color', '#23CE47');
+    }, function () {
+        window.$(this).css('background-color', '#21BA45');
+    });
+    window.$('.fb-bt.bt2').hover(function () {
+        window.$(this).css('background-color', '#00C9C1');
+    }, function () {
+        window.$(this).css('background-color', '#00B5AD');
+    });
+    window.$('.fb-bt.bt3').hover(function () {
+        window.$(this).css('background-color', '#EF2A2A');
+    }, function () {
+        window.$(this).css('background-color', '#DB2828');
+    });
+
+    window.$('.fb-bt').on('click', function () {
+        if (!window.$('#feedback-btn').hasClass('msg')) {
+            window.$('#feedback-panel').animate({ right: '232px' }, 250, 'swing');
+            window.$('#feedback-type').animate({ right: '240px' }, 250, 'swing');
+            window.$('#feedback-msg').animate({ right: '0px' }, 250, 'swing', function () {
+                window.$('#feedback-btn').addClass('msg');
+                hideFeedbackPanelWhenClickOutside();
+            });
+        }
+    });
+
+    window.$('.fb-bt.bt1').on('click', function () {
+        window.$('#send-btn').removeClass('green red teal');
+        window.$('#send-btn').addClass('green');
+        window.$('#msg-type').css('background-color', '#21BA45');
+        window.$('#msg-type i').removeClass('smile frown heart');
+        window.$('#msg-type i').addClass('smile');
+        window.$('#mtype').val('smile');
+    });
+    window.$('.fb-bt.bt2').on('click', function () {
+        window.$('#send-btn').removeClass('green red teal');
+        window.$('#send-btn').addClass('teal');
+        window.$('#msg-type').css('background-color', '#00B5AD');
+        window.$('#msg-type i').removeClass('smile frown heart');
+        window.$('#msg-type i').addClass('frown');
+        window.$('#mtype').val('frown');
+    });
+    window.$('.fb-bt.bt3').on('click', function () {
+        window.$('#send-btn').removeClass('green red teal');
+        window.$('#send-btn').addClass('red');
+        window.$('#msg-type').css('background-color', '#DB2828');
+        window.$('#msg-type i').removeClass('smile frown heart');
+        window.$('#msg-type i').addClass('heart');
+        window.$('#mtype').val('heart');
+    });
+
+    function hideFeedbackPanelWhenClickOutside() {
+        window.$(document).mouseup(function (e) {
+            var container = window.$('#feedback-panel');
+
+            if (!container.is(e.target) // if the target of the click isn't the container...
+            && container.has(e.target).length === 0) // ... nor a descendant of the container
+                {
+                    window.$('#feedback-btn button').trigger('click');
+                }
+        });
+    }
+
+    window.$("#feedbackForm").submit(function () {
+        window.$('#feedback_dimmer').dimmer('toggle');
+        var formURL = window.$(this).attr("action");
+        var postData = window.$(this).serializeArray();
+        window.$.ajax({
+            url: formURL + '/feedback',
+            type: "POST",
+            data: postData,
+            success: function success(data) {
+                window.$('#message').val('');
+                window.$('#feedback_dimmer').dimmer('toggle');
+                window.$('#feedback_success').dimmer('toggle');
+                setTimeout(function () {
+                    window.$('#feedback-btn button').trigger('click');
+                    window.$('#feedback_success').dimmer('toggle');
+                }, 500);
+            },
+            error: function error(data) {
+
+                window.$('#feedback_dimmer').dimmer('toggle');
+            }
+        });
+        return false;
+    });
+}
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(2);
+__webpack_require__(3);
+__webpack_require__(4);
+module.exports = __webpack_require__(5);
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__commons__ = __webpack_require__(0);
+
+
+function elementExist(selector) {
+    return window.$(selector).length != 0;
+}
 
 function login_validation() {
     $('#p_login .ui.form').form({
@@ -226,10 +358,14 @@ function reset_validation() {
     });
 }
 
-function vertical_align_panel(id) {
-    var body_height = window.$('body')[0].offsetHeight;
-    var p_panel_height = window.$(id)[0].offsetHeight;
-    if (body_height > p_panel_height) window.$(id).css('padding-top', (body_height - p_panel_height) / 2);
+function vertical_align_panel(selector) {
+    var body = window.$('body');
+    var p_panel = window.$(selector);
+    if (body[0].offsetHeight > p_panel[0].offsetHeight) {
+        window.$(selector).css('padding-top', (body[0].offsetHeight - p_panel[0].offsetHeight) / 2);
+    } else {
+        window.$(selector).css('padding-top', 16);
+    }
 }
 function init_message_dismiss_btns() {
     $('.message .close').on('click', function () {
@@ -241,165 +377,52 @@ function panelsInit() {
     // initialize footer date
     window.$('#month_year').html(new persianDate().format("MMMM YYYY"));
 
-    if (window.$('#p_login').length != 0) {
+    if (elementExist('#p_login')) {
         // Components initialization
         window.$('#p_login .checkbox').checkbox();
 
-        vertical_align_panel('#p_login');
         login_validation();
     }
 
-    if (window.$('#p_register').length != 0) {
+    if (elementExist('#p_register')) {
         // Components initialization
         window.$('#p_register .dropdown').dropdown();
 
-        vertical_align_panel('#p_register');
         register_validation();
     }
 
-    if (window.$('#p_forget').length != 0) {
+    if (elementExist('#p_forget')) {
         // Components initialization
         init_message_dismiss_btns();
 
-        vertical_align_panel('#p_forget');
         forget_validation();
     }
 
-    if (window.$('#p_reset').length != 0) {
+    if (elementExist('#p_reset')) {
         // Components initialization
         init_message_dismiss_btns();
 
-        vertical_align_panel('#p_reset');
         reset_validation();
     }
 }
-function feedbackInit() {
-    window.$('#feedback-btn button').on('click', function () {
-        if (window.$('#feedback-btn').hasClass('open') && window.$('#feedback-btn').hasClass('msg')) {
-            window.$(this).blur();
-            window.$('#feedback-panel').animate({ right: '-64px' }, { duration: 250, easing: 'swing', queue: false });
-            window.$('#feedback-type').animate({ right: '-57px' }, { duration: 250, easing: 'swing', queue: false });
-            window.$('#feedback-msg').animate({ right: '-240px' }, 250, 'swing', function () {
-                window.$('#feedback-btn').removeClass('open msg');
-                window.$(document).off('mouseup');
-            });
-        } else if (window.$('#feedback-btn').hasClass('open')) {
-            window.$(this).blur();
-            window.$('#feedback-panel').animate({ right: '-64px' }, 250, 'swing');
-            window.$('#feedback-type').animate({ right: '-57px' }, 250, 'swing', function () {
-                window.$('#feedback-btn').removeClass('open');
-                window.$(document).off('mouseup');
-            });
-        } else {
-            window.$(this).blur();
-            window.$('#feedback-panel').animate({ right: '-9px' }, 250, 'swing');
-            window.$('#feedback-type').animate({ right: '0px' }, 250, 'swing', function () {
-                window.$('#feedback-btn').addClass('open');
-                hideFeedbackPanelWhenClickOutside();
-            });
-        }
-    });
+function panelsVAlign() {
+    if (elementExist('#p_login')) vertical_align_panel('#p_login');
 
-    window.$('.fb-bt.bt1').hover(function () {
-        window.$(this).css('background-color', '#23CE47');
-    }, function () {
-        window.$(this).css('background-color', '#21BA45');
-    });
-    window.$('.fb-bt.bt2').hover(function () {
-        window.$(this).css('background-color', '#00C9C1');
-    }, function () {
-        window.$(this).css('background-color', '#00B5AD');
-    });
-    window.$('.fb-bt.bt3').hover(function () {
-        window.$(this).css('background-color', '#EF2A2A');
-    }, function () {
-        window.$(this).css('background-color', '#DB2828');
-    });
+    if (elementExist('#p_register')) vertical_align_panel('#p_register');
 
-    window.$('.fb-bt').on('click', function () {
-        if (!window.$('#feedback-btn').hasClass('msg')) {
-            window.$('#feedback-panel').animate({ right: '232px' }, 250, 'swing');
-            window.$('#feedback-type').animate({ right: '240px' }, 250, 'swing');
-            window.$('#feedback-msg').animate({ right: '0px' }, 250, 'swing', function () {
-                window.$('#feedback-btn').addClass('msg');
-                hideFeedbackPanelWhenClickOutside();
-            });
-        }
-    });
+    if (elementExist('#p_forget')) vertical_align_panel('#p_forget');
 
-    window.$('.fb-bt.bt1').on('click', function () {
-        window.$('#send-btn').removeClass('green red teal');
-        window.$('#send-btn').addClass('green');
-        window.$('#msg-type').css('background-color', '#21BA45');
-        window.$('#msg-type i').removeClass('smile frown heart');
-        window.$('#msg-type i').addClass('smile');
-        window.$('#mtype').val('smile');
-    });
-    window.$('.fb-bt.bt2').on('click', function () {
-        window.$('#send-btn').removeClass('green red teal');
-        window.$('#send-btn').addClass('teal');
-        window.$('#msg-type').css('background-color', '#00B5AD');
-        window.$('#msg-type i').removeClass('smile frown heart');
-        window.$('#msg-type i').addClass('frown');
-        window.$('#mtype').val('frown');
-    });
-    window.$('.fb-bt.bt3').on('click', function () {
-        window.$('#send-btn').removeClass('green red teal');
-        window.$('#send-btn').addClass('red');
-        window.$('#msg-type').css('background-color', '#DB2828');
-        window.$('#msg-type i').removeClass('smile frown heart');
-        window.$('#msg-type i').addClass('heart');
-        window.$('#mtype').val('heart');
-    });
-
-    function hideFeedbackPanelWhenClickOutside() {
-        window.$(document).mouseup(function (e) {
-            var container = window.$('#feedback-panel');
-
-            if (!container.is(e.target) // if the target of the click isn't the container...
-            && container.has(e.target).length === 0) // ... nor a descendant of the container
-                {
-                    window.$('#feedback-btn button').trigger('click');
-                }
-        });
-    }
-
-    window.$("#feedbackForm").submit(function () {
-        window.$('#feedback_dimmer').dimmer('toggle');
-        var formURL = window.$(this).attr("action");
-        var postData = window.$(this).serializeArray();
-        window.$.ajax({
-            url: formURL + '/feedback',
-            type: "POST",
-            data: postData,
-            success: function success(data) {
-                window.$('#message').val('');
-                window.$('#feedback_dimmer').dimmer('toggle');
-                window.$('#feedback_success').dimmer('toggle');
-                setTimeout(function () {
-                    window.$('#feedback-btn button').trigger('click');
-                    window.$('#feedback_success').dimmer('toggle');
-                }, 500);
-            },
-            error: function error(data) {
-
-                window.$('#feedback_dimmer').dimmer('toggle');
-            }
-        });
-        return false;
-    });
+    if (elementExist('#p_reset')) vertical_align_panel('#p_reset');
 }
 
 window.$(function () {
+    __WEBPACK_IMPORTED_MODULE_0__commons__["a" /* feedbackInit */]();
     panelsInit();
-    feedbackInit();
+    panelsVAlign();
+    window.$(window).resize(function () {
+        panelsVAlign();
+    });
 });
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 3 */
@@ -409,6 +432,12 @@ window.$(function () {
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

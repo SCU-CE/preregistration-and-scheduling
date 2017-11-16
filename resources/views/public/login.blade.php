@@ -69,6 +69,7 @@
                     </div>
                 </div>
 
+                <div class="ui hidden divider"></div>
                 @include('components.public-footer')
             </div>
         </div>

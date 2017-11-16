@@ -8,25 +8,15 @@ use App\Http\Controllers\Controller;
 
 class BaseController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function home()
     {
-        return 'Student Home Page!';
-
-        return view('student.home');
+        $currentStep = '1st';
+        return view('student.home', compact('currentStep'));
     }
 }

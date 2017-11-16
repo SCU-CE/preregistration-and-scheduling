@@ -1,0 +1,183 @@
+@import "commons";
+
+body {
+  direction: rtl;
+}
+
+.container {
+  padding: 6px 0px;
+}
+
+.computer.menu {
+  padding: 5px;
+
+  .steps {
+    margin: 0px;
+  }
+
+  .right {
+    #user_btn {
+      margin: 0px;
+      padding: 10px 10px 10px 16px;
+
+      i {
+        margin: 0px 0px 5px 0px;
+      }
+
+      span {
+        font-size: 16px;
+      }
+    }
+    #logout_btn {
+      margin: 0px;
+      padding: 10px;
+      height: 54px;
+      width: 54px;
+    }
+  }
+}
+
+.mobile.menu {
+  padding: 5px;
+  margin: 0px;
+
+  #steps_btn {
+    margin: 0;
+    padding: 8px;
+    height: 38px;
+    width: 38px;
+
+    i {
+      font-size: 16px;
+    }
+  }
+
+  .right {
+    #user_btn {
+      margin: 0px;
+      padding: 8px 8px 8px 14px;
+
+      i {
+        margin: 0px 0px 4px 0px;
+      }
+
+      span {
+        font-size: 14px;
+      }
+    }
+    #logout_btn {
+      margin: 0px;
+      padding: 8px;
+      height: 38px;
+      width: 38px;
+    }
+  }
+}
+.mobile.steps {
+  position: absolute;
+  margin-top: 6px;
+  z-index: 1000;
+}
+
+.computer.vertical.menu {
+  position: absolute;
+  z-index: 1000;
+}
+.mobile.vertical.menu {
+  position: absolute;
+  z-index: 1000;
+}
+
+@media only screen and (min-width: 768px) {
+  .computer.menu {
+    display: flex !important;
+  }
+  .computer.vertical.menu {
+    display: flex !important;
+  }
+  .mobile.menu {
+    display: none !important;
+  }
+  .mobile.steps {
+    display: none !important;
+  }
+  .mobile.vertical.menu {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .computer.menu {
+    display: none !important;
+  }
+  .computer.vertical.menu {
+    display: none !important;
+  }
+  .mobile.menu {
+    display: flex !important;
+  }
+  .mobile.steps {
+    display: inline-flex !important;
+  }
+  .mobile.vertical.menu {
+    display: flex !important;
+  }
+
+  .ui.steps .step {
+    border-left: none !important;
+  }
+}
+
+.five-px-element {
+  width: 5px;
+  height: 5px;
+}
+
+.ribbon {
+  margin-bottom: 20px;
+  padding: 14px 20px;
+
+  i {
+    padding: 0px;
+    margin: 0px 0px 0px 4px;
+  }
+}
+
+.center.segment{
+  margin-bottom: 6px;
+}
+
+.completed-color {
+  color: #21BA45 !important;
+}
+.active-color {
+  color: #2185D0 !important;
+}
+.disabled-color {
+  color: lightgray !important;
+}
+
+.ui.steps .step.active {
+  background: #fafafa;
+}
+
+.ui.steps .step.active:after {
+  background: #fafafa;
+}
+
+
+#p_student_login {
+
+  .segment .steps .step .content {
+    margin-top: 0.5em;
+  }
+
+  .segment .steps .step .content .description {
+    margin-top: .85em;
+    color: lightgray;
+  }
+
+  .segment .huge.blue.basic.button {
+    padding: 0.5em;
+    line-height: 1.75em;
+  }
+}

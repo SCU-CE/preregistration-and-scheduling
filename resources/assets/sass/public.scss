@@ -1,116 +1,11 @@
-// #common
+@import "commons";
+
 body {
   direction: rtl;
   background-image: url(../imgs/class-image.jpg);
   background-size: cover;
   background-attachment: fixed;
   background-position: right;
-}
-
-// #common
-.fw-200 {
-  font-weight: 200 !important;
-}
-.fw-300 {
-  font-weight: 300 !important;
-}
-.fw-400 {
-  font-weight: 400 !important;
-}
-
-// #common
-#feedback-panel{
-  position: fixed;
-  right: -64px;
-  bottom: 100px;
-  z-index: 200;
-
-  #feedback-btn{
-    transform: rotate(-90deg);
-
-    button {
-      width: 165px
-    }
-  }
-
-  #feedback-type{
-    height: 164px;
-    width: 57px;
-    position: fixed;
-    right: -57px;
-    bottom: 41px;
-    background-color: #1f67ae;
-    z-index: -100;
-
-    .bt1 {
-      background-color: #21BA45;
-    }
-
-    .bt2 {
-      background-color: #00B5AD;
-    }
-
-    .bt3 {
-      background-color: #DB2828;
-    }
-
-    .fb-bt{
-      width: 44px;
-      height: 44px;
-      text-align: center;
-      font-size: xx-large;
-      border-radius: 20%;
-      margin: 8px 5px;
-      cursor: pointer;
-
-      i{
-        margin-top: 13px;
-        margin-right: 3px;
-        color: white;
-      }
-    }
-  }
-
-  #feedback-msg{
-    height: 164px;
-    width: 240px;
-    position: fixed;
-    right: -240px;
-    bottom: 41px;
-    background-color: #1f67ae;
-    z-index: -100;
-
-    #feedbackForm {
-      padding: 8px 6px;
-
-      textarea {
-        height: 105px;
-        padding: 8px;
-        line-height: 24px;
-        resize: none;
-        font-family: 'IRANSans', 'Tahoma', Arial, Helvetica, sans-serif;
-        font-size: small;
-      }
-
-      .fields {
-        margin-top: -8px;
-      }
-
-      #msg-type {
-        background-color: #21BA45;
-        width: 37px;
-        height: 37px;
-        border-radius: 20%;
-        margin-right: -6px;
-
-        i {
-          font-size: 27px;
-          margin-top: 9px;
-          margin-right: 3px;
-        }
-      }
-    }
-  }
 }
 
 #p_login {

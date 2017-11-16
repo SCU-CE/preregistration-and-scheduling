@@ -15,8 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // db configuration
         Schema::defaultStringLength(191);
 
+        // custom validations
         Validator::extend('valid_pass', function($attribute, $value, $parameters, $validator) {
             if(password_verify($value, Auth::user()->password)){
                 return true;

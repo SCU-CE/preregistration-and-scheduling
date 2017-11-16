@@ -1,0 +1,306 @@
+.fw-200 {
+  font-weight: 200 !important;
+}
+
+.fw-300 {
+  font-weight: 300 !important;
+}
+
+.fw-400 {
+  font-weight: 400 !important;
+}
+
+#feedback-panel {
+  position: fixed;
+  right: -64px;
+  bottom: 100px;
+  z-index: 200;
+}
+
+#feedback-panel #feedback-btn {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
+
+#feedback-panel #feedback-btn button {
+  width: 166px;
+}
+
+#feedback-panel #feedback-type {
+  height: 165px;
+  width: 57px;
+  position: fixed;
+  right: -57px;
+  bottom: 40px;
+  background-color: #1f67ae;
+  z-index: -100;
+}
+
+#feedback-panel #feedback-type .bt1 {
+  background-color: #21BA45;
+}
+
+#feedback-panel #feedback-type .bt2 {
+  background-color: #00B5AD;
+}
+
+#feedback-panel #feedback-type .bt3 {
+  background-color: #DB2828;
+}
+
+#feedback-panel #feedback-type .fb-bt {
+  width: 44px;
+  height: 44px;
+  text-align: center;
+  font-size: xx-large;
+  border-radius: 20%;
+  margin: 8px 5px;
+  cursor: pointer;
+}
+
+#feedback-panel #feedback-type .fb-bt i {
+  margin-top: 13px;
+  margin-right: 3px;
+  color: white;
+}
+
+#feedback-panel #feedback-msg {
+  height: 165px;
+  width: 240px;
+  position: fixed;
+  right: -240px;
+  bottom: 40px;
+  background-color: #1f67ae;
+  z-index: -100;
+}
+
+#feedback-panel #feedback-msg #feedbackForm {
+  padding: 8px 6px;
+}
+
+#feedback-panel #feedback-msg #feedbackForm textarea {
+  height: 105px;
+  padding: 8px;
+  line-height: 24px;
+  resize: none;
+  font-family: 'IRANSans', 'Tahoma', Arial, Helvetica, sans-serif;
+  font-size: small;
+}
+
+#feedback-panel #feedback-msg #feedbackForm .fields {
+  margin-top: -8px;
+}
+
+#feedback-panel #feedback-msg #feedbackForm #msg-type {
+  background-color: #21BA45;
+  width: 37px;
+  height: 37px;
+  border-radius: 20%;
+  margin-right: -6px;
+}
+
+#feedback-panel #feedback-msg #feedbackForm #msg-type i {
+  font-size: 27px;
+  margin-top: 9px;
+  margin-right: 3px;
+}
+
+body {
+  direction: rtl;
+}
+
+.container {
+  padding: 6px 0px;
+}
+
+.computer.menu {
+  padding: 5px;
+}
+
+.computer.menu .steps {
+  margin: 0px;
+}
+
+.computer.menu .right #user_btn {
+  margin: 0px;
+  padding: 10px 10px 10px 16px;
+}
+
+.computer.menu .right #user_btn i {
+  margin: 0px 0px 5px 0px;
+}
+
+.computer.menu .right #user_btn span {
+  font-size: 16px;
+}
+
+.computer.menu .right #logout_btn {
+  margin: 0px;
+  padding: 10px;
+  height: 54px;
+  width: 54px;
+}
+
+.mobile.menu {
+  padding: 5px;
+  margin: 0px;
+}
+
+.mobile.menu #steps_btn {
+  margin: 0;
+  padding: 8px;
+  height: 38px;
+  width: 38px;
+}
+
+.mobile.menu #steps_btn i {
+  font-size: 16px;
+}
+
+.mobile.menu .right #user_btn {
+  margin: 0px;
+  padding: 8px 8px 8px 14px;
+}
+
+.mobile.menu .right #user_btn i {
+  margin: 0px 0px 4px 0px;
+}
+
+.mobile.menu .right #user_btn span {
+  font-size: 14px;
+}
+
+.mobile.menu .right #logout_btn {
+  margin: 0px;
+  padding: 8px;
+  height: 38px;
+  width: 38px;
+}
+
+.mobile.steps {
+  position: absolute;
+  margin-top: 6px;
+  z-index: 1000;
+}
+
+.computer.vertical.menu {
+  position: absolute;
+  z-index: 1000;
+}
+
+.mobile.vertical.menu {
+  position: absolute;
+  z-index: 1000;
+}
+
+@media only screen and (min-width: 768px) {
+  .computer.menu {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+  }
+
+  .computer.vertical.menu {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+  }
+
+  .mobile.menu {
+    display: none !important;
+  }
+
+  .mobile.steps {
+    display: none !important;
+  }
+
+  .mobile.vertical.menu {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .computer.menu {
+    display: none !important;
+  }
+
+  .computer.vertical.menu {
+    display: none !important;
+  }
+
+  .mobile.menu {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+  }
+
+  .mobile.steps {
+    display: -webkit-inline-box !important;
+    display: -ms-inline-flexbox !important;
+    display: inline-flex !important;
+  }
+
+  .mobile.vertical.menu {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+  }
+
+  .ui.steps .step {
+    border-left: none !important;
+  }
+}
+
+.five-px-element {
+  width: 5px;
+  height: 5px;
+}
+
+.ribbon {
+  margin-bottom: 20px;
+  padding: 14px 20px;
+}
+
+.ribbon i {
+  padding: 0px;
+  margin: 0px 0px 0px 4px;
+}
+
+.center.segment {
+  margin-bottom: 6px;
+}
+
+.completed-color {
+  color: #21BA45 !important;
+}
+
+.active-color {
+  color: #2185D0 !important;
+}
+
+.disabled-color {
+  color: lightgray !important;
+}
+
+.ui.steps .step.active {
+  background: #fafafa;
+}
+
+.ui.steps .step.active:after {
+  background: #fafafa;
+}
+
+#p_student_login .segment .steps .step .content {
+  margin-top: 0.5em;
+}
+
+#p_student_login .segment .steps .step .content .description {
+  margin-top: .85em;
+  color: lightgray;
+}
+
+#p_student_login .segment .huge.blue.basic.button {
+  padding: 0.5em;
+  line-height: 1.75em;
+}
+

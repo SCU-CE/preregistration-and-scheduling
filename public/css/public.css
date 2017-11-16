@@ -1,11 +1,3 @@
-body {
-  direction: rtl;
-  background-image: url(/images/class-image.jpg?3c4704325583d60c22b6d873dbba5665);
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: right;
-}
-
 .fw-200 {
   font-weight: 200 !important;
 }
@@ -31,15 +23,15 @@ body {
 }
 
 #feedback-panel #feedback-btn button {
-  width: 165px;
+  width: 166px;
 }
 
 #feedback-panel #feedback-type {
-  height: 164px;
+  height: 165px;
   width: 57px;
   position: fixed;
   right: -57px;
-  bottom: 41px;
+  bottom: 40px;
   background-color: #1f67ae;
   z-index: -100;
 }
@@ -73,11 +65,11 @@ body {
 }
 
 #feedback-panel #feedback-msg {
-  height: 164px;
+  height: 165px;
   width: 240px;
   position: fixed;
   right: -240px;
-  bottom: 41px;
+  bottom: 40px;
   background-color: #1f67ae;
   z-index: -100;
 }
@@ -111,6 +103,14 @@ body {
   font-size: 27px;
   margin-top: 9px;
   margin-right: 3px;
+}
+
+body {
+  direction: rtl;
+  background-image: url(/images/class-image.jpg?3c4704325583d60c22b6d873dbba5665);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: right;
 }
 
 #p_login {
