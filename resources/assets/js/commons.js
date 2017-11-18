@@ -6,7 +6,6 @@ export function feedbackInit() {
             window.$('#feedback-type').animate({right: '-57px'},{duration: 250, easing: 'swing', queue: false});
             window.$('#feedback-msg').animate({right: '-240px'},250,'swing',function () {
                 window.$('#feedback-btn').removeClass('open msg');
-                window.$(document).off('mouseup');
             });
 
         }else if(window.$('#feedback-btn').hasClass('open')){
@@ -14,14 +13,12 @@ export function feedbackInit() {
             window.$('#feedback-panel').animate({right: '-64px'},250,'swing');
             window.$('#feedback-type').animate({right: '-57px'},250,'swing', function () {
                 window.$('#feedback-btn').removeClass('open');
-                window.$(document).off('mouseup');
             });
         }else{
             window.$(this).blur();
             window.$('#feedback-panel').animate({right: '-9px'},250,'swing');
             window.$('#feedback-type').animate({right: '0px'},250,'swing', function () {
                 window.$('#feedback-btn').addClass('open');
-                hideFeedbackPanelWhenClickOutside();
             });
         }
     });
@@ -57,7 +54,6 @@ export function feedbackInit() {
             window.$('#feedback-type').animate({right: '240px'}, 250, 'swing');
             window.$('#feedback-msg').animate({right: '0px'}, 250, 'swing', function () {
                 window.$('#feedback-btn').addClass('msg');
-                hideFeedbackPanelWhenClickOutside();
             });
         }
     });
@@ -87,18 +83,16 @@ export function feedbackInit() {
         window.$('#mtype').val('heart');
     });
 
-    function hideFeedbackPanelWhenClickOutside() {
-        window.$(document).mouseup(function (e)
+    window.$(document).on('mouseup', function (e)
+    {
+        const container = window.$('#feedback-panel');
+        if (!container.is(e.target) // if the target of the click isn't the container...
+            && container.has(e.target).length === 0 // ... nor a descendant of the container
+            && window.$('#feedback-btn').hasClass('open'))
         {
-            const container = window.$('#feedback-panel');
-
-            if (!container.is(e.target) // if the target of the click isn't the container...
-                && container.has(e.target).length === 0) // ... nor a descendant of the container
-            {
-                window.$('#feedback-btn button').trigger('click');
-            }
-        });
-    }
+            window.$('#feedback-btn button').trigger('click');
+        }
+    });
 
 
     window.$("#feedbackForm").submit(function()
@@ -111,7 +105,7 @@ export function feedbackInit() {
                 url : formURL + '/feedback',
                 type : "POST",
                 data : postData,
-                success:function(data)
+                success: function(data)
                 {
                     window.$('#message').val('');
                     window.$('#feedback_dimmer').dimmer('toggle');
@@ -119,7 +113,7 @@ export function feedbackInit() {
                     setTimeout(function () {
                         window.$('#feedback-btn button').trigger('click');
                         window.$('#feedback_success').dimmer('toggle');
-                    },500)
+                    }, 500)
                 },
                 error: function(data)
                 {

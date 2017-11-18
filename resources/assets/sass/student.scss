@@ -4,8 +4,8 @@ body {
   direction: rtl;
 }
 
-.container {
-  padding: 6px 0px;
+.ui.menu {
+  margin-top: 0;
 }
 
 .computer.menu {
@@ -36,10 +36,8 @@ body {
     }
   }
 }
-
 .mobile.menu {
   padding: 5px;
-  margin: 0px;
 
   #steps_btn {
     margin: 0;
@@ -73,10 +71,11 @@ body {
     }
   }
 }
+
 .mobile.steps {
   position: absolute;
-  margin-top: 6px;
   z-index: 1000;
+  margin: -1rem 6px;
 }
 
 .computer.vertical.menu {
@@ -104,6 +103,9 @@ body {
   .mobile.vertical.menu {
     display: none !important;
   }
+  .center.segment{
+    font-size: 1em;
+  }
 }
 @media only screen and (max-width: 767px) {
   .computer.menu {
@@ -125,6 +127,9 @@ body {
   .ui.steps .step {
     border-left: none !important;
   }
+  .center.segment{
+    font-size: .75em;
+  }
 }
 
 .five-px-element {
@@ -142,10 +147,6 @@ body {
   }
 }
 
-.center.segment{
-  margin-bottom: 6px;
-}
-
 .completed-color {
   color: #21BA45 !important;
 }
@@ -159,13 +160,11 @@ body {
 .ui.steps .step.active {
   background: #fafafa;
 }
-
 .ui.steps .step.active:after {
   background: #fafafa;
 }
 
-
-#p_student_login {
+#p_student_home {
 
   .segment .steps .step .content {
     margin-top: 0.5em;

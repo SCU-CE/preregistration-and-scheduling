@@ -3,7 +3,7 @@ import * as commons from './commons';
 function autohide_menu (btn_selector,menu_selector){
     const menu = window.$(menu_selector);
     const container = window.$(btn_selector + ',' + menu_selector);
-    window.$(document).mouseup(function (e) {
+    window.$(document).on('mouseup', function (e) {
         if (!menu.hasClass('hidden') // if menu is not hidden
             && !container.is(e.target) // if the target of the click isn't the container...
             && container.has(e.target).length === 0) // ... nor a descendant of the container
@@ -54,7 +54,7 @@ function init_vmenu_position() {
     mobile_vmenu.css('top', mobile_vmenu_top);
 
     const computer_vmenu_left = computer_user_btn[0].offsetLeft - (Math.abs(computer_user_btn[0].offsetWidth - computer_vmenu[0].offsetWidth));
-    const computer_vmenu_top = (computer_user_btn[0].offsetTop) + computer_user_btn[0].offsetHeight;
+    const computer_vmenu_top = (computer_user_btn[0].offsetTop * 2) + computer_user_btn[0].offsetHeight;
 
     computer_vmenu.css('left', computer_vmenu_left);
     computer_vmenu.css('top', computer_vmenu_top);
@@ -75,6 +75,17 @@ function init_vmenu_position() {
         }
     }
 }
+function adjust_to_screen_size() {
+    if(screen.width < 768) {
+        window.$('.ui.container .segment .fluid.steps').removeClass('large').addClass('tiny');
+        window.$('.ui.container .segment .blue.button').removeClass('huge');
+        window.$('#feedback-panel').hide();
+    }else{
+        window.$('.ui.container .segment .fluid.steps').removeClass('tiny').addClass('large');
+        window.$('.ui.container .segment .blue.button').addClass('huge');
+        window.$('#feedback-panel').show();
+    }
+}
 
 window.$(function () {
     // initialize footer date
@@ -82,8 +93,12 @@ window.$(function () {
 
     commons.feedbackInit();
     init_menu_btns();
+
     init_vmenu_position();
+    adjust_to_screen_size();
+
     window.$(window).resize(function(){
         init_vmenu_position();
+        adjust_to_screen_size();
     });
 });

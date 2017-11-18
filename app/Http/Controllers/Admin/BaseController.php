@@ -23,6 +23,6 @@ class BaseController extends Controller
 
     public function home()
     {
-        return 'Admin Home Page!';
+        return view('admin.home');
     }
 }

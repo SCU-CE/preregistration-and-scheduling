@@ -109,8 +109,8 @@ body {
   direction: rtl;
 }
 
-.container {
-  padding: 6px 0px;
+.ui.menu {
+  margin-top: 0;
 }
 
 .computer.menu {
@@ -143,7 +143,6 @@ body {
 
 .mobile.menu {
   padding: 5px;
-  margin: 0px;
 }
 
 .mobile.menu #steps_btn {
@@ -179,8 +178,8 @@ body {
 
 .mobile.steps {
   position: absolute;
-  margin-top: 6px;
   z-index: 1000;
+  margin: -1rem 6px;
 }
 
 .computer.vertical.menu {
@@ -217,6 +216,10 @@ body {
   .mobile.vertical.menu {
     display: none !important;
   }
+
+  .center.segment {
+    font-size: 1em;
+  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -249,6 +252,10 @@ body {
   .ui.steps .step {
     border-left: none !important;
   }
+
+  .center.segment {
+    font-size: .75em;
+  }
 }
 
 .five-px-element {
@@ -264,10 +271,6 @@ body {
 .ribbon i {
   padding: 0px;
   margin: 0px 0px 0px 4px;
-}
-
-.center.segment {
-  margin-bottom: 6px;
 }
 
 .completed-color {
@@ -290,16 +293,16 @@ body {
   background: #fafafa;
 }
 
-#p_student_login .segment .steps .step .content {
+#p_student_home .segment .steps .step .content {
   margin-top: 0.5em;
 }
 
-#p_student_login .segment .steps .step .content .description {
+#p_student_home .segment .steps .step .content .description {
   margin-top: .85em;
   color: lightgray;
 }
 
-#p_student_login .segment .huge.blue.basic.button {
+#p_student_home .segment .huge.blue.basic.button {
   padding: 0.5em;
   line-height: 1.75em;
 }

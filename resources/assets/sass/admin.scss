@@ -1,0 +1,72 @@
+@import "commons";
+
+body {
+  direction: rtl;
+}
+
+.ui.menu {
+  margin-top: 0;
+}
+
+.mobile.vertical.menu {
+  position: absolute;
+  z-index: 1000;
+  margin: -1rem 6px;
+}
+
+.computer.menu {
+  padding: 5px;
+
+  .icon.button {
+    margin: 0;
+    padding: 8px;
+    height: 54px;
+    width: 54px;
+
+    i {
+      font-size: 2em;
+    }
+  }
+}
+.mobile.menu {
+  padding: 5px;
+
+  .icon.button {
+    margin: 0;
+    padding: 8px;
+    height: 38px;
+    width: 38px;
+
+    i {
+      font-size: 18px;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .computer.menu {
+    display: flex !important;
+  }
+  .mobile.menu {
+    display: none !important;
+  }
+  .center.segment{
+    font-size: 1em;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .computer.menu {
+    display: none !important;
+  }
+  .mobile.menu {
+    display: flex !important;
+  }
+  .center.segment{
+    font-size: .75em;
+  }
+}
+
+.five-px-element {
+  width: 5px;
+  height: 5px;
+}

@@ -6,12 +6,12 @@
         @include('components.feedback-desktop')
     @endif
 
-    <div id="p_student_login">
-        <div class="ui container">
-            <!-- Menu -->
-            @include('components.student-menu', ['hasSteps' => false])
+    <div id="p_student_home">
+        <!-- Menu -->
+        @include('components.student-menu', ['hasSteps' => true, 'active' => $currentStep])
 
-            <!-- Content -->
+        <!-- Content -->
+        <div class="ui container">
             <div class="ui segment">
 
                 @include('components.steps', [
@@ -26,12 +26,11 @@
                 <div class="ui divider"></div>
 
 
-
             </div>
-
-            <!-- Footer -->
-            @include('components.public-footer')
         </div>
+
+        <!-- Footer -->
+        @include('components.public-footer')
     </div>
 
 @endsection

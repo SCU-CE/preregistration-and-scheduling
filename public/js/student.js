@@ -77,21 +77,18 @@ function feedbackInit() {
             window.$('#feedback-type').animate({ right: '-57px' }, { duration: 250, easing: 'swing', queue: false });
             window.$('#feedback-msg').animate({ right: '-240px' }, 250, 'swing', function () {
                 window.$('#feedback-btn').removeClass('open msg');
-                window.$(document).off('mouseup');
             });
         } else if (window.$('#feedback-btn').hasClass('open')) {
             window.$(this).blur();
             window.$('#feedback-panel').animate({ right: '-64px' }, 250, 'swing');
             window.$('#feedback-type').animate({ right: '-57px' }, 250, 'swing', function () {
                 window.$('#feedback-btn').removeClass('open');
-                window.$(document).off('mouseup');
             });
         } else {
             window.$(this).blur();
             window.$('#feedback-panel').animate({ right: '-9px' }, 250, 'swing');
             window.$('#feedback-type').animate({ right: '0px' }, 250, 'swing', function () {
                 window.$('#feedback-btn').addClass('open');
-                hideFeedbackPanelWhenClickOutside();
             });
         }
     });
@@ -118,7 +115,6 @@ function feedbackInit() {
             window.$('#feedback-type').animate({ right: '240px' }, 250, 'swing');
             window.$('#feedback-msg').animate({ right: '0px' }, 250, 'swing', function () {
                 window.$('#feedback-btn').addClass('msg');
-                hideFeedbackPanelWhenClickOutside();
             });
         }
     });
@@ -148,17 +144,14 @@ function feedbackInit() {
         window.$('#mtype').val('heart');
     });
 
-    function hideFeedbackPanelWhenClickOutside() {
-        window.$(document).mouseup(function (e) {
-            var container = window.$('#feedback-panel');
-
-            if (!container.is(e.target) // if the target of the click isn't the container...
-            && container.has(e.target).length === 0) // ... nor a descendant of the container
-                {
-                    window.$('#feedback-btn button').trigger('click');
-                }
-        });
-    }
+    window.$(document).on('mouseup', function (e) {
+        var container = window.$('#feedback-panel');
+        if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0 // ... nor a descendant of the container
+        && window.$('#feedback-btn').hasClass('open')) {
+            window.$('#feedback-btn button').trigger('click');
+        }
+    });
 
     window.$("#feedbackForm").submit(function () {
         window.$('#feedback_dimmer').dimmer('toggle');
@@ -210,7 +203,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 function autohide_menu(btn_selector, menu_selector) {
     var menu = window.$(menu_selector);
     var container = window.$(btn_selector + ',' + menu_selector);
-    window.$(document).mouseup(function (e) {
+    window.$(document).on('mouseup', function (e) {
         if (!menu.hasClass('hidden') // if menu is not hidden
         && !container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
@@ -261,7 +254,7 @@ function init_vmenu_position() {
     mobile_vmenu.css('top', mobile_vmenu_top);
 
     var computer_vmenu_left = computer_user_btn[0].offsetLeft - Math.abs(computer_user_btn[0].offsetWidth - computer_vmenu[0].offsetWidth);
-    var computer_vmenu_top = computer_user_btn[0].offsetTop + computer_user_btn[0].offsetHeight;
+    var computer_vmenu_top = computer_user_btn[0].offsetTop * 2 + computer_user_btn[0].offsetHeight;
 
     computer_vmenu.css('left', computer_vmenu_left);
     computer_vmenu.css('top', computer_vmenu_top);
@@ -282,6 +275,17 @@ function init_vmenu_position() {
         }
     }
 }
+function adjust_to_screen_size() {
+    if (screen.width < 768) {
+        window.$('.ui.container .segment .fluid.steps').removeClass('large').addClass('tiny');
+        window.$('.ui.container .segment .blue.button').removeClass('huge');
+        window.$('#feedback-panel').hide();
+    } else {
+        window.$('.ui.container .segment .fluid.steps').removeClass('tiny').addClass('large');
+        window.$('.ui.container .segment .blue.button').addClass('huge');
+        window.$('#feedback-panel').show();
+    }
+}
 
 window.$(function () {
     // initialize footer date
@@ -289,9 +293,13 @@ window.$(function () {
 
     __WEBPACK_IMPORTED_MODULE_0__commons__["a" /* feedbackInit */]();
     init_menu_btns();
+
     init_vmenu_position();
+    adjust_to_screen_size();
+
     window.$(window).resize(function () {
         init_vmenu_position();
+        adjust_to_screen_size();
     });
 });
 
