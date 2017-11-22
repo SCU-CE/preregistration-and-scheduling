@@ -44,6 +44,13 @@ class AppServiceProvider extends ServiceProvider
             }
             return false;
         });
+        Validator::extend('enfa_num', function($attribute, $value, $parameters, $validator) {
+            $pattern = '/^[\s\x{0600}-\x{06FF}0-9A-Za-z]*$/u';
+            if(preg_match($pattern,$value)){
+                return true;
+            }
+            return false;
+        });
     }
 
     /**

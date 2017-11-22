@@ -88,6 +88,14 @@ return [
     'uploaded'             => 'آپلود فایل :attribute موفقیت آمیز نبود.',
     'url'                  => 'فرمت آدرس :attribute اشتباه است.',
 
+    //
+
+    'valid_pass'           => ':attribute وارد شده نامعتبر می باشد.',
+    'valid_email'          => ':attribute قبلا انتخاب شده است.',
+    'valid_sid'            => 'این شماره دانشجویی قبلا گرفته شده است.',
+    'persian'              => 'لطفا :attribute را با حروف پارسی وارد کنید.',
+    'enfa_num'             => ':attribute فقط باید شامل حروف پارسی و انگلیسی و اعداد باشد.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -100,10 +108,7 @@ return [
     */
 
     'custom'               => [
-        'valid_pass'           => ':attribute وارد شده نامعتبر می باشد.',
-        'valid_email'          => ':attribute قبلا انتخاب شده است.',
-        'valid_sid'            => 'این شماره دانشجویی قبلا گرفته شده است.',
-        'persian'              => 'لطفا با حروف پارسی وارد کنید.',
+
     ],
 
     /*
@@ -152,6 +157,12 @@ return [
 
         'student_id'            => 'شماره دانشجویی',
         'entry_year'            => 'سال ورود',
+        'course_name'           => 'نام درس',
+        'course_code'           => 'کد درس',
+        'units'                 => 'تعداد واحد',
+        'default_min_capacity_fall'     => 'حداقل ظرفیت پاییز',
+        'default_min_capacity_spring'   => 'حداقل ظرفیت بهار',
+        'category'              => 'دسته بندی',
     ],
 
 ];

@@ -179,10 +179,35 @@ body {
   .center.segment {
     font-size: .75em;
   }
+
+  .ui.form button.submit {
+    margin-top: 1em;
+  }
+
+  .ui.modal > .actions {
+    padding: 1rem !important;
+  }
+
+  .ui.modal > .header {
+    font-size: 1em !important;
+  }
 }
 
 .five-px-element {
   width: 5px;
   height: 5px;
+}
+
+#p_admin_courses .grey.segment .message {
+  text-align: center;
+}
+
+#edit_course.modal .content {
+  padding: .75em !important;
+}
+
+#edit_course.modal .actions {
+  text-align: left !important;
+  padding: .75em .5em .75em !important;
 }
 

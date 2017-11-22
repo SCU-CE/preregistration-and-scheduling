@@ -17,6 +17,7 @@ Route::get('/', 'HomeController@index');
 
 Auth::routes();
 
+// Student Routes
 Route::group([
                 'middleware' => 'student',
                 'prefix' => 'student',
@@ -26,7 +27,7 @@ Route::group([
     Route::get('home', 'BaseController@home');
 });
 
-
+// Admin Routes
 Route::group([
                 'middleware' => 'admin',
                 'prefix' => 'admin',
@@ -34,4 +35,9 @@ Route::group([
 ], function()
 {
     Route::get('home', 'BaseController@home');
+    Route::get('courses', 'BaseController@courses');
+    Route::get('instructors', 'BaseController@instructors');
+
+    Route::resource('course', 'CourseController', ['only' => ['store', 'update', 'destroy']]);
+    Route::resource('instructor', 'InstructorController', ['only' => ['store', 'update', 'destroy']]);
 });
