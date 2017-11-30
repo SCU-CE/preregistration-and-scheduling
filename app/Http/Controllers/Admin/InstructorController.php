@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Course;
+use App\Models\Instructor;
 use App\Models\Semester;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class CourseController extends Controller
+class InstructorController extends Controller
 {
     public function __construct()
     {
@@ -19,82 +21,85 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-        $categories = ['درس پایه', 'درس اصلی', 'درس اختیاری', 'آزمایشگاه'];
-
+        $sexes = ['مرد', 'زن'];
         $validator = Validator::make($request->all(), [
-            'course_name' => 'required|enfa_num|max:50',
-            'course_code' => 'required|digits_between:1,20|unique:courses,code',
-            'units' => 'required|digits:1',
-            'default_min_capacity_fall' => 'required|digits_between:1,2',
-            'default_min_capacity_spring' => 'required|digits_between:1,2',
-            'category' => 'required|in:' . implode(',', $categories)
+            'instructor_name' => 'required|enfa_num|max:100',
+            'sex' => 'required|in:' . implode(',', $sexes),
+            'profile_link' => 'nullable|url',
+            'photo' => 'nullable|file|image'
         ]);
 
         if ($validator->fails()) {
-            return redirect('admin/courses')
+            return redirect('admin/instructors')
                 ->withErrors($validator, 'store')
                 ->withInput();
         }
 
-        $course = Course::create([
-            'name' => $request->input('course_name'),
-            'code' => $request->input('course_code'),
-            'units' => $request->input('units'),
-            'default_min_capacity_fall' => $request->input('default_min_capacity_fall'),
-            'default_min_capacity_spring' => $request->input('default_min_capacity_spring'),
-            'category' => $request->input('category')
+        $photo = null;
+        if($request->file('photo') != null){
+            $photo = $request->file('photo')->storeAs('instructor_photos', uniqid('img_') . '.jpg', 'public');
+        }
+
+        $instructor = Instructor::create([
+            'name' => $request->input('instructor_name'),
+            'sex' => $request->input('sex'),
+            'link' => $request->input('profile_link') == 'http://engg.scu.ac.ir/' ? null : $request->input('profile_link'),
+            'photo' => $photo
         ]);
 
-        Session::flash('message', 'درس "' . $course->name . '" با موفقیت در سامانه ثبت شد.');
+        Session::flash('message', 'استاد "' . $instructor->name . '" با موفقیت در سامانه ثبت شد.');
         Session::flash('message_color', 'green');
 
-        return redirect('admin/courses');
+        return redirect('admin/instructors');
     }
 
     public function update(Request $request, $id)
     {
-        $course = Course::find($id);
+        $instructor = Instructor::find($id);
 
-        $categories = ['درس پایه', 'درس اصلی', 'درس اختیاری', 'آزمایشگاه'];
+        $sexes = ['مرد', 'زن'];
         $validator = Validator::make($request->all(), [
-            'course_name' => 'required|enfa_num|max:50',
-            'course_code' => 'required|digits_between:1,20|unique:courses,code,'.$course->id,
-            'units' => 'required|digits:1',
-            'default_min_capacity_fall' => 'required|digits_between:1,2',
-            'default_min_capacity_spring' => 'required|digits_between:1,2',
-            'category' => 'required|in:' . implode(',', $categories)
+            'instructor_name' => 'required|enfa_num|max:100',
+            'sex' => 'required|in:' . implode(',', $sexes),
+            'profile_link' => 'nullable|url',
+            'photo' => 'nullable|file|image'
         ]);
 
         if ($validator->fails()) {
-            return redirect('admin/courses')
+            return redirect('admin/instructors')
                 ->withErrors($validator, 'update')
                 ->withInput()
-                ->with('course_id', $course->id);
+                ->with('instructor_id', $instructor->id);
         }
 
-        $course->name = $request->input('course_name');
-        $course->code = $request->input('course_code');
-        $course->units = $request->input('units');
-        $course->default_min_capacity_fall = $request->input('default_min_capacity_fall');
-        $course->default_min_capacity_spring = $request->input('default_min_capacity_spring');
-        $course->category = $request->input('category');
+        $instructor->name = $request->input('instructor_name');
+        $instructor->sex = $request->input('sex');
+        $instructor->link = $request->input('profile_link') == 'http://engg.scu.ac.ir/' ? null : $request->input('profile_link');
 
-        $course->save();
+        if($request->file('photo') != null){
+            $path_name = explode('/', $instructor->photo);
+            $request->file('photo')->storeAs($path_name[0],$path_name[1],'public');
+        }
 
-        Session::flash('message', 'درس "' . $course->name . '" با موفقیت به روز رسانی شد.');
+        $instructor->save();
+
+        Session::flash('message', 'استاد "' . $instructor->name . '" با موفقیت به روز رسانی شد.');
         Session::flash('message_color', 'teal');
 
-        return redirect('admin/courses');
+        return redirect('admin/instructors');
     }
 
     public function destroy($id)
     {
-        $course = Course::find($id);
-        $course->delete();
+        $instructor = Instructor::find($id);
+        if($instructor->photo != null) {
+            Storage::delete('public/' . $instructor->photo);
+        }
+        $instructor->delete();
 
-        Session::flash('message', 'درس "' . $course->name . '" با موفقیت از سامانه حذف شد.');
+        Session::flash('message', 'استاد "' . $instructor->name . '" با موفقیت از سامانه حذف شد.');
         Session::flash('message_color', 'orange');
 
-        return redirect('admin/courses');
+        return redirect('admin/instructors');
     }
 }

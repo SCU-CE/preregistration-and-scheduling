@@ -74,9 +74,8 @@ module.exports = __webpack_require__(9);
 /***/ }),
 
 /***/ 9:
-/***/ (function(module, __webpack_exports__) {
+/***/ (function(module, exports) {
 
-"use strict";
 Chart.defaults.global.maintainAspectRatio = false;
 Chart.defaults.global.defaultFontFamily = "'IRANSans', 'Tahoma', 'Arial', sans-serif";
 
@@ -236,6 +235,62 @@ function edit_course_validation() {
         }
     });
 }
+function add_instructor_validation() {
+    window.$('#p_admin_instructors .ui.form').form({
+        fields: {
+            instructor_name: {
+                identifier: 'instructor_name',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نام استاد را وارد کنید.'
+                }]
+            },
+            sex: {
+                identifier: 'sex',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا جنسیت استاد را انتخاب کنید.'
+                }]
+            },
+            profile_link: {
+                identifier: 'profile_link',
+                rules: []
+            },
+            photo: {
+                identifier: 'photo',
+                rules: []
+            }
+        }
+    });
+}
+function edit_instructor_validation() {
+    window.$('#edit_instructor .ui.form').form({
+        fields: {
+            instructor_name: {
+                identifier: 'instructor_name',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نام استاد را وارد کنید.'
+                }]
+            },
+            sex: {
+                identifier: 'sex',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا جنسیت استاد را انتخاب کنید.'
+                }]
+            },
+            profile_link: {
+                identifier: 'profile_link',
+                rules: []
+            },
+            photo: {
+                identifier: 'photo',
+                rules: []
+            }
+        }
+    });
+}
 
 function init_menu_btns() {
     // cache map btn and steps dom elements
@@ -316,6 +371,73 @@ function pagesInit() {
         // validations
         add_course_validation();
         edit_course_validation();
+
+        // init dropdowns
+        window.$('.ui.dropdown').dropdown();
+
+        // init messages
+        if (elementExist('.grey.segment .message')) {
+            window.$('.grey.segment .message .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.grey.segment .message').hasClass('hidden')) window.$('.grey.segment .message').transition('fade');
+            }, 4000);
+        }
+    }
+
+    // instructor page logic
+    if (elementExist('#p_admin_instructors')) {
+
+        // edit instructor logic
+        var _edit_btns = window.$('.grey.segment table tr .orange.button');
+        var edit_instructor_modal = window.$('#edit_instructor.modal');
+        var edit_instructor_form = edit_instructor_modal.find('form');
+        var edit_instructor_form_action = edit_instructor_form.attr('action');
+        _edit_btns.on('click', function () {
+            var instructor_id = $(this).data('id');
+            var instructor_row = window.$('#instructor_' + instructor_id);
+            // clear the form
+            window.$('#edit_instructor .ui.form').form('reset');
+            window.$('#edit_instructor .ui.form .error.message').html('');
+            // fill it with prev info
+            edit_instructor_form.find('[name=instructor_name]').val(instructor_row.find('td:nth-child(1)').html());
+            edit_instructor_form.find('[name=sex]').val(instructor_row.find('td:nth-child(2)').html());
+            if (instructor_row.find('td:nth-child(3) a').html() !== '') {
+                edit_instructor_form.find('[name=profile_link]').val(instructor_row.find('td:nth-child(3) a').html());
+            }
+            window.$('.ui.dropdown').dropdown();
+            edit_instructor_form.attr('action', edit_instructor_form_action + '/' + instructor_id);
+            edit_instructor_modal.modal({
+                onApprove: function onApprove() {
+                    return window.$('#edit_instructor .ui.form').form('is valid');
+                }
+            }).modal('show');
+        });
+        if (window.$('#edit_instructor.modal').data('error') === true) {
+            edit_instructor_modal.modal('show');
+        }
+
+        // delete instructor logic
+        var _delete_btns = window.$('.grey.segment table tr .red.button');
+        var delete_instructor_modal = window.$('#delete_instructor.modal');
+        var _delete_preview_row = delete_instructor_modal.find('table tbody tr');
+        var delete_instructor_form = delete_instructor_modal.find('form');
+        var delete_instructor_form_action = delete_instructor_form.attr('action');
+        _delete_btns.on('click', function () {
+            var instructor_id = $(this).data('id');
+            var instructor_row = window.$('#instructor_' + instructor_id);
+            _delete_preview_row.find('td:nth-child(1)').html(instructor_row.find('td:nth-child(1)').html());
+            _delete_preview_row.find('td:nth-child(2)').html(instructor_row.find('td:nth-child(2)').html());
+            _delete_preview_row.find('td:nth-child(3)').html(instructor_row.find('td:nth-child(3)').html());
+            _delete_preview_row.find('td:nth-child(4)').html(instructor_row.find('td:nth-child(4)').html());
+            delete_instructor_form.attr('action', delete_instructor_form_action + '/' + instructor_id);
+            delete_instructor_modal.modal('show');
+        });
+
+        // validations
+        add_instructor_validation();
+        edit_instructor_validation();
 
         // init dropdowns
         window.$('.ui.dropdown').dropdown();

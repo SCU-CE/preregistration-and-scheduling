@@ -198,8 +198,30 @@ body {
   height: 5px;
 }
 
-#p_admin_courses .grey.segment .message {
+.grey.segment .message {
   text-align: center;
+}
+
+#p_admin_courses .grey.segment table thead tr th:last-child {
+  min-width: 200px;
+}
+
+#p_admin_instructors [name=profile_link] {
+  direction: ltr;
+  text-align: left;
+}
+
+#p_admin_instructors [name=photo] {
+  direction: ltr;
+  padding: .5em;
+}
+
+#p_admin_instructors .grey.segment thead tr th:last-child {
+  min-width: 200px;
+}
+
+#p_admin_instructors .grey.segment tbody td img {
+  max-width: 120px;
 }
 
 #edit_course.modal .content {
@@ -209,5 +231,28 @@ body {
 #edit_course.modal .actions {
   text-align: left !important;
   padding: .75em .5em .75em !important;
+}
+
+#edit_instructor.modal [name=profile_link] {
+  direction: ltr;
+  text-align: left;
+}
+
+#edit_instructor.modal [name=photo] {
+  direction: ltr;
+  padding: .5em;
+}
+
+#edit_instructor.modal .content {
+  padding: .75em !important;
+}
+
+#edit_instructor.modal .actions {
+  text-align: left !important;
+  padding: .75em .5em .75em !important;
+}
+
+#delete_instructor.modal tbody td img {
+  max-width: 120px;
 }
 

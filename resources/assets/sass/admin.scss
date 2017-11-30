@@ -83,10 +83,36 @@ body {
   height: 5px;
 }
 
+.grey.segment {
+  .message {
+    text-align: center;
+  }
+}
+
 #p_admin_courses {
+  .grey.segment table thead tr th:last-child {
+    min-width: 200px;
+  }
+}
+#p_admin_instructors {
+  [name=profile_link] {
+    direction: ltr;
+    text-align: left;
+  }
+  [name=photo] {
+    direction: ltr;
+    padding: .5em;
+  }
   .grey.segment {
-    .message {
-      text-align: center;
+    thead tr {
+      th:last-child {
+        min-width: 200px;
+      }
+    }
+    tbody td {
+      img {
+        max-width: 120px;
+      }
     }
   }
 }
@@ -98,5 +124,29 @@ body {
   .actions {
     text-align: left !important;
     padding: .75em .5em .75em !important;
+  }
+}
+#edit_instructor.modal {
+  [name=profile_link] {
+    direction: ltr;
+    text-align: left;
+  }
+  [name=photo] {
+    direction: ltr;
+    padding: .5em;
+  }
+  .content {
+    padding: .75em !important;
+  }
+  .actions {
+    text-align: left !important;
+    padding: .75em .5em .75em !important;
+  }
+}
+#delete_instructor.modal {
+  tbody td {
+    img {
+      max-width: 120px;
+    }
   }
 }

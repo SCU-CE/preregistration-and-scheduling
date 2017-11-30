@@ -2,47 +2,40 @@
 
 @section('content')
 
-    <div id="p_admin_courses">
+    <div id="p_admin_instructors">
         <div class="ui green segment">
-            <form class="ui form{{ $errors->store->any() ? ' error' : '' }}" method="POST" action="{{ url('admin/course') }}">
+            <form class="ui form{{ $errors->store->any() ? ' error' : '' }}" method="POST" enctype="multipart/form-data" action="{{ url('admin/instructor') }}">
 
                 {{ csrf_field() }}
 
                 <div class="fields">
-                    <div class="eight wide field{{ $errors->store->has('course_name') ? ' error' : '' }}">
-                        <label for="course_name">نام درس</label>
-                        <input type="text" name="course_name" placeholder="نام درس" value="{{ $errors->store->any() ? old('course_name') : '' }}" autofocus>
+                    <div class="ten wide field{{ $errors->store->has('instructor_name') ? ' error' : '' }}">
+                        <label for="instructor_name">نام استاد</label>
+                        <input type="text" name="instructor_name" placeholder="نام استاد" value="{{ $errors->store->any() ? old('instructor_name') : '' }}" autofocus>
                     </div>
-                    <div class="four wide field{{ $errors->store->has('course_code') ? ' error' : '' }}">
-                        <label for="course_code">کد درس</label>
-                        <input type="text" name="course_code" placeholder="کد درس" value="{{ $errors->store->any() ? old('course_code') : '' }}">
-                    </div>
-                    <div class="four wide field{{ $errors->store->has('units') ? ' error' : '' }}">
-                        <label for="units">تعداد واحد</label>
-                        <input type="text" name="units" placeholder="تعداد واحد" value="{{ $errors->store->any() ? old('units') : '' }}">
-                    </div>
-                </div>
-                <div class="fields">
-                    <div class="five wide field{{ $errors->store->has('default_min_capacity_fall') ? ' error' : '' }}">
-                        <label for="default_min_capacity_fall">حداقل ظرفیت پاییز</label>
-                        <input type="text" name="default_min_capacity_fall" placeholder="حداقل ظرفیت پاییز" value="{{ $errors->store->any() ? old('default_min_capacity_fall') : '10' }}">
-                    </div>
-                    <div class="five wide field{{ $errors->store->has('default_min_capacity_spring') ? ' error' : '' }}">
-                        <label for="default_min_capacity_spring">حداقل ظرفیت بهار</label>
-                        <input type="text" name="default_min_capacity_spring" placeholder="حداقل ظرفیت بهار" value="{{ $errors->store->any() ? old('default_min_capacity_spring') : '10' }}">
-                    </div>
-                    <div class="six wide field{{ $errors->store->has('category') ? ' error' : '' }}">
-                        <label for="category">دسته‌بندی درس</label>
-                        <select name="category" class="ui dropdown">
-                            <option value="">دسته‌بندی درس</option>
-                            <option value="درس پایه"{{ $errors->store->any() && old('category') == 'درس پایه' ? ' selected' : '' }}>درس پایه</option>
-                            <option value="درس اصلی"{{ $errors->store->any() && old('category') == 'درس اصلی' ? ' selected' : '' }}>درس اصلی</option>
-                            <option value="درس اختیاری"{{ $errors->store->any() && old('category') == 'درس اختیاری' ? ' selected' : '' }}>درس اختیاری</option>
-                            <option value="آزمایشگاه"{{ $errors->store->any() && old('category') == 'آزمایشگاه' ? ' selected' : '' }}>آزمایشگاه</option>
+                    <div class="six wide field{{ $errors->store->has('sex') ? ' error' : '' }}">
+                        <label for="sex">جنسیت</label>
+                        <select name="sex" class="ui dropdown">
+                            <option value="">جنسیت</option>
+                            <option value="مرد"{{ $errors->store->any() && old('sex') == 'مرد' ? ' selected' : '' }}>مرد</option>
+                            <option value="زن"{{ $errors->store->any() && old('sex') == 'زن' ? ' selected' : '' }}>زن</option>
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="ui fluid green submit button fw-300">ثبت درس</button>
+                <div class="fields">
+                    <div class="eight wide field{{ $errors->store->has('profile_link') ? ' error' : '' }}">
+                        <label for="profile_link">آدرس پروفایل</label>
+                        <div class="ui right icon input" data-tooltip="این فیلد می تواند خالی باشد" data-position="right center">
+                            <i class="student icon"></i>
+                            <input type="text" name="profile_link" placeholder="http://engg.scu.ac.ir/name" value="{{ $errors->store->any() ? old('profile_link') : 'http://engg.scu.ac.ir/' }}">
+                        </div>
+                    </div>
+                    <div class="eight wide field{{ $errors->store->has('photo') ? ' error' : '' }}">
+                        <label for="photo">تصویر</label>
+                        <input type="file" name="photo" data-tooltip="این فیلد می تواند خالی باشد" data-position="left center">
+                    </div>
+                </div>
+                <button type="submit" class="ui fluid green submit button fw-300">ثبت استاد</button>
                 <div class="ui error message">
                     @if ($errors->store->any())
                         <ul class="list">
@@ -55,7 +48,7 @@
             </form>
         </div>
 
-        @if(count($courses)>0)
+        @if(count($instructors)>0)
         <div class="ui grey segment">
             @if(Session::has('message'))
             <div class="ui {{ Session::get('message_color') }} message">
@@ -66,27 +59,25 @@
             <table class="ui selectable celled striped center aligned table">
                 <thead>
                     <tr>
-                        <th>نام درس</th>
-                        <th>کد درس</th>
-                        <th>واحد</th>
-                        <th>پاییز</th>
-                        <th>بهار</th>
-                        <th>دسته‌بندی</th>
+                        <th>نام استاد</th>
+                        <th>جنسیت</th>
+                        <th>آدرس پروفایل</th>
+                        <th>تصویر</th>
                         <th>ویرایش / حذف</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($courses as $course)
-                    <tr id="course_{{$course->id}}">
-                        <td>{{$course->name}}</td>
-                        <td>{{$course->code}}</td>
-                        <td>{{$course->units}}</td>
-                        <td>{{$course->default_min_capacity_fall}}</td>
-                        <td>{{$course->default_min_capacity_spring}}</td>
-                        <td>{{$course->category}}</td>
+                @foreach($instructors as $instructor)
+                    <tr id="instructor_{{$instructor->id}}">
+                        <td>{{$instructor->name}}</td>
+                        <td>{{$instructor->sex}}</td>
+                        <td><a href="{{$instructor->link}}" target="_blank">{{$instructor->link}}</a></td>
                         <td>
-                            <div class="ui orange button fw-300" data-id="{{$course->id}}">ویرایش</div>
-                            <div class="ui red button fw-300" data-id="{{$course->id}}">حذف</div>
+                            <img src="{{$instructor->photo != null ? Storage::url($instructor->photo) : ( $instructor->sex == 'مرد' ? Storage::url('instructor_photos/img_male.png') : Storage::url('instructor_photos/img_female.png') )}}" alt="">
+                        </td>
+                        <td>
+                            <div class="ui orange button fw-300" data-id="{{$instructor->id}}">ویرایش</div>
+                            <div class="ui red button fw-300" data-id="{{$instructor->id}}">حذف</div>
                         </td>
                     </tr>
                 @endforeach
@@ -96,41 +87,34 @@
         @endif
 
         <div class="ui dimmer modals page transition hidden">
-            <div id="edit_course" class="ui tiny longer modal transition hidden" data-error="{{ $errors->update->any() ? 'true' : 'false'}}">
-                <form class="ui form{{ $errors->update->any() ? ' error' : '' }}" method="POST" action="{{ url('admin/course') }}{{ Session::has('course_id') ? '/'.Session::get('course_id') : '' }}">
+            <div id="edit_instructor" class="ui tiny longer modal transition hidden" data-error="{{ $errors->update->any() ? 'true' : 'false'}}">
+                <form class="ui form{{ $errors->update->any() ? ' error' : '' }}" method="POST" enctype="multipart/form-data"  action="{{ url('admin/instructor') }}{{ Session::has('instructor_id') ? '/'.Session::get('instructor_id') : '' }}">
 
                     <div class="scrolling content">
                         {{ csrf_field() }}
                         {{ method_field('PATCH') }}
-                        <div class="field{{ $errors->update->has('course_name') ? ' error' : '' }}">
-                            <label for="course_name">نام درس</label>
-                            <input type="text" name="course_name" placeholder="نام درس" value="{{ $errors->update->any() ? old('course_name') : '' }}" autofocus>
+                        <div class="field{{ $errors->update->has('instructor_name') ? ' error' : '' }}">
+                            <label for="instructor_name">نام استاد</label>
+                            <input type="text" name="instructor_name" placeholder="نام استاد" value="{{ $errors->update->any() ? old('instructor_name') : '' }}" autofocus>
                         </div>
-                        <div class="field{{ $errors->update->has('course_code') ? ' error' : '' }}">
-                            <label for="course_code">کد درس</label>
-                            <input type="text" name="course_code" placeholder="کد درس" value="{{ $errors->update->any() ? old('course_code') : '' }}">
-                        </div>
-                        <div class="field{{ $errors->update->has('units') ? ' error' : '' }}">
-                            <label for="units">تعداد واحد</label>
-                            <input type="text" name="units" placeholder="تعداد واحد" value="{{ $errors->update->any() ? old('units') : '' }}">
-                        </div>
-                        <div class="field{{ $errors->update->has('default_min_capacity_fall') ? ' error' : '' }}">
-                            <label for="default_min_capacity_fall">حداقل ظرفیت پاییز</label>
-                            <input type="text" name="default_min_capacity_fall" placeholder="حداقل ظرفیت پاییز" value="{{ $errors->update->any() ? old('default_min_capacity_fall') : '' }}">
-                        </div>
-                        <div class="field{{ $errors->update->has('default_min_capacity_spring') ? ' error' : '' }}">
-                            <label for="default_min_capacity_spring">حداقل ظرفیت بهار</label>
-                            <input type="text" name="default_min_capacity_spring" placeholder="حداقل ظرفیت بهار" value="{{ $errors->update->any() ? old('default_min_capacity_spring') : '' }}">
-                        </div>
-                        <div class="field{{ $errors->update->has('category') ? ' error' : '' }}">
-                            <label for="category">دسته‌بندی درس</label>
-                            <select name="category" class="ui dropdown">
-                                <option value="">دسته‌بندی درس</option>
-                                <option value="درس پایه"{{ $errors->update->any() && old('category') == 'درس پایه' ? ' selected' : '' }}>درس پایه</option>
-                                <option value="درس اصلی"{{ $errors->update->any() && old('category') == 'درس اصلی' ? ' selected' : '' }}>درس اصلی</option>
-                                <option value="درس اختیاری"{{ $errors->update->any() && old('category') == 'درس اختیاری' ? ' selected' : '' }}>درس اختیاری</option>
-                                <option value="آزمایشگاه"{{ $errors->update->any() && old('category') == 'آزمایشگاه' ? ' selected' : '' }}>آزمایشگاه</option>
+                        <div class="field{{ $errors->update->has('sex') ? ' error' : '' }}">
+                            <label for="sex">جنسیت</label>
+                            <select name="sex" class="ui dropdown">
+                                <option value="">جنسیت</option>
+                                <option value="مرد"{{ $errors->update->any() && old('sex') == 'مرد' ? ' selected' : '' }}>مرد</option>
+                                <option value="زن"{{ $errors->update->any() && old('sex') == 'زن' ? ' selected' : '' }}>زن</option>
                             </select>
+                        </div>
+                        <div class="field{{ $errors->update->has('profile_link') ? ' error' : '' }}">
+                            <label for="profile_link">آدرس پروفایل</label>
+                            <div class="ui right icon input">
+                                <i class="student icon"></i>
+                                <input type="text" name="profile_link" placeholder="http://engg.scu.ac.ir/name" value="{{ $errors->update->any() ? old('profile_link') : 'http://engg.scu.ac.ir/' }}">
+                            </div>
+                        </div>
+                        <div class="field{{ $errors->update->has('photo') ? ' error' : '' }}">
+                            <label for="photo">تصویر</label>
+                            <input type="file" name="photo">
                         </div>
 
                         <div class="ui error message">
@@ -159,22 +143,24 @@
 
                 </form>
             </div>
-            <div id="delete_course" class="ui tiny modal transition hidden">
+            <div id="delete_instructor" class="ui tiny modal transition hidden">
                 <div class="header fw-300">
-                    آیا از حذف این درس مطمئن هستید؟
+                    آیا از حذف این استاد مطمئن هستید؟
                 </div>
 
                 <div class="content">
-                    <table class="ui celled table">
+                    <table class="ui celled center aligned table">
                         <thead>
                         <tr>
-                            <th>نام درس</th>
-                            <th>کد درس</th>
-                            <th>تعداد واحد</th>
+                            <th>نام استاد</th>
+                            <th>جنسیت</th>
+                            <th>آدرس پروفایل</th>
+                            <th>تصویر</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -183,7 +169,7 @@
                     </table>
                 </div>
                 <div class="actions">
-                    <form class="ui" method="POST" action="{{ url('admin/course') }}">
+                    <form class="ui" method="POST" action="{{ url('admin/instructor') }}">
                         <div class="ui negative right labeled icon button fw-300">
                             خیر
                             <i class="remove icon"></i>

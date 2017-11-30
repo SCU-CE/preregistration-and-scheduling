@@ -51,7 +51,6 @@ class CourseController extends Controller
         return redirect('admin/courses');
     }
 
-
     public function update(Request $request, $id)
     {
         $course = Course::find($id);

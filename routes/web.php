@@ -37,7 +37,9 @@ Route::group([
     Route::get('home', 'BaseController@home');
     Route::get('courses', 'BaseController@courses');
     Route::get('instructors', 'BaseController@instructors');
+    Route::get('semesters', 'BaseController@semesters');
 
     Route::resource('course', 'CourseController', ['only' => ['store', 'update', 'destroy']]);
     Route::resource('instructor', 'InstructorController', ['only' => ['store', 'update', 'destroy']]);
+    Route::resource('semester', 'SemesterController', ['only' => ['store', 'update', 'destroy']]);
 });

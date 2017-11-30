@@ -67,8 +67,8 @@ return [
     'not_in'               => ':attribute انتخاب شده، معتبر نیست.',
     'numeric'              => ':attribute باید عدد باشد.',
     'present'              => 'فیلد :attribute باید در پارامترهای ارسالی وجود داشته باشد.',
-    'regex'                => 'فرمت :attribute معتبر نیست',
-    'required'             => 'فیلد :attribute الزامی است',
+    'regex'                => 'فرمت :attribute معتبر نیست.',
+    'required'             => 'فیلد :attribute الزامی است.',
     'required_if'          => 'هنگامی که :other برابر با :value است، فیلد :attribute الزامی است.',
     'required_unless'      => 'فیلد :attribute ضروری است، مگر آنکه :other در :values موجود باشد.',
     'required_with'        => 'در صورت وجود فیلد :values، فیلد :attribute الزامی است.',
@@ -163,6 +163,9 @@ return [
         'default_min_capacity_fall'     => 'حداقل ظرفیت پاییز',
         'default_min_capacity_spring'   => 'حداقل ظرفیت بهار',
         'category'              => 'دسته بندی',
+        'instructor_name'       => 'نام استاد',
+        'profile_link'          => 'آدرس پروفایل',
+        'photo'                 => 'فایل تصویر',
     ],
 
 ];

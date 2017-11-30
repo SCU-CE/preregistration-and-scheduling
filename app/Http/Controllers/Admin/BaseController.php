@@ -57,4 +57,9 @@ class BaseController extends Controller
         // return view with courses
         return view('admin.instructors', compact('instructors'));
     }
+
+    public function semesters()
+    {
+
+    }
 }

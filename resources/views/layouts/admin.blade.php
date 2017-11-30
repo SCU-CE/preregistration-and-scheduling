@@ -33,9 +33,11 @@
                 </button>
             </a>
             <div class="five-px-element"></div>
-            <button class="ui basic icon button" data-tooltip="استاد ها" data-position="bottom left">
-                <i class="large student icon"></i>
-            </button>
+            <a href="{{ url('admin/instructors') }}">
+                <button class="ui basic icon button" data-tooltip="استاد ها" data-position="bottom left">
+                    <i class="large student icon"></i>
+                </button>
+            </a>
             <div class="five-px-element"></div>
             <button class="ui basic icon button" data-tooltip="ترم ها" data-position="bottom left">
                 <i class="large road icon"></i>
@@ -103,7 +105,7 @@
             <i class="large book icon"></i>
             <span>درس ها</span>
         </a>
-        <a class="item">
+        <a class="item" href="{{ url('admin/instructors') }}">
             <i class="large student icon"></i>
             <span>استاد ها</span>
         </a>
