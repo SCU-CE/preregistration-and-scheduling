@@ -3,45 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Student extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'student_id', 'first_name', 'last_name', 'entry_year',
     ];
-
-    /**
-     * User has one relationship with User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
-
-    /**
-     * Student has many relationship with Course
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
     public function courses()
     {
         return $this->belongsToMany('App\Models\Course')->withTimestamps();
     }
-
-    /**
-     * Student has many relationship with Semester
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
     public function semesters()
     {
         return $this->belongsToMany('App\Models\Semester', 'course_student');
+    }
+    public function passed_course($id)
+    {
+        return DB::table('course_student')->where('student_id', $this->id)->where('course_id', $id)->where('semester_id', 1)->count() > 0;
     }
 }

@@ -291,6 +291,58 @@ function edit_instructor_validation() {
         }
     });
 }
+function add_semester_validation() {
+    window.$('#p_admin_semesters .ui.form').form({
+        fields: {
+            semester: {
+                identifier: 'semester',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نوبت ترم را انتخاب کنید.'
+                }]
+            },
+            year: {
+                identifier: 'year',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا سال ترم را وارد کنید.'
+                }, {
+                    type: 'number',
+                    prompt: 'سال ترم باید به شکل عددی باشد.'
+                }, {
+                    type: 'exactLength[4]',
+                    prompt: 'سال ترم باید 4 رقم داشته باشد.'
+                }]
+            }
+        }
+    });
+}
+function edit_semester_validation() {
+    window.$('#edit_semester .ui.form').form({
+        fields: {
+            semester: {
+                identifier: 'semester',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نوبت ترم را انتخاب کنید.'
+                }]
+            },
+            year: {
+                identifier: 'year',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا سال ترم را وارد کنید.'
+                }, {
+                    type: 'number',
+                    prompt: 'سال ترم باید به شکل عددی باشد.'
+                }, {
+                    type: 'exactLength[4]',
+                    prompt: 'سال ترم باید 4 رقم داشته باشد.'
+                }]
+            }
+        }
+    });
+}
 
 function init_menu_btns() {
     // cache map btn and steps dom elements
@@ -302,6 +354,12 @@ function init_menu_btns() {
     });
     // hide steps if clicked elsewhere
     autohide_menu('.mobile.menu #sidebar_btn', '.mobile.vertical.menu');
+
+    //
+    var logout_btns = window.$('.basic.logout.icon.button');
+    logout_btns.on('click', function () {
+        window.$('#logout_form').submit();
+    });
 }
 function adjust_to_screen_size() {
     var mobile_vmenu = window.$('.mobile.vertical.menu');
@@ -313,14 +371,28 @@ function adjust_to_screen_size() {
         }
     }
 }
+
 function pagesInit() {
     // initialize footer date
     window.$('#month_year').html(new persianDate().format("MMMM YYYY"));
-
+    // setup csrf token for ajax
+    window.$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+        }
+    });
     init_menu_btns();
-
+    // home page logic
+    if (elementExist('#p_admin_home')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(0)').addClass('blue');
+        window.$('.vertical.menu a i:eq(0)').removeClass('grey').addClass('blue');
+    }
     // course page logic
     if (elementExist('#p_admin_courses')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(1)').addClass('green');
+        window.$('.vertical.menu a i:eq(1)').removeClass('grey').addClass('green');
 
         // edit course logic
         var edit_btns = window.$('.grey.segment table tr .orange.button');
@@ -385,9 +457,11 @@ function pagesInit() {
             }, 4000);
         }
     }
-
     // instructor page logic
     if (elementExist('#p_admin_instructors')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(2)').addClass('violet');
+        window.$('.vertical.menu a i:eq(2)').removeClass('grey').addClass('violet');
 
         // edit instructor logic
         var _edit_btns = window.$('.grey.segment table tr .orange.button');
@@ -452,12 +526,184 @@ function pagesInit() {
             }, 4000);
         }
     }
+    // semester page logic
+    if (elementExist('#p_admin_semesters')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(3)').addClass('brown');
+        window.$('.vertical.menu a i:eq(3)').removeClass('grey').addClass('brown');
+
+        // edit semester logic
+        var _edit_btns2 = window.$('.grey.segment table tr .orange.button');
+        var edit_semester_modal = window.$('#edit_semester.modal');
+        var edit_semester_form = edit_semester_modal.find('form');
+        var edit_semester_form_action = edit_semester_form.attr('action');
+        _edit_btns2.on('click', function () {
+            var semester_id = $(this).data('id');
+            var semester_row = window.$('#semester_' + semester_id);
+            // clear the form
+            window.$('#edit_semester .ui.form').form('reset');
+            window.$('#edit_semester .ui.form .error.message').html('');
+            // fill it with prev info
+            edit_semester_form.find('[name=semester]').val(semester_row.find('td:nth-child(1)').html());
+            edit_semester_form.find('[name=year]').val(semester_row.find('td:nth-child(2)').html());
+            window.$('.ui.dropdown').dropdown();
+            edit_semester_form.attr('action', edit_semester_form_action + '/' + semester_id);
+            edit_semester_modal.modal({
+                onApprove: function onApprove() {
+                    return window.$('#edit_semester .ui.form').form('is valid');
+                }
+            }).modal('show');
+        });
+        if (window.$('#edit_semester.modal').data('error') === true) {
+            edit_semester_modal.modal('show');
+        }
+
+        // delete semester logic
+        var _delete_btns2 = window.$('.grey.segment table tr .red.button');
+        var delete_semester_modal = window.$('#delete_semester.modal');
+        var _delete_preview_row2 = delete_semester_modal.find('table tbody tr');
+        var delete_semester_form = delete_semester_modal.find('form');
+        var delete_semester_form_action = delete_semester_form.attr('action');
+        _delete_btns2.on('click', function () {
+            var semester_id = $(this).data('id');
+            var semester_row = window.$('#semester_' + semester_id);
+            _delete_preview_row2.find('td:nth-child(1)').html(semester_row.find('td:nth-child(1)').html());
+            _delete_preview_row2.find('td:nth-child(2)').html(semester_row.find('td:nth-child(2)').html());
+            delete_semester_form.attr('action', delete_semester_form_action + '/' + semester_id);
+            delete_semester_modal.modal('show');
+        });
+        // validations
+        add_semester_validation();
+        edit_semester_validation();
+
+        // init dropdowns
+        window.$('.ui.dropdown').dropdown();
+
+        // init messages
+        if (elementExist('.grey.segment .message')) {
+            window.$('.grey.segment .message .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.grey.segment .message').hasClass('hidden')) window.$('.grey.segment .message').transition('fade');
+            }, 4000);
+        }
+    }
+    if (elementExist('#p_admin_semester_courses')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(3)').addClass('brown');
+        window.$('.vertical.menu a i:eq(3)').removeClass('grey').addClass('brown');
+        // on check and unckeck events
+        window.$('.ui.checkbox').checkbox({
+            onChecked: function onChecked() {
+                $(this).parents('tr').find('.ui.input').removeClass('disabled');
+            },
+            onUnchecked: function onUnchecked() {
+                $(this).parents('tr').find('.ui.input').addClass('disabled');
+            }
+        });
+        // select and deselect all buttons
+        window.$('#select_all').on('click', function () {
+            window.$('.ui.checkbox').checkbox('check');
+        });
+        window.$('#deselect_all').on('click', function () {
+            window.$('.ui.checkbox').checkbox('uncheck');
+        });
+        // submit changes button
+        window.$('#submit_changes').on('click', function () {
+            // TODO validation logic
+            var rows = window.$('tbody tr');
+            var course_data = [];
+            for (var i = 0; i < rows.length; i++) {
+                var course_id = rows[i].id;
+                course_data.push({
+                    id: course_id,
+                    checked: window.$('#' + course_id + ' .ui.checkbox').checkbox('is checked'),
+                    min_capacity: window.$('#' + course_id + ' .ui.input input').val()
+                });
+            }
+            window.$.ajax({
+                url: document.location.href + '/updatecourses',
+                type: "POST",
+                data: JSON.stringify(course_data),
+                contentType: "application/json",
+                success: function success(result, status, xhr) {
+                    // TODO show success before redirect
+                    window.location = window.$('.ui.breadcrumb a').attr('href');
+                },
+                error: function error(xhr, status, _error) {
+                    // TODO error handling logic
+                }
+            });
+        });
+    }
+    // student page logic
+    if (elementExist('#p_admin_students')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(4)').addClass('teal');
+        window.$('.vertical.menu a i:eq(4)').removeClass('grey').addClass('teal');
+        // delete student logic
+        var _delete_btns3 = window.$('.grey.segment table tr .red.button');
+        var delete_student_modal = window.$('#delete_student.modal');
+        var _delete_preview_row3 = delete_student_modal.find('table tbody tr');
+        var delete_student_form = delete_student_modal.find('form');
+        var delete_student_form_action = delete_student_form.attr('action');
+        _delete_btns3.on('click', function () {
+            var student_id = $(this).data('id');
+            var student_row = window.$('#student_' + student_id);
+            _delete_preview_row3.find('td:nth-child(1)').html(student_row.find('td:nth-child(1)').html());
+            _delete_preview_row3.find('td:nth-child(2)').html(student_row.find('td:nth-child(2)').html());
+            _delete_preview_row3.find('td:nth-child(3)').html(student_row.find('td:nth-child(3)').html());
+            _delete_preview_row3.find('td:nth-child(4)').html(student_row.find('td:nth-child(4)').html());
+            _delete_preview_row3.find('td:nth-child(5)').html(student_row.find('td:nth-child(5)').html());
+            delete_student_form.attr('action', delete_student_form_action + '/' + student_id);
+            delete_student_modal.modal('show');
+        });
+        // init messages
+        if (elementExist('.grey.segment .message')) {
+            window.$('.grey.segment .message .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.grey.segment .message').hasClass('hidden')) window.$('.grey.segment .message').transition('fade');
+            }, 4000);
+        }
+    }
+    if (elementExist('#p_admin_student_courses')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(4)').addClass('teal');
+        window.$('.vertical.menu a i:eq(4)').removeClass('grey').addClass('teal');
+
+        window.$('.menu .item').tab();
+    }
+    // report page logic
+    if (elementExist('#p_admin_reports')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(5)').addClass('red');
+        window.$('.vertical.menu a i:eq(5)').removeClass('grey').addClass('red');
+    }
+    // scheduling page logic
+    if (elementExist('#p_admin_scheduling')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(6)').addClass('orange');
+        window.$('.vertical.menu a i:eq(6)').removeClass('grey').addClass('orange');
+    }
+    // message page logic
+    if (elementExist('#p_admin_messages')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(7)').addClass('olive');
+        window.$('.vertical.menu a i:eq(7)').removeClass('grey').addClass('olive');
+    }
+    // setting page logic
+    if (elementExist('#p_admin_settings')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(8)').addClass('black');
+        window.$('.vertical.menu a i:eq(8)').removeClass('grey').addClass('black');
+    }
 }
 
 window.$(function () {
-
     pagesInit();
-
     window.$(window).resize(function () {
         adjust_to_screen_size();
     });

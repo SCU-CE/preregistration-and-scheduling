@@ -27,7 +27,7 @@
                         <label for="profile_link">آدرس پروفایل</label>
                         <div class="ui right icon input" data-tooltip="این فیلد می تواند خالی باشد" data-position="right center">
                             <i class="student icon"></i>
-                            <input type="text" name="profile_link" placeholder="http://engg.scu.ac.ir/name" value="{{ $errors->store->any() ? old('profile_link') : 'http://engg.scu.ac.ir/' }}">
+                            <input type="text" name="profile_link" placeholder="{{env('DEP_URL','http://engg.scu.ac.ir/')}}name" value="{{ $errors->store->any() ? old('profile_link') : env('DEP_URL','http://engg.scu.ac.ir/') }}">
                         </div>
                     </div>
                     <div class="eight wide field{{ $errors->store->has('photo') ? ' error' : '' }}">
@@ -87,7 +87,7 @@
         @endif
 
         <div class="ui dimmer modals page transition hidden">
-            <div id="edit_instructor" class="ui tiny longer modal transition hidden" data-error="{{ $errors->update->any() ? 'true' : 'false'}}">
+            <div id="edit_instructor" class="ui tiny longer edit modal transition hidden" data-error="{{ $errors->update->any() ? 'true' : 'false'}}">
                 <form class="ui form{{ $errors->update->any() ? ' error' : '' }}" method="POST" enctype="multipart/form-data"  action="{{ url('admin/instructor') }}{{ Session::has('instructor_id') ? '/'.Session::get('instructor_id') : '' }}">
 
                     <div class="scrolling content">
@@ -109,7 +109,7 @@
                             <label for="profile_link">آدرس پروفایل</label>
                             <div class="ui right icon input">
                                 <i class="student icon"></i>
-                                <input type="text" name="profile_link" placeholder="http://engg.scu.ac.ir/name" value="{{ $errors->update->any() ? old('profile_link') : 'http://engg.scu.ac.ir/' }}">
+                                <input type="text" name="profile_link" placeholder="{{env('DEP_URL','http://engg.scu.ac.ir/')}}name" value="{{ $errors->update->any() ? old('profile_link') : env('DEP_URL','http://engg.scu.ac.ir/') }}">
                             </div>
                         </div>
                         <div class="field{{ $errors->update->has('photo') ? ' error' : '' }}">

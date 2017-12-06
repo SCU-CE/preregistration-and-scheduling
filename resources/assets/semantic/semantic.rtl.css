@@ -25733,11 +25733,15 @@ Floated Menu / Item
   visibility: hidden;
 }
 
+/* !!! commented by arash.e.alikhani@gmail.com because of side effects in passed_courses !!! */
+
 /* Consecutive Card Groups Preserve Row Spacing */
 
+/*
 .ui.cards ~ .ui.cards {
-  margin-top: 0.875em;
+  margin-top: @consecutiveGroupDistance;
 }
+*/
 
 /*--------------
   Rounded Edges

@@ -17,17 +17,14 @@ use Illuminate\Support\Facades\Input;
 
 class BaseController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
     }
-
     public function home()
     {
         return view('admin.home');
     }
-
     public function courses()
     {
         // get query parameters
@@ -49,17 +46,49 @@ class BaseController extends Controller
         // return view with courses
         return view('admin.courses', compact('courses'));
     }
-
     public function instructors()
     {
         $instructors = Instructor::all()->sortBy('name');
-
-        // return view with courses
         return view('admin.instructors', compact('instructors'));
     }
-
     public function semesters()
     {
+        $semesters = Semester::all()->where('semester', '!=','x')->sortByDesc('year');
+        return view('admin.semesters', compact('semesters'));
+    }
+    public function students()
+    {
+        // get query parameters
+        $sortby = Input::get('sortby','entry_year');
+        $order = Input::get('order','desc');
 
+        // validate query paramaters
+        $valid_sortby_columns = ['first_name', 'last_name', 'student_id', 'entry_year', 'email'];
+        if(!in_array($sortby, $valid_sortby_columns))
+            $sortby = 'entry_year';
+
+        // retrieve students based on it
+        $students = DB::table('users')
+                        ->join('students', 'users.id', '=', 'students.user_id')
+                        ->orderBy($sortby, $order)
+                        ->get();
+
+        return view('admin.students', compact('students'));
+    }
+    public function reports()
+    {
+        return view('admin.reports');
+    }
+    public function scheduling()
+    {
+        return view('admin.scheduling');
+    }
+    public function messages()
+    {
+        return view('admin.messages');
+    }
+    public function settings()
+    {
+        return view('admin.settings');
     }
 }

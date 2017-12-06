@@ -89,6 +89,10 @@ body {
   }
 }
 
+#logout_form {
+  display: none;
+}
+
 #p_admin_courses {
   .grey.segment table thead tr th:last-child {
     min-width: 200px;
@@ -116,8 +120,17 @@ body {
     }
   }
 }
+#p_admin_semesters {
+  .grey.segment {
+    thead tr {
+      th:last-child {
+        min-width: 200px;
+      }
+    }
+  }
+}
 
-#edit_course.modal {
+.edit.modal {
   .content {
     padding: .75em !important;
   }
@@ -135,13 +148,6 @@ body {
     direction: ltr;
     padding: .5em;
   }
-  .content {
-    padding: .75em !important;
-  }
-  .actions {
-    text-align: left !important;
-    padding: .75em .5em .75em !important;
-  }
 }
 #delete_instructor.modal {
   tbody td {
@@ -149,4 +155,9 @@ body {
       max-width: 120px;
     }
   }
+}
+
+/* framework side effects quick fix */
+.ui.segment[class*="bottom attached"] {
+  margin-bottom: 0 !important;
 }

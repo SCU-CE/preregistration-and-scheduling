@@ -31,7 +31,6 @@ mix.scripts([
 mix.styles([
     'resources/assets/css/IRANSans.css',
     'resources/assets/semantic/semantic.rtl.min.css',
-    'node_modules/hamburgers/dist/hamburgers.min.css',
     'node_modules/persian-datepicker/dist/css/persian-datepicker.min.css'
 ], 'public/css/vendor.css');
 

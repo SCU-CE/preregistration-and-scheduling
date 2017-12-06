@@ -18,7 +18,6 @@ class InstructorController extends Controller
     {
         $this->middleware('auth');
     }
-
     public function store(Request $request)
     {
         $sexes = ['مرد', 'زن'];
@@ -43,7 +42,7 @@ class InstructorController extends Controller
         $instructor = Instructor::create([
             'name' => $request->input('instructor_name'),
             'sex' => $request->input('sex'),
-            'link' => $request->input('profile_link') == 'http://engg.scu.ac.ir/' ? null : $request->input('profile_link'),
+            'link' => $request->input('profile_link') == env('DEP_URL','http://engg.scu.ac.ir/') ? null : $request->input('profile_link'),
             'photo' => $photo
         ]);
 
@@ -52,7 +51,6 @@ class InstructorController extends Controller
 
         return redirect('admin/instructors');
     }
-
     public function update(Request $request, $id)
     {
         $instructor = Instructor::find($id);
@@ -72,9 +70,11 @@ class InstructorController extends Controller
                 ->with('instructor_id', $instructor->id);
         }
 
+        $old_name = $instructor->name;
+
         $instructor->name = $request->input('instructor_name');
         $instructor->sex = $request->input('sex');
-        $instructor->link = $request->input('profile_link') == 'http://engg.scu.ac.ir/' ? null : $request->input('profile_link');
+        $instructor->link = $request->input('profile_link') == env('DEP_URL','http://engg.scu.ac.ir/') ? null : $request->input('profile_link');
 
         if($request->file('photo') != null){
             $path_name = explode('/', $instructor->photo);
@@ -83,12 +83,11 @@ class InstructorController extends Controller
 
         $instructor->save();
 
-        Session::flash('message', 'استاد "' . $instructor->name . '" با موفقیت به روز رسانی شد.');
+        Session::flash('message', 'استاد "' . $old_name . '" با موفقیت به روز رسانی شد.');
         Session::flash('message_color', 'teal');
 
         return redirect('admin/instructors');
     }
-
     public function destroy($id)
     {
         $instructor = Instructor::find($id);

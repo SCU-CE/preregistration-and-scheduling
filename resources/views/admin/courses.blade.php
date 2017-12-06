@@ -96,7 +96,7 @@
         @endif
 
         <div class="ui dimmer modals page transition hidden">
-            <div id="edit_course" class="ui tiny longer modal transition hidden" data-error="{{ $errors->update->any() ? 'true' : 'false'}}">
+            <div id="edit_course" class="ui tiny longer edit modal transition hidden" data-error="{{ $errors->update->any() ? 'true' : 'false'}}">
                 <form class="ui form{{ $errors->update->any() ? ' error' : '' }}" method="POST" action="{{ url('admin/course') }}{{ Session::has('course_id') ? '/'.Session::get('course_id') : '' }}">
 
                     <div class="scrolling content">

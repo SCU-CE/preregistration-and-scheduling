@@ -6,67 +6,33 @@
         @include('components.feedback-desktop')
     @endif
 
-    <div id="p_student">
+    <div id="p_student_passedcourses">
+        <!-- Menu -->
+        @include('components.student-menu', ['hasSteps' => true, 'active' => $currentStep])
+
+        <!-- Content -->
         <div class="ui container">
-            <!-- Menu -->
-             @include('components.student-menu', ['hasSteps' => true])
-
-            <!-- Content -->
             <div class="ui segment">
-
-                <div class="ui fluid steps">
-                    <div class="active step active-color">
-                        <i class="hand peace blue icon"></i>
-                        <div class="content">
-                            <div class="title">گذرانده شده ها</div>
+                @include('components.preregister-steps', ['active' => '1st'])
+                <div class="ui divider"></div>
+                @include('components.info-message', ['message' => 'در این مرحله لطفا تمام درس هایی را که در ترم های گذشته گذرانده اید انتخاب کنید.'])
+                <div class="ui divider"></div>
+                @for($i = 0; $i<4; $i++)
+                    @if($has_category[$i])
+                        @include('components.course-category-ribbon', ['category' => $i])
+                        <div class="ui four course cards">
+                            @foreach($courses_by_category[$i] as $course)
+                                @include('components.passed-course-card', ['is_passed' => $student->passed_course($course->id), 'course' => $course])
+                            @endforeach
                         </div>
-                    </div>
-                    <div class="step disabled-color">
-                        <i class="book icon"></i>
-                        <div class="content">
-                            <div class="title">درس های ترم</div>
-                        </div>
-                    </div>
-                    <div class="step disabled-color">
-                        <i class="student icon"></i>
-                        <div class="content">
-                            <div class="title">پیشنهاد استاد</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ui divider"></div>
-
-                <div class="ui blue ribbon label huge">
-                    <i class="cube large icon"></i>
-                    <span class="fw-300"> درس های پایه</span>
-                </div>
-
-                <div class="ui divider"></div>
-
-                <div class="ui green ribbon label huge">
-                    <i class="puzzle large icon"></i>
-                    <span class="fw-300"> درس های اصلی</span>
-                </div>
-
-                <div class="ui divider"></div>
-
-                <div class="ui red ribbon label huge">
-                    <i class="heart large icon"></i>
-                    <span class="fw-300"> درس های اختیاری</span>
-                </div>
-
-                <div class="ui divider"></div>
-
-                <div class="ui orange ribbon label huge">
-                    <i class="lab large icon"></i>
-                    <span class="fw-300">آزمایشگاه ها</span>
-                </div>
+                        <div class="ui divider"></div>
+                    @endif
+                @endfor
+                @include('components.next-back-btns', ['back_title' => 'بازگشت', 'back_link' => 'home',
+                                                       'next_title' => 'مرحله بعد', 'next_link' => 'semester-courses'])
             </div>
-
-            <!-- Footer -->
-            @include('components.public-footer')
         </div>
+        <!-- Footer -->
+        @include('components.public-footer')
     </div>
-
 @endsection

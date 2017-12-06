@@ -1,15 +1,16 @@
 @import "commons";
-
 body {
   direction: rtl;
 }
-
 .ui.menu {
   margin-top: 0;
 }
-
 .computer.menu {
   padding: 5px;
+
+  a.basic.icon.button {
+    padding-top: 1em;
+  }
 
   .steps {
     margin: 0px;
@@ -38,6 +39,17 @@ body {
 }
 .mobile.menu {
   padding: 5px;
+
+  #home_btn {
+    margin: 0;
+    padding: 7px 4px;
+    height: 38px;
+    width: 38px;
+
+    i {
+      font-size: 24px;
+    }
+  }
 
   #steps_btn {
     margin: 0;
@@ -71,7 +83,6 @@ body {
     }
   }
 }
-
 .mobile.steps {
   position: absolute;
   z-index: 1000;
@@ -87,6 +98,7 @@ body {
   z-index: 1000;
 }
 
+// computer only
 @media only screen and (min-width: 768px) {
   .computer.menu {
     display: flex !important;
@@ -106,7 +118,14 @@ body {
   .center.segment{
     font-size: 1em;
   }
+  #units_summery.desktop{
+    display: block;
+  }
+  #units_summery.mobile{
+    display: none;
+  }
 }
+// mobile only
 @media only screen and (max-width: 767px) {
   .computer.menu {
     display: none !important;
@@ -123,20 +142,110 @@ body {
   .mobile.vertical.menu {
     display: flex !important;
   }
-
   .ui.steps .step {
     border-left: none !important;
   }
   .center.segment{
     font-size: .75em;
   }
+  #units_summery.desktop{
+    display: none;
+  }
+  #units_summery.mobile{
+    display: block;
+  }
+}
+
+#units_summery.desktop {
+  position: fixed;
+  left: 0;
+  z-index: 100;
+  .category {
+    float: left;
+    cursor: pointer;
+  }
+  .category.sum {
+    margin-top: 10px;
+    z-index: 100;
+  }
+  .units {
+    width: 0;
+    height: 56px;
+    float: left;
+    position: relative;
+    border-radius: 0 4px 4px 0;
+    div {
+      color: white;
+      font-size: large;
+      padding: 20px 14px;
+      text-align: center;
+      display: none;
+    }
+  }
+  .units.sum {
+    margin-top: 10px;
+    margin-left: -28px;
+    z-index: -100;
+    div {
+      padding: 20px 0 20px 28px;
+    }
+  }
+}
+#units_summery.mobile {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  .group {
+    float: left;
+  }
+  .category {
+    float: left;
+    cursor: pointer;
+    i{
+      margin: 0;
+    }
+  }
+  .category.sum {
+    z-index: 100;
+    margin-left: 5px;
+  }
+  .units {
+    width: 0;
+    height: 56px;
+    position: relative;
+    border-radius: 4px 4px 0 0;
+    top: 0;
+    z-index: -1;
+    div {
+      color: white;
+      font-size: large;
+      padding: 20px 14px;
+      text-align: center;
+      top: -36px;
+      position: relative;
+      display: none;
+    }
+  }
+  .units.sum {
+    z-index: -100;
+    margin-left: 5px;
+    height: 112px;
+    position: absolute;
+    div {
+      position: initial;
+    }
+  }
+}
+
+.ui.popup{
+  line-height: 1.5em;
+  text-align: center;
 }
 
 .five-px-element {
   width: 5px;
   height: 5px;
 }
-
 .ribbon {
   margin-bottom: 20px;
   padding: 14px 20px;
@@ -165,18 +274,39 @@ body {
 }
 
 #p_student_home {
-
   .segment .steps .step .content {
     margin-top: 0.5em;
   }
-
   .segment .steps .step .content .description {
     margin-top: .85em;
     color: lightgray;
   }
-
   .segment .huge.blue.basic.button {
     padding: 0.5em;
     line-height: 1.75em;
+  }
+}
+
+.info.message{
+  text-align: center;
+}
+.ui.course.cards {
+  margin-top: 0;
+}
+.ui.course.card {
+  cursor: pointer;
+  .content .header {
+    padding: 10px 0px;
+  }
+  .extra.content {
+    .indicating.progress {
+      margin-bottom: 38px !important;
+      .label {
+        font-size: x-small;
+        font-weight: 400;
+        width: 90%;
+        margin-right: 5% !important;
+      }
+    }
   }
 }

@@ -166,6 +166,7 @@ return [
         'instructor_name'       => 'نام استاد',
         'profile_link'          => 'آدرس پروفایل',
         'photo'                 => 'فایل تصویر',
+        'semester'              => 'نوبت ترم',
     ],
 
 ];

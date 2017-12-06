@@ -1,5 +1,8 @@
 import * as commons from './commons';
-
+// utility functions
+function elementExist(selector) {
+    return window.$(selector).length != 0;
+}
 function autohide_menu (btn_selector,menu_selector){
     const menu = window.$(menu_selector);
     const container = window.$(btn_selector + ',' + menu_selector);
@@ -12,6 +15,19 @@ function autohide_menu (btn_selector,menu_selector){
         }
     });
 }
+function set_class(all_classes, selected_class, selector) {
+    for (let i=0; i<all_classes.length; i++){
+        selector.removeClass(all_classes[i]);
+    }
+    selector.addClass(selected_class);
+}
+function fix_persian_numbers(selector) {
+    const element = window.$(selector);
+    element.each(function(index,item){
+        $(item).html(persianJs($(item).html()).englishNumber().toString());
+    });
+}
+
 function init_menu_btns () {
     // cache map btn and steps dom elements
     const map_btn = window.$('.mobile.menu #steps_btn');
@@ -39,7 +55,7 @@ function init_menu_btns () {
     autohide_menu('.computer.menu #user_btn','.computer.vertical.menu');
     autohide_menu('.mobile.menu #user_btn','.mobile.vertical.menu');
 }
-function init_vmenu_position() {
+function init_position() {
     const mobile_steps = window.$('.mobile.steps');
 
     const computer_user_btn = window.$('.computer.menu #user_btn');
@@ -59,6 +75,16 @@ function init_vmenu_position() {
     computer_vmenu.css('left', computer_vmenu_left);
     computer_vmenu.css('top', computer_vmenu_top);
 
+    if(elementExist('#p_student_semestercourses')) {
+        const units_summery_desktop = window.$('#units_summery.desktop');
+        const units_summery_desktop_top = (window.innerHeight - units_summery_desktop[0].offsetHeight) / 2;
+        units_summery_desktop.css('top', units_summery_desktop_top);
+
+        const units_summery_mobile = window.$('#units_summery.mobile');
+        const units_summery_mobile_left = (window.innerWidth - units_summery_mobile[0].offsetWidth) / 2;
+        units_summery_mobile.css('left', units_summery_mobile_left);
+    }
+
     if(screen.width > 767){
         if(!mobile_vmenu.hasClass('hidden')){
             mobile_vmenu.removeClass('visible');
@@ -75,30 +101,365 @@ function init_vmenu_position() {
         }
     }
 }
+
+function adjust_cards_number() {
+    const course_cards = window.$('.ui.course.cards');
+    const class_values = ['one', 'two', 'three', 'four'];
+    if(screen.width > 1199) {
+        set_class(class_values, 'four', course_cards);
+    }else if(screen.width > 991) {
+        set_class(class_values, 'three', course_cards);
+    }else if(screen.width > 529) {
+        set_class(class_values, 'two', course_cards);
+    }else {
+        set_class(class_values, 'one', course_cards);
+    }
+}
 function adjust_to_screen_size() {
+    // --------
+    adjust_cards_number();
+    // --------
     if(screen.width < 768) {
         window.$('.ui.container .segment .fluid.steps').removeClass('large').addClass('tiny');
-        window.$('.ui.container .segment .blue.button').removeClass('huge');
+        window.$('.ui.container .segment .blue.fluid.button').removeClass('huge');
         window.$('#feedback-panel').hide();
     }else{
         window.$('.ui.container .segment .fluid.steps').removeClass('tiny').addClass('large');
-        window.$('.ui.container .segment .blue.button').addClass('huge');
+        window.$('.ui.container .segment .blue.fluid.button').addClass('huge');
         window.$('#feedback-panel').show();
     }
 }
 
-window.$(function () {
+function pagesInit() {
     // initialize footer date
     window.$('#month_year').html(new persianDate().format("MMMM YYYY"));
+    // setup csrf token for ajax
+    window.$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+        }
+    });
 
     commons.feedbackInit();
     init_menu_btns();
-
-    init_vmenu_position();
+    init_position();
     adjust_to_screen_size();
 
+    if(elementExist('#p_student_passedcourses')){
+        // pass and unpass course
+        const class_values = ['red', 'green', 'hidden', 'checkmark', 'remove'];
+        const course_card = window.$('.ui.course.card');
+        course_card.on('mouseenter', function(){
+            if($(this).attr('data-state') === 'taken'){
+                set_class(class_values, 'red', $(this));
+                set_class(class_values, 'red', $(this).find('.right.corner.label'));
+                set_class(class_values, 'remove', $(this).find('.right.corner.label i'));
+            }else{
+                set_class(class_values, 'green', $(this));
+                set_class(class_values, 'green', $(this).find('.right.corner.label'));
+                set_class(class_values, 'checkmark', $(this).find('.right.corner.label i'));
+            }
+        });
+        course_card.on('mouseleave', function(){
+            if($(this).attr('data-state') === 'taken'){
+                set_class(class_values, 'green', $(this));
+                set_class(class_values, 'green', $(this).find('.right.corner.label'));
+                set_class(class_values, 'checkmark', $(this).find('.right.corner.label i'));
+            }else{
+                set_class(class_values, '', $(this));
+                set_class(class_values, 'hidden', $(this).find('.right.corner.label'));
+                set_class(class_values, '', $(this).find('.right.corner.label i'));
+            }
+        });
+        course_card.on('click', function(){
+            if($(this).attr('data-state') === 'taken'){
+                const current_card = $(this);
+                current_card.find('.inverted.dimmer').dimmer('toggle');
+                window.$.ajax({
+                    url: document.location.origin + '/student/' + current_card.attr('data-id') + '/unpass',
+                    type: "POST",
+                    success: function (result,status,xhr) {
+                        current_card.attr('data-state', 'nottaken');
+                        set_class(class_values, '', current_card);
+                        set_class(class_values, 'hidden', current_card.find('.right.corner.label'));
+                        set_class(class_values, '', current_card.find('.right.corner.label i'));
+                        current_card.find('.inverted.dimmer').dimmer('toggle');
+                    },
+                    error: function (xhr,status,error) {
+                        // TODO error handling logic
+                        current_card.find('.inverted.dimmer').dimmer('toggle');
+                    }
+                });
+            }else{
+                const current_card = $(this);
+                current_card.find('.inverted.dimmer').dimmer('toggle');
+                window.$.ajax({
+                    url: document.location.origin + '/student/' + current_card.attr('data-id') + '/pass',
+                    type: "POST",
+                    success: function (result,status,xhr) {
+                        current_card.attr('data-state', 'taken');
+                        set_class(class_values, 'green', current_card);
+                        set_class(class_values, 'green', current_card.find('.right.corner.label'));
+                        set_class(class_values, 'checkmark', current_card.find('.right.corner.label i'));
+                        current_card.find('.inverted.dimmer').dimmer('toggle');
+                    },
+                    error: function (xhr,status,error) {
+                        // TODO error handling logic
+                        current_card.find('.inverted.dimmer').dimmer('toggle');
+                    }
+                });
+            }
+        });
+    }
+    if(elementExist('#p_student_semestercourses')){
+        // convert english numbers to persian
+        fix_persian_numbers('.ui.massive.inverted.center.aligned.segment');
+        fix_persian_numbers('#units_summery .units div');
+        // init course cards progress
+        window.$('.ui.indicating.progress')
+            .progress({
+                label: 'ratio',
+                text: {
+                    active  : 'تا الان {value} نفر از {total} نفر حداقل مورد نیاز برای ارائه‌ی این درس آن را گرفته اند.',
+                    success : 'بیش از {value} نفر این درس را گرفته اند! این درس در ترم جاری ارائه خواهد شد.',
+                    ratio: '{value}/{total}'
+                }
+            });
+
+        // take and untake course
+        const class_values = ['red', 'green', 'hidden', 'checkmark', 'remove'];
+        const course_card = window.$('.ui.course.card');
+        course_card.on('mouseenter', function(){
+            if($(this).attr('data-state') === 'taken'){
+                set_class(class_values, 'red', $(this));
+                set_class(class_values, 'red', $(this).find('.right.corner.label'));
+                set_class(class_values, 'remove', $(this).find('.right.corner.label i'));
+            }else{
+                set_class(class_values, 'green', $(this));
+                set_class(class_values, 'green', $(this).find('.right.corner.label'));
+                set_class(class_values, 'checkmark', $(this).find('.right.corner.label i'));
+            }
+        });
+        course_card.on('mouseleave', function(){
+            if($(this).attr('data-state') === 'taken'){
+                set_class(class_values, 'green', $(this));
+                set_class(class_values, 'green', $(this).find('.right.corner.label'));
+                set_class(class_values, 'checkmark', $(this).find('.right.corner.label i'));
+            }else{
+                set_class(class_values, '', $(this));
+                set_class(class_values, 'hidden', $(this).find('.right.corner.label'));
+                set_class(class_values, '', $(this).find('.right.corner.label i'));
+            }
+        });
+        course_card.on('click', function(){
+            const course_units = $(this).attr('data-units');
+            const course_cat = $(this).attr('data-category') - 1;
+            if($(this).attr('data-state') === 'taken'){
+                const current_card = $(this);
+                current_card.find('.inverted.dimmer').dimmer('toggle');
+                window.$.ajax({
+                    url: document.location.origin + '/student/' + current_card.attr('data-id') + '/untake',
+                    type: "POST",
+                    success: function (result,status,xhr) {
+                        // fix course card state and view
+                        current_card.attr('data-state', 'nottaken');
+                        set_class(class_values, '', current_card);
+                        set_class(class_values, 'hidden', current_card.find('.right.corner.label'));
+                        set_class(class_values, '', current_card.find('.right.corner.label i'));
+
+                        // fix units sum warning
+                        const units_sum_circle = window.$('.category.sum i');
+                        if(units_sum_circle.hasClass('warning yellow')){
+                            units_sum_circle.removeClass('warning yellow').addClass('plus grey');
+                            window.$('.units.sum').css('background-color', '#666666');
+                        }
+
+                        // set course card progress bar
+                        let progress_value = current_card.find('.ui.indicating.progress').attr('data-value');
+                        current_card.find('.ui.indicating.progress').attr('data-value', --progress_value);
+                        current_card.find('.ui.indicating.progress').progress('set progress', progress_value);
+
+                        // change category units value in summary panel
+                        const $cat_units_d = window.$('.desktop .units.number:eq('+course_cat+') div');
+                        const cat_units_d_value = $cat_units_d.attr('data-value');
+                        $cat_units_d.html(+cat_units_d_value - +course_units);
+                        $cat_units_d.attr('data-value', (+cat_units_d_value - +course_units));
+                        const $cat_units_m = window.$('.mobile .units.number:eq('+course_cat+') div');
+                        const cat_units_m_value = $cat_units_m.attr('data-value');
+                        $cat_units_m.html(+cat_units_m_value - +course_units);
+                        $cat_units_m.attr('data-value', (+cat_units_m_value - +course_units));
+
+                        // change sum units value in summary panel
+                        const $sum_units_d = window.$('.desktop .units.sum div:first');
+                        const sum_units_d_value = $sum_units_d.attr('data-value');
+                        $sum_units_d.html(+sum_units_d_value - +course_units);
+                        $sum_units_d.attr('data-value', (+sum_units_d_value - +course_units));
+                        const $sum_units_m = window.$('.mobile .units.sum div:first');
+                        const sum_units_m_value = $sum_units_m.attr('data-value');
+                        $sum_units_m.html(+sum_units_m_value - +course_units);
+                        $sum_units_m.attr('data-value', (+sum_units_m_value - +course_units));
+
+                        fix_persian_numbers('#units_summery .units div');
+
+                        window.$('.desktop .category.button:eq('+course_cat+')').transition('pulse');
+                        window.$('.mobile .category.button:eq('+course_cat+')').transition('pulse');
+
+                        current_card.find('.inverted.dimmer').dimmer('toggle');
+                    },
+                    error: function (xhr,status,error) {
+                        // TODO error handling logic
+                        current_card.find('.inverted.dimmer').dimmer('toggle');
+                    }
+                });
+            }else{
+                const current_card = $(this);
+                current_card.find('.inverted.dimmer').dimmer('toggle');
+                window.$.ajax({
+                    url: document.location.origin + '/student/' + current_card.attr('data-id') + '/take',
+                    type: "POST",
+                    success: function (result,status,xhr) {
+                        if(result === 'UNITS_RANGE_ERROR'){
+                            const units_sum_circle = window.$('.category.sum i');
+                            units_sum_circle.removeClass('plus grey').addClass('warning yellow');
+                            window.$('.category.sum').transition('shake');
+                            window.$('.units.sum').css('background-color', '#E2AA08');
+                        }else{
+                            // fix course card state and view
+                            current_card.attr('data-state', 'taken');
+                            set_class(class_values, 'green', current_card);
+                            set_class(class_values, 'green', current_card.find('.right.corner.label'));
+                            set_class(class_values, 'checkmark', current_card.find('.right.corner.label i'));
+
+                            // fix units sum warning
+                            const units_sum_circle = window.$('.category.sum i');
+                            if(units_sum_circle.hasClass('warning yellow')){
+                                units_sum_circle.removeClass('warning yellow').addClass('plus grey');
+                                window.$('.units.sum').css('background-color', '#666666');
+                            }
+
+                            // set course card progress bar
+                            let progress_value = current_card.find('.ui.indicating.progress').attr('data-value');
+                            current_card.find('.ui.indicating.progress').attr('data-value', ++progress_value);
+                            current_card.find('.ui.indicating.progress').progress('set progress', progress_value);
+
+                            // change category units value in summary panel
+                            const $cat_units_d = window.$('.desktop .units.number:eq('+course_cat+') div');
+                            const cat_units_d_value = $cat_units_d.attr('data-value');
+                            $cat_units_d.html(+cat_units_d_value + +course_units);
+                            $cat_units_d.attr('data-value', (+cat_units_d_value + +course_units));
+                            const $cat_units_m = window.$('.mobile .units.number:eq('+course_cat+') div');
+                            const cat_units_m_value = $cat_units_m.attr('data-value');
+                            $cat_units_m.html(+cat_units_m_value + +course_units);
+                            $cat_units_m.attr('data-value', (+cat_units_m_value + +course_units));
+
+                            // change sum units value in summary panel
+                            const $sum_units_d = window.$('.desktop .units.sum div:first');
+                            const sum_units_d_value = $sum_units_d.attr('data-value');
+                            $sum_units_d.html(+sum_units_d_value + +course_units);
+                            $sum_units_d.attr('data-value', (+sum_units_d_value + +course_units));
+                            const $sum_units_m = window.$('.mobile .units.sum div:first');
+                            const sum_units_m_value = $sum_units_m.attr('data-value');
+                            $sum_units_m.html(+sum_units_m_value + +course_units);
+                            $sum_units_m.attr('data-value', (+sum_units_m_value + +course_units));
+
+                            fix_persian_numbers('#units_summery .units div');
+
+                            window.$('.desktop .category.button:eq('+course_cat+')').transition('jiggle');
+                            window.$('.mobile .category.button:eq('+course_cat+')').transition('jiggle');
+                        }
+                        current_card.find('.inverted.dimmer').dimmer('toggle');
+                    },
+                    error: function (xhr,status,error) {
+                        // TODO error handling logic
+                        current_card.find('.inverted.dimmer').dimmer('toggle');
+                    }
+                });
+            }
+        });
+
+        // units summery desktop
+        window.$('#units_summery.desktop .category.sum').popup({
+            on: 'hover',
+            transition: 'fade down'
+        });
+        window.$('#units_summery.desktop .category.button').hover(
+            function () {
+                $(this).siblings('.units').animate({width: '56px'},250, function () {
+                    $(this).find('div').show();
+                });
+            },
+            function () {
+                $(this).siblings('.units').animate({width: '0px'},250, function () {
+                    $(this).find('div').hide();
+                });
+            }
+        );
+        window.$('#units_summery.desktop .category.sum').hover(
+            function () {
+                $(this).siblings('.units').animate({width: '84px'},250, function () {
+                    $(this).find('div').show();
+                });
+                $('.units.number').animate({width: '56px'},250, function () {
+                    $(this).find('div').show();
+                });
+            },
+            function () {
+                $(this).siblings('.units').animate({width: '0px'},250, function () {
+                    $(this).find('div').hide();
+                });
+                $('.units.number').animate({width: '0px'},250, function () {
+                    $(this).find('div').hide();
+                });
+            }
+        );
+        // units summery mobile
+        window.$('#units_summery.mobile .category.sum').popup({
+            on: 'hover',
+            transition: 'fade down',
+            onVisible: function(){
+                window.$('.ui.popup').animate({bottom: '+=56px'},250);
+            }
+        });
+        window.$('#units_summery.mobile .category.button').hover(
+            function () {
+                $(this).siblings('.units').css('width','56px').animate({top: '-56px'},250, function () {
+                    $(this).find('div').show();
+                });
+            },
+            function () {
+                $(this).siblings('.units').animate({top: '0px'},250, function () {
+                    $(this).css('width','0');
+                    $(this).find('div').hide();
+                });
+            }
+        );
+        window.$('#units_summery.mobile .category.sum').hover(
+            function () {
+                $(this).siblings('.units').css('width','56px').animate({top: '-56px'},250, function () {
+                    $(this).find('div').show();
+                });
+                $('.units.number').css('width','56px').animate({top: '-56px'},250, function () {
+                    $(this).find('div').show();
+                });
+            },
+            function () {
+                $(this).siblings('.units').animate({top: '0px'},250, function () {
+                    $(this).css('width','0');
+                    $(this).find('div').hide();
+                });
+                $('.units.number').animate({top: '0px'},250, function () {
+                    $(this).css('width','0');
+                    $(this).find('div').hide();
+                });
+            }
+        );
+    }
+}
+
+window.$(function () {
+    pagesInit();
     window.$(window).resize(function(){
-        init_vmenu_position();
+        init_position();
         adjust_to_screen_size();
     });
 });

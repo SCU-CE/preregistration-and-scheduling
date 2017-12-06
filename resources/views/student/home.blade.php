@@ -8,7 +8,7 @@
 
     <div id="p_student_home">
         <!-- Menu -->
-        @include('components.student-menu', ['hasSteps' => true, 'active' => $currentStep])
+        @include('components.student-menu', ['hasSteps' => false, 'active' => $currentStep])
 
         <!-- Content -->
         <div class="ui container">

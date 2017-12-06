@@ -117,6 +117,10 @@ body {
   padding: 5px;
 }
 
+.computer.menu a.basic.icon.button {
+  padding-top: 1em;
+}
+
 .computer.menu .steps {
   margin: 0px;
 }
@@ -143,6 +147,17 @@ body {
 
 .mobile.menu {
   padding: 5px;
+}
+
+.mobile.menu #home_btn {
+  margin: 0;
+  padding: 7px 4px;
+  height: 38px;
+  width: 38px;
+}
+
+.mobile.menu #home_btn i {
+  font-size: 24px;
 }
 
 .mobile.menu #steps_btn {
@@ -220,6 +235,14 @@ body {
   .center.segment {
     font-size: 1em;
   }
+
+  #units_summery.desktop {
+    display: block;
+  }
+
+  #units_summery.mobile {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -256,6 +279,115 @@ body {
   .center.segment {
     font-size: .75em;
   }
+
+  #units_summery.desktop {
+    display: none;
+  }
+
+  #units_summery.mobile {
+    display: block;
+  }
+}
+
+#units_summery.desktop {
+  position: fixed;
+  left: 0;
+  z-index: 100;
+}
+
+#units_summery.desktop .category {
+  float: left;
+  cursor: pointer;
+}
+
+#units_summery.desktop .category.sum {
+  margin-top: 10px;
+  z-index: 100;
+}
+
+#units_summery.desktop .units {
+  width: 0;
+  height: 56px;
+  float: left;
+  position: relative;
+  border-radius: 0 4px 4px 0;
+}
+
+#units_summery.desktop .units div {
+  color: white;
+  font-size: large;
+  padding: 20px 14px;
+  text-align: center;
+  display: none;
+}
+
+#units_summery.desktop .units.sum {
+  margin-top: 10px;
+  margin-left: -28px;
+  z-index: -100;
+}
+
+#units_summery.desktop .units.sum div {
+  padding: 20px 0 20px 28px;
+}
+
+#units_summery.mobile {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+}
+
+#units_summery.mobile .group {
+  float: left;
+}
+
+#units_summery.mobile .category {
+  float: left;
+  cursor: pointer;
+}
+
+#units_summery.mobile .category i {
+  margin: 0;
+}
+
+#units_summery.mobile .category.sum {
+  z-index: 100;
+  margin-left: 5px;
+}
+
+#units_summery.mobile .units {
+  width: 0;
+  height: 56px;
+  position: relative;
+  border-radius: 4px 4px 0 0;
+  top: 0;
+  z-index: -1;
+}
+
+#units_summery.mobile .units div {
+  color: white;
+  font-size: large;
+  padding: 20px 14px;
+  text-align: center;
+  top: -36px;
+  position: relative;
+  display: none;
+}
+
+#units_summery.mobile .units.sum {
+  z-index: -100;
+  margin-left: 5px;
+  height: 112px;
+  position: absolute;
+}
+
+#units_summery.mobile .units.sum div {
+  position: initial;
+}
+
+.ui.popup {
+  line-height: 1.5em;
+  text-align: center;
 }
 
 .five-px-element {
@@ -305,5 +437,32 @@ body {
 #p_student_home .segment .huge.blue.basic.button {
   padding: 0.5em;
   line-height: 1.75em;
+}
+
+.info.message {
+  text-align: center;
+}
+
+.ui.course.cards {
+  margin-top: 0;
+}
+
+.ui.course.card {
+  cursor: pointer;
+}
+
+.ui.course.card .content .header {
+  padding: 10px 0px;
+}
+
+.ui.course.card .extra.content .indicating.progress {
+  margin-bottom: 38px !important;
+}
+
+.ui.course.card .extra.content .indicating.progress .label {
+  font-size: x-small;
+  font-weight: 400;
+  width: 90%;
+  margin-right: 5% !important;
 }
 

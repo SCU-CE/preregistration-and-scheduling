@@ -1,6 +1,10 @@
 <div class="ui computer menu">
     <div class="ui container">
         @if($hasSteps)
+            <a href="{{url('student/home')}}" class="ui basic icon button">
+                <i class="big flipped home icon"></i>
+            </a>
+            <div class="five-px-element"></div>
             @include('components.steps', ['size' => 'mini', 'fluid' => false, 'active' => $active, 'extraclasses' => ''])
         @endif
         <div class="right menu">
@@ -29,9 +33,13 @@
 <div class="ui mobile menu">
     <div class="ui container">
         @if($hasSteps)
-        <button id="steps_btn" class="ui basic icon button">
-            <i class="large map outline icon"></i>
-        </button>
+            <a id="home_btn" class="ui basic icon button" href="{{url('student/home')}}">
+                <i class="large home icon"></i>
+            </a>
+            <div class="five-px-element"></div>
+            <button id="steps_btn" class="ui basic icon button">
+                <i class="large map outline icon"></i>
+            </button>
         @endif
         <div class="right menu">
             <div class="five-px-element"></div>

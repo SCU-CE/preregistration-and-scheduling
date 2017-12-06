@@ -16,7 +16,6 @@ class CourseController extends Controller
     {
         $this->middleware('auth');
     }
-
     public function store(Request $request)
     {
         $categories = ['درس پایه', 'درس اصلی', 'درس اختیاری', 'آزمایشگاه'];
@@ -50,7 +49,6 @@ class CourseController extends Controller
 
         return redirect('admin/courses');
     }
-
     public function update(Request $request, $id)
     {
         $course = Course::find($id);
@@ -72,6 +70,8 @@ class CourseController extends Controller
                 ->with('course_id', $course->id);
         }
 
+        $old_name = $course->name;
+
         $course->name = $request->input('course_name');
         $course->code = $request->input('course_code');
         $course->units = $request->input('units');
@@ -81,12 +81,11 @@ class CourseController extends Controller
 
         $course->save();
 
-        Session::flash('message', 'درس "' . $course->name . '" با موفقیت به روز رسانی شد.');
+        Session::flash('message', 'درس "' . $old_name . '" با موفقیت به روز رسانی شد.');
         Session::flash('message_color', 'teal');
 
         return redirect('admin/courses');
     }
-
     public function destroy($id)
     {
         $course = Course::find($id);
