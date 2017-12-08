@@ -73,7 +73,7 @@
                         <td>{{$instructor->sex}}</td>
                         <td><a href="{{$instructor->link}}" target="_blank">{{$instructor->link}}</a></td>
                         <td>
-                            <img src="{{$instructor->photo != null ? Storage::url($instructor->photo) : ( $instructor->sex == 'مرد' ? Storage::url('instructor_photos/img_male.png') : Storage::url('instructor_photos/img_female.png') )}}" alt="">
+                            <img src="{{$instructor->photo != null ? Storage::url($instructor->photo) : ( $instructor->sex == 'مرد' ? Storage::url('instructor_photos/img_male.png') : Storage::url('instructor_photos/img_female.png') )}}">
                         </td>
                         <td>
                             <div class="ui orange button fw-300" data-id="{{$instructor->id}}">ویرایش</div>

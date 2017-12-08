@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Models\Instructor;
 use App\Models\Option;
 use App\Models\Semester;
 use Illuminate\Http\Request;
@@ -74,7 +75,25 @@ class BaseController extends Controller
     public function instructor_suggestion ()
     {
         $currentStep = '1st';
-        return view('student.instructor-suggestion', compact('currentStep'));
+        $student = Auth::user()->student;
+        $semester = Semester::find(Option::find(1)->value);
+        $student_courses = DB::table('course_student')
+                                ->where('student_id','=',$student->id)
+                                ->where('semester_id','=',$semester->id)
+                                ->join('courses','course_student.course_id','=','courses.id')
+                                ->where('courses.category','!=','درس پایه')
+                                ->orderBy('courses.category','desc')
+                                ->get();
+        $semester_courses = DB::table('course_semester')
+                                ->where('semester_id','=',$semester->id)
+                                ->whereNotIn('course_id',$student_courses->pluck('course_id'))
+                                ->join('courses','course_semester.course_id','=','courses.id')
+                                ->where('courses.category','!=','درس پایه')
+                                ->orderBy('courses.category','desc')
+                                ->get();
+        $instructors = Instructor::all();
+
+        return view('student.instructor-suggestion', compact('currentStep','student', 'semester','student_courses','semester_courses','instructors'));
     }
     public function evaluate ()
     {

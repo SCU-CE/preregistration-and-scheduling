@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Models\Option;
 use App\Models\Semester;
 use App\Models\Course;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -50,5 +51,54 @@ class SemesterController extends Controller
         $student = Auth::user()->student;
         $current_semester = Option::find(1)->value;
         $student->courses()->wherePivot('semester_id', $current_semester)->detach($course_id);
+    }
+    public function voted_instructors($course_id)
+    {
+        $student_id = Auth::user()->student->id;
+        $semester_id = Option::find(1)->value;
+        return DB::table('course_instructor')
+                    ->where('semester_id','=',$semester_id)
+                    ->where('student_id','=',$student_id)
+                    ->where('course_id','=',$course_id)
+                    ->select('instructor_id')
+                    ->get()->pluck('instructor_id');
+    }
+    public function submit_vote(Request $request, $course_id)
+    {
+        // TODO validation logic
+        $student_id = Auth::user()->student->id;
+        $semester_id = Option::find(1)->value;
+        foreach ($request->all() as $vote){
+            $vote_exist = DB::table('course_instructor')
+                                ->where('semester_id','=',$semester_id)
+                                ->where('student_id','=',$student_id)
+                                ->where('course_id','=',$course_id)
+                                ->where('instructor_id','=',$vote['id'])
+                                ->count() > 0;
+            if($vote_exist){
+                if($vote['state'] == 'selected'){
+                    DB::table('course_instructor')
+                        ->where('semester_id','=',$semester_id)
+                        ->where('student_id','=',$student_id)
+                        ->where('course_id','=',$course_id)
+                        ->where('instructor_id','=',$vote['id'])
+                        ->update(['semester_id' => $semester_id, 'student_id' => $student_id, 'course_id' => $course_id,
+                            'instructor_id' => $vote['id'], 'created_at' => Carbon::now()]);
+                }else{
+                    DB::table('course_instructor')
+                        ->where('semester_id','=',$semester_id)
+                        ->where('student_id','=',$student_id)
+                        ->where('course_id','=',$course_id)
+                        ->where('instructor_id','=',$vote['id'])
+                        ->delete();
+                }
+            }else{
+                if($vote['state'] == 'selected'){
+                    DB::table('course_instructor')
+                        ->insert(['semester_id' => $semester_id, 'student_id' => $student_id, 'course_id' => $course_id,
+                            'instructor_id' => $vote['id'], 'created_at' => Carbon::now()]);
+                }
+            }
+        }
     }
 }

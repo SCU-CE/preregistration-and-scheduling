@@ -125,17 +125,21 @@ body {
   margin: 0px;
 }
 
-.computer.menu .right #user_btn {
-  margin: 0px;
-  padding: 10px 10px 10px 16px;
-}
+.computer.menu .right {
+  /*
+    #user_btn {
+      margin: 0px;
+      padding: 10px 10px 10px 16px;
 
-.computer.menu .right #user_btn i {
-  margin: 0px 0px 5px 0px;
-}
+      i {
+        margin: 0px 0px 5px 0px;
+      }
 
-.computer.menu .right #user_btn span {
-  font-size: 16px;
+      span {
+        font-size: 16px;
+      }
+    }
+    */
 }
 
 .computer.menu .right #logout_btn {
@@ -171,17 +175,32 @@ body {
   font-size: 16px;
 }
 
+.mobile.menu .right {
+  /*
+    #user_btn {
+      margin: 0px;
+      padding: 8px 8px 8px 14px;
+
+      i {
+        margin: 0px 0px 4px 0px;
+      }
+
+      span {
+        font-size: 14px;
+      }
+    }
+    */
+}
+
 .mobile.menu .right #user_btn {
-  margin: 0px;
-  padding: 8px 8px 8px 14px;
+  margin: 0;
+  padding: 7px 4px;
+  height: 38px;
+  width: 38px;
 }
 
 .mobile.menu .right #user_btn i {
-  margin: 0px 0px 4px 0px;
-}
-
-.mobile.menu .right #user_btn span {
-  font-size: 14px;
+  font-size: 24px;
 }
 
 .mobile.menu .right #logout_btn {
@@ -464,5 +483,42 @@ body {
   font-weight: 400;
   width: 90%;
   margin-right: 5% !important;
+}
+
+.ui.course.card .extra.content .instructor {
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.ui.course.card .extra.content .instructor .photo {
+  display: inline-block;
+}
+
+.ui.course.card .extra.content .instructor .photo img {
+  display: block;
+}
+
+.ui.course.card .extra.content .instructor .votes {
+  display: inline-block;
+}
+
+.ui.course.card .extra.content .instructor .votes .bar {
+  width: 4px;
+  height: 26px;
+  border-radius: 1px;
+  margin: 0 auto;
+}
+
+.ui.course.card .extra.content .instructor .votes .number {
+  margin: 0 auto;
+  font-size: .75em;
+}
+
+.ui.instructor.card {
+  cursor: pointer;
+}
+
+.ui.instructor.card .content {
+  font-size: .7em;
 }
 

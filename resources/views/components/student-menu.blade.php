@@ -9,12 +9,11 @@
         @endif
         <div class="right menu">
             <div class="five-px-element"></div>
-            <button id="user_btn" class="ui basic button">
+            <button id="user_btn"  class="ui basic icon button" data-tooltip="{{Auth::user()->student->first_name . ' ' . Auth::user()->student->last_name}}" data-position="left center">
                 <i class="big user icon"></i>
-                <span class="fw-300">آرش علیخانی</span>
             </button>
             <div class="five-px-element"></div>
-            <button id="logout_btn" class="ui basic icon button">
+            <button id="logout_btn" class="ui basic logout icon button">
                 <i class="big flipped sign out icon"></i>
             </button>
         </div>
@@ -43,12 +42,11 @@
         @endif
         <div class="right menu">
             <div class="five-px-element"></div>
-            <button id="user_btn" class="ui basic button">
+            <button id="user_btn"  class="ui basic icon button" data-tooltip="{{Auth::user()->student->first_name . ' ' . Auth::user()->student->last_name}}" data-position="left center">
                 <i class="large user icon"></i>
-                <span class="fw-300">آرش علیخانی</span>
             </button>
             <div class="five-px-element"></div>
-            <button id="logout_btn" class="ui basic icon button">
+            <button id="logout_btn" class="ui basic logout icon button">
                 <i class="large flipped sign out icon"></i>
             </button>
         </div>
@@ -67,3 +65,7 @@
         <span>تغییر رمز عبور</span>
     </a>
 </div>
+<!-- Logout Form -->
+<form id="logout_form" action="{{url('/logout')}}" method="POST">
+    {{ csrf_field() }}
+</form>

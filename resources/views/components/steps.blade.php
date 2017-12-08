@@ -1,4 +1,4 @@
-<div class="ui{{$fluid?' fluid':''}} {{$size}} steps{{$extraclasses}}">
+<div class="ui{{$fluid?' fluid':''}} {{$size}} main steps{{$extraclasses}}">
     @isset($dates)
         @if($active == '1st')
             @include('components.1st-step', ['state' => 'active', 'date' => $dates[0]])

@@ -17,6 +17,7 @@ body {
   }
 
   .right {
+    /*
     #user_btn {
       margin: 0px;
       padding: 10px 10px 10px 16px;
@@ -29,6 +30,7 @@ body {
         font-size: 16px;
       }
     }
+    */
     #logout_btn {
       margin: 0px;
       padding: 10px;
@@ -63,6 +65,7 @@ body {
   }
 
   .right {
+    /*
     #user_btn {
       margin: 0px;
       padding: 8px 8px 8px 14px;
@@ -73,6 +76,17 @@ body {
 
       span {
         font-size: 14px;
+      }
+    }
+    */
+    #user_btn {
+      margin: 0;
+      padding: 7px 4px;
+      height: 38px;
+      width: 38px;
+
+      i {
+        font-size: 24px;
       }
     }
     #logout_btn {
@@ -308,5 +322,34 @@ body {
         margin-right: 5% !important;
       }
     }
+    .instructor{
+      display: inline-block;
+      margin: 0 8px;
+      .photo{
+        display: inline-block;
+        img {
+          display: block;
+        }
+      }
+      .votes{
+        display: inline-block;
+        .bar{
+          width: 4px;
+          height: 26px;
+          border-radius: 1px;
+          margin: 0 auto;
+        }
+        .number{
+          margin: 0 auto;
+          font-size: .75em;
+        }
+      }
+    }
   }
+}
+.ui.instructor.card{
+  cursor: pointer;
+ .content{
+   font-size: .7em;
+ }
 }

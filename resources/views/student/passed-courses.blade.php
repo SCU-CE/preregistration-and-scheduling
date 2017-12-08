@@ -15,7 +15,7 @@
             <div class="ui segment">
                 @include('components.preregister-steps', ['active' => '1st'])
                 <div class="ui divider"></div>
-                @include('components.info-message', ['message' => 'در این مرحله لطفا تمام درس هایی را که در ترم های گذشته گذرانده اید انتخاب کنید.'])
+                @include('components.info-message', ['message' => 'لطفا تمام درس هایی را که در ترم های گذشته گذرانده اید انتخاب کنید.'])
                 <div class="ui divider"></div>
                 @for($i = 0; $i<4; $i++)
                     @if($has_category[$i])

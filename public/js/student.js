@@ -254,6 +254,12 @@ function init_menu_btns() {
     // hide menu if clicked elsewhere
     autohide_menu('.computer.menu #user_btn', '.computer.vertical.menu');
     autohide_menu('.mobile.menu #user_btn', '.mobile.vertical.menu');
+
+    // logout
+    var logout_btns = window.$('.basic.logout.icon.button');
+    logout_btns.on('click', function () {
+        window.$('#logout_form').submit();
+    });
 }
 function init_position() {
     var mobile_steps = window.$('.mobile.steps');
@@ -263,13 +269,13 @@ function init_position() {
     var computer_vmenu = window.$('.computer.vertical.menu');
     var mobile_vmenu = window.$('.mobile.vertical.menu');
 
-    var mobile_vmenu_left = mobile_user_btn[0].offsetLeft - Math.abs(mobile_user_btn[0].offsetWidth - mobile_vmenu[0].offsetWidth);
+    var mobile_vmenu_left = mobile_user_btn[0].offsetLeft;
     var mobile_vmenu_top = mobile_user_btn[0].offsetTop * 2 + mobile_user_btn[0].offsetHeight;
 
     mobile_vmenu.css('left', mobile_vmenu_left);
     mobile_vmenu.css('top', mobile_vmenu_top);
 
-    var computer_vmenu_left = computer_user_btn[0].offsetLeft - Math.abs(computer_user_btn[0].offsetWidth - computer_vmenu[0].offsetWidth);
+    var computer_vmenu_left = computer_user_btn[0].offsetLeft;
     var computer_vmenu_top = computer_user_btn[0].offsetTop * 2 + computer_user_btn[0].offsetHeight;
 
     computer_vmenu.css('left', computer_vmenu_left);
@@ -309,7 +315,7 @@ function adjust_cards_number() {
         set_class(class_values, 'four', course_cards);
     } else if (screen.width > 991) {
         set_class(class_values, 'three', course_cards);
-    } else if (screen.width > 529) {
+    } else if (screen.width > 559) {
         set_class(class_values, 'two', course_cards);
     } else {
         set_class(class_values, 'one', course_cards);
@@ -320,11 +326,11 @@ function adjust_to_screen_size() {
     adjust_cards_number();
     // --------
     if (screen.width < 768) {
-        window.$('.ui.container .segment .fluid.steps').removeClass('large').addClass('tiny');
+        window.$('.ui.container .segment .fluid.main.steps').removeClass('large').addClass('tiny');
         window.$('.ui.container .segment .blue.fluid.button').removeClass('huge');
         window.$('#feedback-panel').hide();
     } else {
-        window.$('.ui.container .segment .fluid.steps').removeClass('tiny').addClass('large');
+        window.$('.ui.container .segment .fluid.main.steps').removeClass('tiny').addClass('large');
         window.$('.ui.container .segment .blue.fluid.button').addClass('huge');
         window.$('#feedback-panel').show();
     }
@@ -639,6 +645,117 @@ function pagesInit() {
                 $(this).css('width', '0');
                 $(this).find('div').hide();
             });
+        });
+    }
+    if (elementExist('#p_student_instructorsuggestion')) {
+        var _course_card2 = window.$('.ui.course.card');
+        var instructor_cards = window.$('.ui.instructor.card');
+        var instructor_suggest_modal = window.$('#instructor_suggest.modal');
+        var _class_values2 = ['red', 'green', 'hidden', 'legal', 'checkmark', 'remove'];
+        _course_card2.hover(function () {
+            if ($(this).attr('data-state') === 'voted') {
+                $(this).find('.right.corner.label i').transition('flash');
+            } else {
+                set_class(_class_values2, 'green', $(this));
+                set_class(_class_values2, 'green', $(this).find('.right.corner.label'));
+                set_class(_class_values2, 'legal', $(this).find('.right.corner.label i'));
+            }
+        }, function () {
+            if ($(this).attr('data-state') !== 'voted') {
+                set_class(_class_values2, '', $(this));
+                set_class(_class_values2, 'hidden', $(this).find('.right.corner.label'));
+                set_class(_class_values2, '', $(this).find('.right.corner.label i'));
+            }
+        });
+        _course_card2.on('click', function () {
+            var current_card = $(this);
+            current_card.find('.inverted.dimmer').dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + '/student/' + current_card.attr('data-id') + '/votes',
+                type: "GET",
+                success: function success(result, status, xhr) {
+                    instructor_cards.each(function (index, item) {
+                        $(item).attr('data-state', 'notselected');
+                        set_class(_class_values2, '', $(item));
+                        set_class(_class_values2, 'hidden', $(item).find('.right.corner.label'));
+                        set_class(_class_values2, '', $(item).find('.right.corner.label i'));
+                    });
+                    for (var i = 0; i < result.length; i++) {
+                        var instructor_card = window.$('#instructor_' + result[i]);
+                        instructor_card.attr('data-state', 'selected');
+                        set_class(_class_values2, 'green', instructor_card);
+                        set_class(_class_values2, 'green', instructor_card.find('.right.corner.label'));
+                        set_class(_class_values2, 'checkmark', instructor_card.find('.right.corner.label i'));
+                    }
+                    current_card.find('.inverted.dimmer').dimmer('toggle');
+                    instructor_suggest_modal.attr('data-id', current_card.attr('data-id'));
+                    instructor_suggest_modal.modal('show');
+                },
+                error: function error(xhr, status, _error5) {
+                    // TODO error handling logic
+                    current_card.find('.inverted.dimmer').dimmer('toggle');
+                }
+            });
+        });
+        instructor_cards.hover(function () {
+            if ($(this).attr('data-state') === 'selected') {
+                set_class(_class_values2, 'red', $(this));
+                set_class(_class_values2, 'red', $(this).find('.right.corner.label'));
+                set_class(_class_values2, 'remove', $(this).find('.right.corner.label i'));
+            } else {
+                set_class(_class_values2, 'green', $(this));
+                set_class(_class_values2, 'green', $(this).find('.right.corner.label'));
+                set_class(_class_values2, 'checkmark', $(this).find('.right.corner.label i'));
+            }
+        }, function () {
+            if ($(this).attr('data-state') === 'selected') {
+                set_class(_class_values2, 'green', $(this));
+                set_class(_class_values2, 'green', $(this).find('.right.corner.label'));
+                set_class(_class_values2, 'checkmark', $(this).find('.right.corner.label i'));
+            } else {
+                set_class(_class_values2, '', $(this));
+                set_class(_class_values2, 'hidden', $(this).find('.right.corner.label'));
+                set_class(_class_values2, '', $(this).find('.right.corner.label i'));
+            }
+        });
+        instructor_cards.on('click', function () {
+            $(this).find('.inverted.dimmer').dimmer('toggle');
+            if ($(this).attr('data-state') === 'selected') {
+                $(this).attr('data-state', 'notselected');
+                set_class(_class_values2, '', $(this));
+                set_class(_class_values2, 'hidden', $(this).find('.right.corner.label'));
+                set_class(_class_values2, '', $(this).find('.right.corner.label i'));
+            } else {
+                $(this).attr('data-state', 'selected');
+                set_class(_class_values2, 'green', $(this));
+                set_class(_class_values2, 'green', $(this).find('.right.corner.label'));
+                set_class(_class_values2, 'checkmark', $(this).find('.right.corner.label i'));
+            }
+            $(this).find('.inverted.dimmer').dimmer('toggle');
+        });
+        instructor_suggest_modal.modal({
+            onApprove: function onApprove() {
+                var instructor_data = [];
+                instructor_cards.each(function (index, item) {
+                    instructor_data.push({
+                        id: $(item).attr('data-id'),
+                        state: $(item).attr('data-state')
+                    });
+                });
+                window.$.ajax({
+                    url: document.location.origin + '/student/' + instructor_suggest_modal.attr('data-id') + '/vote',
+                    type: "POST",
+                    data: JSON.stringify(instructor_data),
+                    contentType: "application/json",
+                    success: function success(result, status, xhr) {
+                        // TODO show success before redirect
+                        window.location = document.location.origin + '/student/instructor-suggestion';
+                    },
+                    error: function error(xhr, status, _error6) {
+                        // TODO error handling logic
+                    }
+                });
+            }
         });
     }
 }

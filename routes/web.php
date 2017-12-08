@@ -35,6 +35,19 @@ Route::group([
     Route::post('{course}/untake', 'SemesterController@untake_course');
 
     Route::get('instructor-suggestion', 'BaseController@instructor_suggestion');
+    Route::get('{course}/votes', 'SemesterController@voted_instructors');
+    Route::post('{course}/vote', 'SemesterController@submit_vote');
+
+    Route::get('test', function(){
+        return DB::table('course_instructor')
+                    ->where('semester_id','=',12)
+                    ->where('course_id','=',40)
+                    ->groupBy('instructor_id')
+                    ->select(DB::raw('instructor_id as id, count(*) as votes'))
+                    ->orderBy('votes','desc')
+                    ->take(3)
+                    ->get();
+    });
 });
 
 // Admin Routes

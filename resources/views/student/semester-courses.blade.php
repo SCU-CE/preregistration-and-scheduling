@@ -105,16 +105,16 @@
             <div class="ui segment">
                 @include('components.preregister-steps', ['active' => '2nd'])
                 <div class="ui divider"></div>
+                <div class="ui massive{{$current_semester->semester == 'بهار' ? ' green' : ' orange'}} inverted center aligned segment">
+                    <span>ترم {{$current_semester->semester}} {{$current_semester->year}}</span>
+                </div>
                 @if($passed_all_courses)
                     <h3 class="ui center aligned grey icon header">
                         <i class="massive student icon"></i>
                         <span>شما همه درس‌های ارائه شده در این ترم را گذرانده اید!</span>
                     </h3>
                 @else
-                    <div class="ui massive{{$current_semester->semester == 'بهار' ? ' green' : ' orange'}} inverted center aligned segment">
-                        <span>ترم {{$current_semester->semester}} {{$current_semester->year}}</span>
-                    </div>
-                    @include('components.info-message', ['message' => 'در این مرحله لطفا درس هایی را که قصد دارید در ترم پیش رو اخذ کنید انتخاب کنید.'])
+                    @include('components.info-message', ['message' => 'لطفا درس هایی را که قصد دارید در ترم پیش رو اخذ کنید انتخاب کنید.'])
                     <div class="ui divider"></div>
                     @for($i = 0; $i<4; $i++)
                         @if($category_has_courses[$i])
