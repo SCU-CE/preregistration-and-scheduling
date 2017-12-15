@@ -97,7 +97,7 @@
             <div class="five-px-element"></div>
 
             <div class="right menu">
-                <button id="user_btn" class="ui basic icon button"  data-tooltip="arash.e.alikhani@gmail.com" data-position="bottom right">
+                <button id="user_btn" class="ui basic icon button"  data-tooltip="{{Auth::user()->email}}" data-position="bottom right">
                     <i class="large user circle icon"></i>
                 </button>
                 <div class="five-px-element"></div>

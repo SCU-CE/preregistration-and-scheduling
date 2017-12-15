@@ -13,7 +13,7 @@
                 <i class="big user icon"></i>
             </button>
             <div class="five-px-element"></div>
-            <button id="logout_btn" class="ui basic logout icon button">
+            <button id="logout_btn" class="ui basic logout icon button" data-tooltip="خروج" data-position="bottom right">
                 <i class="big flipped sign out icon"></i>
             </button>
         </div>
@@ -46,7 +46,7 @@
                 <i class="large user icon"></i>
             </button>
             <div class="five-px-element"></div>
-            <button id="logout_btn" class="ui basic logout icon button">
+            <button id="logout_btn" class="ui basic logout icon button" data-tooltip="خروج" data-position="bottom right">
                 <i class="large flipped sign out icon"></i>
             </button>
         </div>

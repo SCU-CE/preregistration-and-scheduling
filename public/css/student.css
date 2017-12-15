@@ -451,6 +451,7 @@ body {
 #p_student_home .segment .steps .step .content .description {
   margin-top: .85em;
   color: lightgray;
+  font-size: .75rem;
 }
 
 #p_student_home .segment .huge.blue.basic.button {

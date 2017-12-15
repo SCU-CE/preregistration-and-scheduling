@@ -55,7 +55,6 @@ body {
     font-size: 1em;
   }
 }
-
 // mobile size style
 @media only screen and (max-width: 767px) {
   .computer.menu {
@@ -82,7 +81,6 @@ body {
   width: 5px;
   height: 5px;
 }
-
 .grey.segment {
   .message {
     text-align: center;
@@ -92,7 +90,6 @@ body {
 #logout_form {
   display: none;
 }
-
 #p_admin_courses {
   .grey.segment table thead tr th:last-child {
     min-width: 200px;
@@ -128,6 +125,182 @@ body {
       }
     }
   }
+}
+#p_admin_scheduling {
+  table{
+    margin: 0;
+    thead {
+      tr{
+        th:first-child{
+          width: 4em;
+        }
+      }
+      th{
+        font-weight: 400;
+      }
+    }
+    tbody {
+      tr {
+        height: 5rem;
+        td:first-child{
+          font-size: .8em;
+          font-weight: 400;
+        }
+        td {
+          padding: 0;
+        }
+      }
+    }
+  }
+  .schedule{
+    .course.lecture{
+      position: absolute;
+      text-align: center;
+      transform-origin: 100% 0;
+      transform: rotate(-90deg);
+      border-radius: 4px;
+      border-width: 0 8px;
+      border-color: rgba(0,0,0,.1);
+      border-style: solid;
+      cursor: pointer;
+      .title{
+        color: white;
+        padding: 0 0 2px 0;
+        font-size: .8em;
+      }
+    }
+    [data-tooltip]:after{
+      font-size: .7rem;
+    }
+  }
+  .ui.menu {
+    padding: .5rem;
+  }
+}
+.ui.course.cards {
+  margin-top: 0;
+}
+.ui.course.card {
+  cursor: pointer;
+  .content .header {
+    padding: 10px 0px;
+  }
+  .extra.content {
+    padding: 0.5em .5em;
+    .left.floated {
+      margin-left: 5px;
+      .student.symbol{
+        text-align: center;
+        float: right;
+        i {
+          display: block;
+        }
+        .year{
+          font-size: .6rem;
+        }
+      }
+      .student.count{
+        float: right;
+        margin-top: 4px;
+        font-size: .9rem;
+      }
+    }
+    .right.floated {
+      margin-left: -6px;
+      margin-top: 1px;
+      span{
+        float: right;
+        display: block;
+        margin-top: 3px;
+        margin-left: -2px;
+      }
+      i{
+        float: right;
+        display: block;
+      }
+    }
+    .green{
+      color: #21ba45;
+    }
+    .green-dark{
+      color: #14692a;
+    }
+    .teal{
+      color: #00b5ad;
+    }
+    .teal-dark{
+      color: #006961;
+    }
+  }
+}
+#add_schedule {
+  .scrolling.content{
+    .menu:nth-child(1) {
+      .right{
+        .labeled.icon.button{
+          margin: 0 6px 6px 0;
+        }
+      }
+    }
+    .tab.segment{
+      .block.preview{
+        border-radius: 4px;
+        border-width: 0 10px;
+        border-color: rgba(0,0,0,.1);
+        border-style: solid;
+        color: white;
+        height: 2.75rem;
+        text-align: center;
+        padding: 0.4rem;
+        font-size: 1.25em;
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+    .bottom.attached.tab{
+      .instructors .row{
+        display: flex;
+        .photo{
+          width: 35px;
+          float: right;
+        }
+        .progress{
+          float: right;
+          width: 97%;
+          .indicating.progress{
+            margin: 1rem;
+          }
+        }
+        .votes{
+          float: right;
+          width: 35px;
+          text-align: center;
+          padding: 1.25rem 0;
+        }
+      }
+    }
+  }
+}
+.ui-timepicker-standard{
+  z-index: 1000 !important;
+}
+.datepicker-plot-area{
+  font-family: IRANSans,Tahoma,Arial,Helvetica,sans-serif;
+}
+.ui.divider{
+  letter-spacing: 0;
+}
+.ui.selection.dropdown{
+  word-wrap: normal;
+}
+.completed-color {
+  color: #21BA45 !important;
+}
+.active-color {
+  color: #2185D0 !important;
+}
+.disabled-color {
+  color: lightgray !important;
 }
 
 .edit.modal {

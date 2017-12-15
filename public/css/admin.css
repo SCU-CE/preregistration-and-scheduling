@@ -232,6 +232,207 @@ body {
   min-width: 200px;
 }
 
+#p_admin_scheduling table {
+  margin: 0;
+}
+
+#p_admin_scheduling table thead tr th:first-child {
+  width: 4em;
+}
+
+#p_admin_scheduling table thead th {
+  font-weight: 400;
+}
+
+#p_admin_scheduling table tbody tr {
+  height: 5rem;
+}
+
+#p_admin_scheduling table tbody tr td:first-child {
+  font-size: .8em;
+  font-weight: 400;
+}
+
+#p_admin_scheduling table tbody tr td {
+  padding: 0;
+}
+
+#p_admin_scheduling .schedule .course.lecture {
+  position: absolute;
+  text-align: center;
+  -webkit-transform-origin: 100% 0;
+          transform-origin: 100% 0;
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+  border-radius: 4px;
+  border-width: 0 8px;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-style: solid;
+  cursor: pointer;
+}
+
+#p_admin_scheduling .schedule .course.lecture .title {
+  color: white;
+  padding: 0 0 2px 0;
+  font-size: .8em;
+}
+
+#p_admin_scheduling .schedule [data-tooltip]:after {
+  font-size: .7rem;
+}
+
+#p_admin_scheduling .ui.menu {
+  padding: .5rem;
+}
+
+.ui.course.cards {
+  margin-top: 0;
+}
+
+.ui.course.card {
+  cursor: pointer;
+}
+
+.ui.course.card .content .header {
+  padding: 10px 0px;
+}
+
+.ui.course.card .extra.content {
+  padding: 0.5em .5em;
+}
+
+.ui.course.card .extra.content .left.floated {
+  margin-left: 5px;
+}
+
+.ui.course.card .extra.content .left.floated .student.symbol {
+  text-align: center;
+  float: right;
+}
+
+.ui.course.card .extra.content .left.floated .student.symbol i {
+  display: block;
+}
+
+.ui.course.card .extra.content .left.floated .student.symbol .year {
+  font-size: .6rem;
+}
+
+.ui.course.card .extra.content .left.floated .student.count {
+  float: right;
+  margin-top: 4px;
+  font-size: .9rem;
+}
+
+.ui.course.card .extra.content .right.floated {
+  margin-left: -6px;
+  margin-top: 1px;
+}
+
+.ui.course.card .extra.content .right.floated span {
+  float: right;
+  display: block;
+  margin-top: 3px;
+  margin-left: -2px;
+}
+
+.ui.course.card .extra.content .right.floated i {
+  float: right;
+  display: block;
+}
+
+.ui.course.card .extra.content .green {
+  color: #21ba45;
+}
+
+.ui.course.card .extra.content .green-dark {
+  color: #14692a;
+}
+
+.ui.course.card .extra.content .teal {
+  color: #00b5ad;
+}
+
+.ui.course.card .extra.content .teal-dark {
+  color: #006961;
+}
+
+#add_schedule .scrolling.content .menu:nth-child(1) .right .labeled.icon.button {
+  margin: 0 6px 6px 0;
+}
+
+#add_schedule .scrolling.content .tab.segment .block.preview {
+  border-radius: 4px;
+  border-width: 0 10px;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-style: solid;
+  color: white;
+  height: 2.75rem;
+  text-align: center;
+  padding: 0.4rem;
+  font-size: 1.25em;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+#add_schedule .scrolling.content .bottom.attached.tab .instructors .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#add_schedule .scrolling.content .bottom.attached.tab .instructors .row .photo {
+  width: 35px;
+  float: right;
+}
+
+#add_schedule .scrolling.content .bottom.attached.tab .instructors .row .progress {
+  float: right;
+  width: 97%;
+}
+
+#add_schedule .scrolling.content .bottom.attached.tab .instructors .row .progress .indicating.progress {
+  margin: 1rem;
+}
+
+#add_schedule .scrolling.content .bottom.attached.tab .instructors .row .votes {
+  float: right;
+  width: 35px;
+  text-align: center;
+  padding: 1.25rem 0;
+}
+
+.ui-timepicker-standard {
+  z-index: 1000 !important;
+}
+
+.datepicker-plot-area {
+  font-family: IRANSans,Tahoma,Arial,Helvetica,sans-serif;
+}
+
+.ui.divider {
+  letter-spacing: 0;
+}
+
+.ui.selection.dropdown {
+  word-wrap: normal;
+}
+
+.completed-color {
+  color: #21BA45 !important;
+}
+
+.active-color {
+  color: #2185D0 !important;
+}
+
+.disabled-color {
+  color: lightgray !important;
+}
+
 .edit.modal .content {
   padding: .75em !important;
 }

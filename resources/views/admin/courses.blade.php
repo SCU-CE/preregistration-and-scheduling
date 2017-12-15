@@ -23,15 +23,15 @@
                     </div>
                 </div>
                 <div class="fields">
-                    <div class="five wide field{{ $errors->store->has('default_min_capacity_fall') ? ' error' : '' }}">
+                    <div class="four wide field{{ $errors->store->has('default_min_capacity_fall') ? ' error' : '' }}">
                         <label for="default_min_capacity_fall">حداقل ظرفیت پاییز</label>
                         <input type="text" name="default_min_capacity_fall" placeholder="حداقل ظرفیت پاییز" value="{{ $errors->store->any() ? old('default_min_capacity_fall') : '10' }}">
                     </div>
-                    <div class="five wide field{{ $errors->store->has('default_min_capacity_spring') ? ' error' : '' }}">
+                    <div class="four wide field{{ $errors->store->has('default_min_capacity_spring') ? ' error' : '' }}">
                         <label for="default_min_capacity_spring">حداقل ظرفیت بهار</label>
                         <input type="text" name="default_min_capacity_spring" placeholder="حداقل ظرفیت بهار" value="{{ $errors->store->any() ? old('default_min_capacity_spring') : '10' }}">
                     </div>
-                    <div class="six wide field{{ $errors->store->has('category') ? ' error' : '' }}">
+                    <div class="four wide field{{ $errors->store->has('category') ? ' error' : '' }}">
                         <label for="category">دسته‌بندی درس</label>
                         <select name="category" class="ui dropdown">
                             <option value="">دسته‌بندی درس</option>
@@ -39,6 +39,15 @@
                             <option value="درس اصلی"{{ $errors->store->any() && old('category') == 'درس اصلی' ? ' selected' : '' }}>درس اصلی</option>
                             <option value="درس اختیاری"{{ $errors->store->any() && old('category') == 'درس اختیاری' ? ' selected' : '' }}>درس اختیاری</option>
                             <option value="آزمایشگاه"{{ $errors->store->any() && old('category') == 'آزمایشگاه' ? ' selected' : '' }}>آزمایشگاه</option>
+                        </select>
+                    </div>
+                    <div class="four wide field{{ $errors->store->has('planned_semester') ? ' error' : '' }}">
+                        <label for="planned_semester">ترم ارائه با توجه به چارت</label>
+                        <select name="planned_semester" class="ui dropdown">
+                            <option value="">انتخاب ترم</option>
+                            @for($i = 1; $i<=8; $i++)
+                                <option value="{{$i}}"{{ $errors->store->any() && old('planned_semester') == $i ? ' selected' : '' }}>ترم {{$i}}</option>
+                            @endfor
                         </select>
                     </div>
                 </div>
@@ -72,6 +81,7 @@
                         <th>پاییز</th>
                         <th>بهار</th>
                         <th>دسته‌بندی</th>
+                        <th>ترم ارائه</th>
                         <th>ویرایش / حذف</th>
                     </tr>
                 </thead>
@@ -84,6 +94,7 @@
                         <td>{{$course->default_min_capacity_fall}}</td>
                         <td>{{$course->default_min_capacity_spring}}</td>
                         <td>{{$course->category}}</td>
+                        <td>{{$course->planned_semester}}</td>
                         <td>
                             <div class="ui orange button fw-300" data-id="{{$course->id}}">ویرایش</div>
                             <div class="ui red button fw-300" data-id="{{$course->id}}">حذف</div>
@@ -130,6 +141,15 @@
                                 <option value="درس اصلی"{{ $errors->update->any() && old('category') == 'درس اصلی' ? ' selected' : '' }}>درس اصلی</option>
                                 <option value="درس اختیاری"{{ $errors->update->any() && old('category') == 'درس اختیاری' ? ' selected' : '' }}>درس اختیاری</option>
                                 <option value="آزمایشگاه"{{ $errors->update->any() && old('category') == 'آزمایشگاه' ? ' selected' : '' }}>آزمایشگاه</option>
+                            </select>
+                        </div>
+                        <div class="field{{ $errors->update->has('planned_semester') ? ' error' : '' }}">
+                            <label for="planned_semester">ترم ارائه با توجه به چارت</label>
+                            <select name="planned_semester" class="ui dropdown">
+                                <option value="">انتخاب ترم</option>
+                                @for($i = 1; $i<=8; $i++)
+                                    <option value="{{$i}}"{{ $errors->update->any() && old('planned_semester') == $i ? ' selected' : '' }}>ترم {{$i}}</option>
+                                @endfor
                             </select>
                         </div>
 

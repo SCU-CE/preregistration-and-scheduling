@@ -23,15 +23,18 @@ mix.scripts([
     'node_modules/jquery/dist/jquery.min.js',
     'resources/assets/semantic/semantic.min.js',
     'node_modules/chart.js/dist/Chart.min.js',
+    'node_modules/randomcolor/randomColor.js',
     'node_modules/persianjs/persian.js',
     'node_modules/persian-date/dist/persian-date.min.js',
-    'node_modules/persian-datepicker/dist/js/persian-datepicker.min.js'
+    'node_modules/persian-datepicker/dist/js/persian-datepicker.min.js',
+    'node_modules/jquery-timepicker/jquery.timepicker.js'
 ], 'public/js/vendor.js');
 
 mix.styles([
     'resources/assets/css/IRANSans.css',
     'resources/assets/semantic/semantic.rtl.min.css',
-    'node_modules/persian-datepicker/dist/css/persian-datepicker.min.css'
+    'node_modules/persian-datepicker/dist/css/persian-datepicker.min.css',
+    'node_modules/jquery-timepicker/jquery.timepicker.css'
 ], 'public/css/vendor.css');
 
 mix.copyDirectory('resources/assets/semantic/themes/default', 'public/css/themes/default');

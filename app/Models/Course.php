@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Course extends Model
 {
     protected $fillable = [
-        'name', 'code', 'units', 'category', 'default_min_capacity_fall', 'default_min_capacity_spring'
+        'name', 'code', 'units', 'category', 'planned_semester', 'default_min_capacity_fall', 'default_min_capacity_spring'
     ];
     public function offered($semester)
     {

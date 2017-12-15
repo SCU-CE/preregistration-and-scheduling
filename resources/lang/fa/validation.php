@@ -163,6 +163,7 @@ return [
         'default_min_capacity_fall'     => 'حداقل ظرفیت پاییز',
         'default_min_capacity_spring'   => 'حداقل ظرفیت بهار',
         'category'              => 'دسته بندی',
+        'planned_semester'      => 'ترم ارائه',
         'instructor_name'       => 'نام استاد',
         'profile_link'          => 'آدرس پروفایل',
         'photo'                 => 'فایل تصویر',

@@ -81,7 +81,28 @@ class BaseController extends Controller
     }
     public function scheduling()
     {
-        return view('admin.scheduling');
+        $semester = Semester::find(Option::find(1)->value);
+        $courses = DB::table('course_student')
+                        ->where('course_student.semester_id','=',$semester->id)
+                        ->join('courses', 'course_student.course_id', '=', 'courses.id')
+                        ->join('course_semester', function ($join) use ($semester){
+                            $join->on('course_student.course_id', '=', 'course_semester.course_id')
+                                ->where('course_semester.semester_id', '=', $semester->id);
+                        })
+                        ->groupby('courses.id', 'courses.code', 'courses.name', 'courses.units', 'courses.category', 'courses.planned_semester', 'course_semester.min_capacity')
+                        ->select(DB::raw('courses.id, courses.name, courses.code, courses.units, courses.category, courses.planned_semester, course_semester.min_capacity, count(*) as count'))
+                        ->orderby('count','desc')
+                        ->get();
+        $instructors = Instructor::all();
+
+        $schedules = DB::table('course_schedule')
+                            ->where('semester_id','=',$semester->id)
+                            ->join('courses','course_schedule.course_id','=','courses.id')
+                            ->join('instructors','course_schedule.instructor_id','=','instructors.id')
+                            ->select('course_schedule.*', 'courses.name as course_name', 'instructors.name as instructor_name')
+                            ->get();
+
+        return view('admin.scheduling', compact('courses','instructors', 'semester', 'schedules'));
     }
     public function messages()
     {

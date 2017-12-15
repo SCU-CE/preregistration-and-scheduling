@@ -26,7 +26,8 @@ class CourseController extends Controller
             'units' => 'required|digits:1',
             'default_min_capacity_fall' => 'required|digits_between:1,2',
             'default_min_capacity_spring' => 'required|digits_between:1,2',
-            'category' => 'required|in:' . implode(',', $categories)
+            'category' => 'required|in:' . implode(',', $categories),
+            'planned_semester' => 'required|numeric|max:8'
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +42,8 @@ class CourseController extends Controller
             'units' => $request->input('units'),
             'default_min_capacity_fall' => $request->input('default_min_capacity_fall'),
             'default_min_capacity_spring' => $request->input('default_min_capacity_spring'),
-            'category' => $request->input('category')
+            'category' => $request->input('category'),
+            'planned_semester' => $request->input('planned_semester')
         ]);
 
         Session::flash('message', 'درس "' . $course->name . '" با موفقیت در سامانه ثبت شد.');
@@ -60,7 +62,8 @@ class CourseController extends Controller
             'units' => 'required|digits:1',
             'default_min_capacity_fall' => 'required|digits_between:1,2',
             'default_min_capacity_spring' => 'required|digits_between:1,2',
-            'category' => 'required|in:' . implode(',', $categories)
+            'category' => 'required|in:' . implode(',', $categories),
+            'planned_semester' => 'required|numeric|max:8'
         ]);
 
         if ($validator->fails()) {
@@ -78,6 +81,7 @@ class CourseController extends Controller
         $course->default_min_capacity_fall = $request->input('default_min_capacity_fall');
         $course->default_min_capacity_spring = $request->input('default_min_capacity_spring');
         $course->category = $request->input('category');
+        $course->planned_semester = $request->input('planned_semester');
 
         $course->save();
 

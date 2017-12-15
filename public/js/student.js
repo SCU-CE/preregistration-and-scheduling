@@ -311,11 +311,11 @@ function init_position() {
 function adjust_cards_number() {
     var course_cards = window.$('.ui.course.cards');
     var class_values = ['one', 'two', 'three', 'four'];
-    if (screen.width > 1199) {
+    if (window.innerWidth > 1199) {
         set_class(class_values, 'four', course_cards);
-    } else if (screen.width > 991) {
+    } else if (window.innerWidth > 991) {
         set_class(class_values, 'three', course_cards);
-    } else if (screen.width > 559) {
+    } else if (window.innerWidth > 559) {
         set_class(class_values, 'two', course_cards);
     } else {
         set_class(class_values, 'one', course_cards);

@@ -39,13 +39,10 @@ Route::group([
     Route::post('{course}/vote', 'SemesterController@submit_vote');
 
     Route::get('test', function(){
-        return DB::table('course_instructor')
-                    ->where('semester_id','=',12)
-                    ->where('course_id','=',40)
-                    ->groupBy('instructor_id')
-                    ->select(DB::raw('instructor_id as id, count(*) as votes'))
-                    ->orderBy('votes','desc')
-                    ->take(3)
+        return DB::table('course_schedule')
+                    ->join('courses','course_schedule.course_id','=','courses.id')
+                    ->join('instructors','course_schedule.instructor_id','=','instructors.id')
+                    ->select('course_schedule.*', 'courses.name as course_name', 'instructors.name as instructor_name')
                     ->get();
     });
 });
@@ -64,6 +61,9 @@ Route::group([
     Route::get('students', 'BaseController@students');
     Route::get('reports', 'BaseController@reports');
     Route::get('scheduling', 'BaseController@scheduling');
+    Route::get('scheduling/{course}/information', 'SchedulingController@course_information');
+    Route::post('scheduling/store', 'SchedulingController@store_schedule');
+    Route::post('scheduling/{course}/destroy', 'SchedulingController@remove_schedule');
     Route::get('messages', 'BaseController@messages');
     Route::get('settings', 'BaseController@settings');
 
