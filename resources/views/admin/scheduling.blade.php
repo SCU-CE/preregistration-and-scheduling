@@ -12,7 +12,7 @@
             <div class="right menu">
                 <button class="ui large red labeled icon button">
                     <i class="checkmark icon"></i>
-                    <span class="fw-400">تایید برنامه اولیه و رفتن به مرحله ارزیابی</span>
+                    <span class="fw-400">تایید برنامه و رفتن به ارزیابی</span>
                 </button>
             </div>
         </div>

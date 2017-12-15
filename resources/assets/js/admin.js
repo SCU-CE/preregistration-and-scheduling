@@ -699,6 +699,87 @@ function draw_schedule(lectures_container,course_group_tab_btns,course_groups_ta
         lecture_blocks_click($(item),course_group_tab_btns,course_groups_tab,approve_btn,remove_schedule_btn,add_schedule_modal,return_btn);
     });
 }
+function init_message_cards(messages_list,formURL) {
+    let $msg_cards = messages_list.find('.msg.card');
+    $msg_cards.find('.star-bt').hover(
+        function () {
+            $(this).toggleClass('yellow');
+        },
+        function () {
+            $(this).toggleClass('yellow');
+        }
+    );
+    $msg_cards.find('.archive-bt').hover(
+        function () {
+            $(this).toggleClass('brown');
+        },
+        function () {
+            $(this).toggleClass('brown');
+        }
+    );
+    $msg_cards.find('.later-bt').hover(
+        function () {
+            $(this).toggleClass('orange');
+        },
+        function () {
+            $(this).toggleClass('orange');
+        }
+    );
+    $msg_cards.find('.trash-bt').hover(
+        function () {
+            $(this).toggleClass('black');
+        },
+        function () {
+            $(this).toggleClass('black');
+        }
+    );
+    $msg_cards.find('.left.floated .icon').on('click', function () {
+        let message_id = $(this).attr('data-id');
+        let message_state = $(this).attr('data-state');
+        let message_color = $(this).attr('data-color');
+        let nextState;
+        if($(this).hasClass(message_color)){
+            nextState = message_state;
+        }else{
+            nextState = 'inbox';
+        }
+        let postData = $(this).find('input').serializeArray();
+        window.$.ajax(
+            {
+                url : formURL + '/' + message_id + '/' + nextState,
+                type : "PATCH",
+                data : postData,
+                success:function() {
+                    window.$('#messages_menu .item.active').trigger('click');
+                },
+                error: function() {
+                }
+            });
+    });
+    $msg_cards.find('.trash.icon').on('click', function ()
+    {
+        let message_id = $(this).attr('data-id');
+        window.$('.small.modal .content').html(window.$('#message_'+message_id).clone());
+        let postData = window.$('.small.modal'+' :input').serializeArray();
+        window.$('.small.modal')
+            .modal({
+                onApprove : function() {
+                    window.$.ajax(
+                        {
+                            url: formURL + '/' + message_id,
+                            type: "DELETE",
+                            data: postData,
+                            success: function()
+                            {
+                                window.$('#messages_menu .item.active').trigger('click');
+                            }
+                        });
+                }
+            })
+            .modal('show')
+        ;
+    });
+}
 
 function pagesInit() {
     // initialize footer date
@@ -1507,12 +1588,148 @@ function pagesInit() {
         // active menu icon
         window.$('.computer.menu .basic.icon.button:eq(7)').addClass('olive');
         window.$('.vertical.menu a i:eq(7)').removeClass('grey').addClass('olive');
+
+        const formURL = document.location.origin + '/admin/messages';
+        const menu_items = window.$('#messages_menu .item');
+        const messages_dimmer = window.$('#messages_dimmer');
+        const messages_list = window.$('#messages_list');
+        const no_messages = window.$('#no_messages');
+        init_message_cards(messages_list,formURL);
+        menu_items.on('click', function (){
+            menu_items.removeClass('active');
+            $(this).addClass('active');
+            let bt_state = $(this).attr('data-state');
+            if(bt_state === 'inbox'){
+                messages_dimmer.dimmer('toggle');
+                window.$.ajax({
+                    url: formURL + '/getinbox',
+                    type: "GET",
+                    success: function(data) {
+                        if(data === ''){
+                            no_messages.show();
+                        }else{
+                            no_messages.hide();
+                        }
+                        messages_list.html(data);
+                        init_message_cards(messages_list,formURL);
+                        messages_dimmer.dimmer('toggle');
+                    },
+                    error: function () {
+                        messages_dimmer.dimmer('toggle');
+                    }
+                });
+            }else if(bt_state === 'star'){
+                messages_dimmer.dimmer('toggle');
+                window.$.ajax({
+                    url: formURL + '/getstar',
+                    type: "GET",
+                    success: function(data) {
+                        if(data === ''){
+                            no_messages.show();
+                        }else{
+                            no_messages.hide();
+                        }
+                        messages_list.html(data);
+                        init_message_cards(messages_list,formURL);
+                        messages_dimmer.dimmer('toggle');
+                    },
+                    error: function () {
+                        messages_dimmer.dimmer('toggle');
+                    }
+                });
+            }else if(bt_state === 'later'){
+                messages_dimmer.dimmer('toggle');
+                window.$.ajax({
+                    url: formURL + '/getlater',
+                    type: "GET",
+                    success: function(data) {
+                        if(data === ''){
+                            no_messages.show();
+                        }else{
+                            no_messages.hide();
+                        }
+                        messages_list.html(data);
+                        init_message_cards(messages_list,formURL);
+                        messages_dimmer.dimmer('toggle');
+                    },
+                    error: function () {
+                        messages_dimmer.dimmer('toggle');
+                    }
+                });
+            }else if(bt_state === 'archive'){
+                messages_dimmer.dimmer('toggle');
+                window.$.ajax({
+                    url: formURL + '/getarchive',
+                    type: "GET",
+                    success: function(data) {
+                        if(data === ''){
+                            no_messages.show();
+                        }else{
+                            no_messages.hide();
+                        }
+                        messages_list.html(data);
+                        init_message_cards(messages_list,formURL);
+                        messages_dimmer.dimmer('toggle');
+                    },
+                    error: function () {
+                        messages_dimmer.dimmer('toggle');
+                    }
+                });
+            }
+        });
     }
     // setting page logic
     if(elementExist('#p_admin_settings')){
         // active menu icon
         window.$('.computer.menu .basic.icon.button:eq(8)').addClass('black');
         window.$('.vertical.menu a i:eq(8)').removeClass('grey').addClass('black');
+
+        window.$('.ui.dropdown').dropdown();
+
+        const delete_admin_modal = window.$('#delete_admin.modal');
+        const delete_admin_btn = window.$('#registered_admin_list tr .red.button');
+        const delete_admin_form = delete_admin_modal.find('form');
+        delete_admin_btn.on('click', function () {
+            const admin_id = $(this).attr('data-id');
+            delete_admin_modal.find('table tbody td:eq(0)').html(window.$('#registered_admin_list #admin_'+admin_id+' td:eq(0)').html());
+            delete_admin_modal.find('table tbody td:eq(1)').html(window.$('#registered_admin_list #admin_'+admin_id+' td:eq(1)').html());
+            delete_admin_form.attr('action', delete_admin_form.attr('action')+'/'+admin_id+'/unregisteradmin');
+            delete_admin_modal.modal('show');
+        });
+        delete_admin_modal.modal({
+            onApprove: function () {
+                delete_admin_form.submit();
+            }
+        });
+
+        const date_input_names = ['prereg_start_date', 'prereg_end_date', 'eval_start_date', 'eval_end_date', 'final_date'];
+        const semester_options_form = window.$('#p_admin_settings form:eq(0)');
+        for (let i=0; i<date_input_names.length; i++){
+            let dp = semester_options_form.find('input[name='+date_input_names[i]+'_p]').persianDatepicker({
+                initialValue: false,
+                observer: true,
+                autoClose: true,
+                format: 'YYYY/MM/DD',
+                altField: '#p_admin_settings form input[name='+date_input_names[i]+']',
+                'toolbox': {
+                    'enabled': false
+                }
+            });
+            if(semester_options_form.find('input[name='+date_input_names[i]+']').val() !== ''){
+                dp.setDate(parseInt(semester_options_form.find('input[name='+date_input_names[i]+']').val()));
+            }
+        }
+
+        // init messages
+        if(elementExist('#manage_admin_panel .message.session')){
+            window.$('#manage_admin_panel .message.session .close').on('click', function() {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if(!window.$('#manage_admin_panel .message.session').hasClass('hidden'))
+                    window.$('#manage_admin_panel .message.session').transition('fade');
+            },4000);
+        }
     }
 }
 

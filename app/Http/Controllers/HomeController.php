@@ -20,14 +20,14 @@ class HomeController extends Controller
         return redirect('/login');
     }
 
-    public function sendFeedback(Request $request)
+    public function post_feedback(Request $request)
     {
         $this->validate($request, [
             'mtype' => 'required|in:smile,frown,heart',
             'message' => 'string|nullable'
         ]);
 
-        $feedback = Feedback::create([
+        Feedback::create([
             'type' => $request->input('mtype'),
             'message' => $request->input('message'),
             'state' => 'inbox'

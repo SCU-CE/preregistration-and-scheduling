@@ -90,7 +90,7 @@ return [
 
     //
 
-    'valid_pass'           => ':attribute وارد شده نامعتبر می باشد.',
+    'valid_pass'           => ':attribute نامعتبر می باشد.',
     'valid_email'          => ':attribute قبلا انتخاب شده است.',
     'valid_sid'            => 'این شماره دانشجویی قبلا گرفته شده است.',
     'persian'              => 'لطفا :attribute را با حروف پارسی وارد کنید.',
@@ -168,6 +168,7 @@ return [
         'profile_link'          => 'آدرس پروفایل',
         'photo'                 => 'فایل تصویر',
         'semester'              => 'نوبت ترم',
+        'old_password'          => 'رمز عبور قبلی'
     ],
 
 ];

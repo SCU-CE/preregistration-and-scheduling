@@ -14,8 +14,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index');
-
 Auth::routes();
+Route::post('/feedback', 'HomeController@post_feedback');
 
 // Student Routes
 Route::group([
@@ -39,11 +39,7 @@ Route::group([
     Route::post('{course}/vote', 'SemesterController@submit_vote');
 
     Route::get('test', function(){
-        return DB::table('course_schedule')
-                    ->join('courses','course_schedule.course_id','=','courses.id')
-                    ->join('instructors','course_schedule.instructor_id','=','instructors.id')
-                    ->select('course_schedule.*', 'courses.name as course_name', 'instructors.name as instructor_name')
-                    ->get();
+
     });
 });
 
@@ -60,12 +56,25 @@ Route::group([
     Route::get('semesters', 'BaseController@semesters');
     Route::get('students', 'BaseController@students');
     Route::get('reports', 'BaseController@reports');
+
     Route::get('scheduling', 'BaseController@scheduling');
     Route::get('scheduling/{course}/information', 'SchedulingController@course_information');
     Route::post('scheduling/store', 'SchedulingController@store_schedule');
     Route::post('scheduling/{course}/destroy', 'SchedulingController@remove_schedule');
+
     Route::get('messages', 'BaseController@messages');
+    Route::get('messages/getinbox', 'FeedbackController@getInboxMessages');
+    Route::get('messages/getstar', 'FeedbackController@getStarMessages');
+    Route::get('messages/getlater', 'FeedbackController@getLaterMessages');
+    Route::get('messages/getarchive', 'FeedbackController@getArchiveMessages');
+    Route::patch('messages/{feedback}/{state}', 'FeedbackController@changeState');
+    Route::delete('messages/{feedback}', 'FeedbackController@destroy');
+
     Route::get('settings', 'BaseController@settings');
+    Route::patch('settings/store', 'OptionController@store_options');
+    Route::patch('settings/changepassword', 'OptionController@change_admin_password');
+    Route::post('settings/registeradmin', 'OptionController@register_admin');
+    Route::delete('settings/{admin}/unregisteradmin', 'OptionController@unregister_admin');
 
     Route::resource('course', 'CourseController', ['only' => ['store', 'update', 'destroy']]);
     Route::resource('instructor', 'InstructorController', ['only' => ['store', 'update', 'destroy']]);

@@ -191,6 +191,14 @@ body {
   .ui.modal > .header {
     font-size: 1em !important;
   }
+
+  #p_admin_semester_courses .ui.toggle.checkbox {
+    margin-top: .5rem;
+  }
+
+  #p_admin_messages #no_messages h1 {
+    font-size: 1rem;
+  }
 }
 
 .five-px-element {

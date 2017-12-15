@@ -106,10 +106,13 @@ class BaseController extends Controller
     }
     public function messages()
     {
-        return view('admin.messages');
+        $messages = Feedback::all()->where('state', '=', 'inbox')->where('message','!=','')->sortByDesc('id');
+        return view('admin.messages', compact('messages'));
     }
     public function settings()
     {
-        return view('admin.settings');
+        $semesters = Semester::all()->where('semester','!=','x')->sortByDesc('year');
+        $options = Option::all();
+        return view('admin.settings', compact('semesters', 'options'));
     }
 }
