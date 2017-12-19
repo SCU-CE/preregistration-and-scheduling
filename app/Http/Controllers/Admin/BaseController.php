@@ -78,7 +78,11 @@ class BaseController extends Controller
     }
     public function reports()
     {
-        return view('admin.reports');
+        $queries = DB::table('sql_queries')
+                        ->select('id','name','description')
+                        ->get();
+
+        return view('admin.reports', compact('queries'));
     }
     public function scheduling()
     {

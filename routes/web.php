@@ -77,6 +77,9 @@ Route::group([
     Route::get('semesters', 'BaseController@semesters');
     Route::get('students', 'BaseController@students');
     Route::get('reports', 'BaseController@reports');
+    Route::get('query-builder', 'ReportController@create_query');
+    Route::resource('query', 'ReportController', ['only' => ['show', 'store', 'edit', 'update', 'destroy']]);
+    Route::post('query/{query}/execute', 'ReportController@execute');
 
     Route::get('scheduling', 'BaseController@scheduling');
     Route::get('scheduling/{course}/information', 'SchedulingController@course_information');

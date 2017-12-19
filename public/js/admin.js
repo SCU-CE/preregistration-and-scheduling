@@ -834,6 +834,67 @@ function init_session_date_inputs(evaluation_sessions_modal) {
         }
     });
 }
+function calculate_column_btn_positions(add_column_btn, remove_column_btn, query_columns) {
+    add_column_btn.css('top', query_columns.find('div:last')[0].offsetTop);
+    remove_column_btn.css('top', query_columns.find('div:last')[0].offsetTop);
+    add_column_btn.css('left', query_columns.find('div:last')[0].offsetLeft);
+    remove_column_btn.css('left', query_columns.find('div:last')[0].offsetLeft);
+}
+function initialize_query_builder_form(create_query_form, add_column_btn, remove_column_btn, query_columns, add_parameter_btn, remove_parameter_btn, parameters_list) {
+    var modal = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : [];
+
+    calculate_column_btn_positions(add_column_btn, remove_column_btn, query_columns);
+    add_column_btn.on('click', function () {
+        var column_number = (parseInt(query_columns.find('div:last').attr('data-number')) + 1).toString();
+        create_query_form.find('[name=number_of_columns]').val(column_number);
+        query_columns.append('\n            <div class="column" data-number="' + column_number + '">\n                <input type="text" name="column_id_' + column_number + '" placeholder="\'id\' of column ' + column_number + '"  style="direction: ltr" required>\n                <input type="text" name="column_name_' + column_number + '" placeholder="\'\u0646\u0627\u0645 \u0641\u0627\u0631\u0633\u06CC\' \u0633\u062A\u0648\u0646 ' + column_number + '" required>\n            </div>\n            ');
+        calculate_column_btn_positions(add_column_btn, remove_column_btn, query_columns);
+        if (modal.length != 0) {
+            modal.modal('refresh');
+        }
+    });
+    remove_column_btn.on('click', function () {
+        if (query_columns.find('div').length > 1) {
+            create_query_form.find('[name=number_of_columns]').val((parseInt(query_columns.find('div:last').attr('data-number')) - 1).toString());
+            query_columns.find('div:last').remove();
+        }
+        calculate_column_btn_positions(add_column_btn, remove_column_btn, query_columns);
+        if (modal.length != 0) {
+            modal.modal('refresh');
+        }
+    });
+    add_parameter_btn.on('click', function () {
+        var parameter_number = 1;
+        if (parameters_list.find('.fields').length > 0) {
+            parameter_number = (parseInt(parameters_list.find('.fields:last').attr('data-number')) + 1).toString();
+        }
+        create_query_form.find('[name=number_of_parameters]').val(parameter_number);
+        parameters_list.append('\n            <div class="fields" data-number="' + parameter_number + '">\n                <div class="two wide field">\n                    <label class="fw-400">\'id\' \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '</label>\n                    <input type="text" name="p_id_' + parameter_number + '" placeholder="\'p\' in ${p}" style="direction: ltr" required>\n                </div>\n                <div class="three wide field">\n                    <label class="fw-400">\u0646\u0627\u0645 \u0641\u0627\u0631\u0633\u06CC \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '</label>\n                    <input type="text" name="p_name_' + parameter_number + '" placeholder="\u0646\u0627\u0645 \u0641\u0627\u0631\u0633\u06CC \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '" required>\n                </div>\n                <div class="two wide field">\n                    <label class="fw-400">\u0646\u0648\u0639 \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '</label>\n                    <select class="ui fluid dropdown" name="p_type_' + parameter_number + '" required>\n                        <option value="textbox">Textbox</option>\n                        <option value="dropdown">Dropdown</option>\n                    </select>\n                </div>\n                <div id="p_query" class="seven wide field disabled">\n                    <label class="fw-400">\u067E\u0631\u0633 \u0648 \u062C\u0648\u06CC \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '</label>\n                    <input type="text" name="p_query_' + parameter_number + '" placeholder="SELECT statement for dropdown parameter" style="direction: ltr">\n                </div>\n                <div id="p_query_column" class="two wide field disabled">\n                    <label class="fw-400">\'id\' \u067E\u0631\u0633 \u0648 \u062C\u0648</label>\n                    <input type="text" name="p_query_column_' + parameter_number + '" placeholder="column id" style="direction: ltr">\n                </div>\n            </div>\n            ');
+        parameters_list.find('.ui.dropdown').dropdown({
+            onChange: function onChange(value, text, $choice) {
+                if (value === 'textbox') {
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled').addClass('disabled');
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').removeAttr('required');
+                } else if (value === 'dropdown') {
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled');
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').attr('required', 'required');
+                }
+            }
+        });
+        if (modal.length != 0) {
+            modal.modal('refresh');
+        }
+    });
+    remove_parameter_btn.on('click', function () {
+        if (parameters_list.find('.fields').length !== 0) {
+            create_query_form.find('[name=number_of_parameters]').val((parseInt(parameters_list.find('.fields:last').attr('data-number')) - 1).toString());
+        }
+        parameters_list.find('.fields:last').remove();
+        if (modal.length != 0) {
+            modal.modal('refresh');
+        }
+    });
+}
 
 function pagesInit() {
     // initialize footer date
@@ -1145,6 +1206,159 @@ function pagesInit() {
         // active menu icon
         window.$('.computer.menu .basic.icon.button:eq(5)').addClass('red');
         window.$('.vertical.menu a i:eq(5)').removeClass('grey').addClass('red');
+
+        var load_btn = window.$('.blue.segment .basic.query.label .green.icon.button');
+        var query_view = window.$('#query_view');
+        var query_result_modal = window.$('#query_result.modal');
+        load_btn.on('click', function () {
+            var query_id = $(this).attr('data-id');
+            var dimmer = $(this).parent().siblings('.dimmer');
+            dimmer.dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + '/admin/query/' + query_id,
+                type: "get",
+                success: function success(result, status, xhr) {
+                    query_view.html(result);
+                    query_view.find('.ui.dropdown').dropdown();
+                    query_view.find('form').on('submit', function () {
+                        var url = $(this).attr('action');
+                        var data = $(this).serializeArray();
+                        var dimmer = $(this).find('.dimmer');
+                        dimmer.dimmer('toggle');
+                        window.$.ajax({
+                            url: url,
+                            type: "post",
+                            data: data,
+                            success: function success(result, status, xhr) {
+                                query_result_modal.find('.scrolling.content').html(result);
+                                query_result_modal.modal('show');
+                                dimmer.dimmer('toggle');
+                            },
+                            error: function error(xhr, status, erro) {
+                                // TODO error handling logic
+                                dimmer.dimmer('toggle');
+                            }
+                        });
+                        return false;
+                    });
+                    dimmer.dimmer('toggle');
+                },
+                error: function error(xhr, status, _error3) {
+                    // TODO error handling logic
+                    dimmer.dimmer('toggle');
+                }
+            });
+        });
+        var delete_btn = window.$('.blue.segment .basic.query.label .red.icon.button');
+        var delete_query_modal = window.$('#delete_query.modal');
+        delete_btn.on('click', function () {
+            var query_id = $(this).attr('data-id');
+            var query_name = $(this).parent().siblings('span').find('span').html();
+            delete_query_modal.find('.content span span').html(query_name);
+            var from_action = document.location.origin + '/admin/query/' + query_id;
+            delete_query_modal.find('form').attr('action', from_action);
+            delete_query_modal.modal('show');
+        });
+        delete_query_modal.modal({
+            onApprove: function onApprove() {
+                delete_query_modal.find('form').submit();
+            }
+        });
+        var edit_btn = window.$('.blue.segment .basic.query.label .orange.icon.button');
+        var edit_query_modal = window.$('#edit_query.modal');
+        edit_btn.on('click', function () {
+            var query_id = $(this).attr('data-id');
+            var dimmer = $(this).parent().siblings('.dimmer');
+            dimmer.dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + '/admin/query/' + query_id + '/edit',
+                type: 'get',
+                success: function success(result, status, xhr) {
+                    edit_query_modal.find('.content').html(result);
+                    var create_query_form = edit_query_modal.find('form');
+                    var add_column_btn = edit_query_modal.find('#add_column');
+                    var remove_column_btn = edit_query_modal.find('#remove_column');
+                    var query_columns = edit_query_modal.find('#query_columns');
+                    var add_parameter_btn = edit_query_modal.find('#add_parameter');
+                    var remove_parameter_btn = edit_query_modal.find('#remove_parameter');
+                    var parameters_list = edit_query_modal.find('#parameters');
+                    parameters_list.find('.ui.dropdown').dropdown({
+                        onChange: function onChange(value, text, $choice) {
+                            if (value === 'textbox') {
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled').addClass('disabled');
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').removeAttr('required');
+                            } else if (value === 'dropdown') {
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled');
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').attr('required', 'required');
+                            }
+                        }
+                    });
+                    var update_url = document.location.origin + '/admin/query/' + query_id;
+                    create_query_form.attr('action', update_url);
+                    edit_query_modal.modal({
+                        onApprove: function onApprove() {
+                            var form_is_valid = false;
+                            create_query_form.find('input,select').each(function (index, item) {
+                                if (!$(item)[0].checkValidity()) {
+                                    form_is_valid = false;
+                                }
+                            });
+                            if (form_is_valid) {
+                                create_query_form.submit();
+                            } else {
+                                create_query_form.find('input[type=submit]').click();
+                                return false;
+                            }
+                        }
+                    });
+                    edit_query_modal.modal('show');
+                    initialize_query_builder_form(create_query_form, add_column_btn, remove_column_btn, query_columns, add_parameter_btn, remove_parameter_btn, parameters_list, edit_query_modal);
+                    dimmer.dimmer('toggle');
+                },
+                error: function error(xhr, status, erro) {
+                    // TODO error handling logic
+                    dimmer.dimmer('toggle');
+                }
+            });
+        });
+        // init messages
+        if (elementExist('.message.session')) {
+            window.$('.message.session .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.message.session').hasClass('hidden')) window.$('.message.session').transition('fade');
+            }, 4000);
+        }
+    }
+    if (elementExist('#p_admin_query_builder')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(5)').addClass('red');
+        window.$('.vertical.menu a i:eq(5)').removeClass('grey').addClass('red');
+
+        var create_query_form = window.$('#create_query');
+        var add_column_btn = window.$('#create_query #add_column');
+        var remove_column_btn = window.$('#create_query #remove_column');
+        var query_columns = window.$('#create_query #query_columns');
+        var add_parameter_btn = window.$('#create_query #add_parameter');
+        var remove_parameter_btn = window.$('#create_query #remove_parameter');
+        var parameters_list = window.$('#create_query #parameters');
+        initialize_query_builder_form(create_query_form, add_column_btn, remove_column_btn, query_columns, add_parameter_btn, remove_parameter_btn, parameters_list);
+        var view_database_btn = window.$('#create_query #view_database');
+        var database_map_modal = window.$('#database_map.modal');
+        view_database_btn.on('click', function () {
+            database_map_modal.modal('show');
+        });
+
+        // init messages
+        if (elementExist('.message.session')) {
+            window.$('.message.session .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.message.session').hasClass('hidden')) window.$('.message.session').transition('fade');
+            }, 4000);
+        }
     }
     // scheduling page logic
     if (elementExist('#p_admin_scheduling')) {
@@ -1281,7 +1495,7 @@ function pagesInit() {
                             card_dimmer.dimmer('toggle');
                             add_schedule_modal.modal('show');
                         },
-                        error: function error(xhr, status, _error3) {
+                        error: function error(xhr, status, _error4) {
                             // TODO error handling logic
                         }
                     });
@@ -1483,7 +1697,7 @@ function pagesInit() {
                             card_dimmer.dimmer('toggle');
                             add_schedule_modal.modal('show');
                         },
-                        error: function error(xhr, status, _error4) {
+                        error: function error(xhr, status, _error5) {
                             // TODO error handling logic
                         }
                     });
@@ -1616,7 +1830,7 @@ function pagesInit() {
                         success: function success(result, status, xhr) {
                             document.location = document.location.origin + '/admin/scheduling';
                         },
-                        error: function error(xhr, status, _error5) {
+                        error: function error(xhr, status, _error6) {
                             // TODO error handling logic
                             document.location = document.location.origin + '/admin/scheduling';
                         }
@@ -1632,7 +1846,7 @@ function pagesInit() {
                     success: function success(result, status, xhr) {
                         document.location = document.location.origin + '/admin/scheduling/';
                     },
-                    error: function error(xhr, status, _error6) {
+                    error: function error(xhr, status, _error7) {
                         document.location = document.location.origin + '/admin/scheduling';
                     }
                 });

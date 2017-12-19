@@ -457,6 +457,67 @@ body {
   color: #db2828 !important;
 }
 
+#p_admin_query_builder > div > form > div.ui.six.column.grid,
+#edit_query form > div.ui.six.column.grid {
+  margin-bottom: 1rem;
+}
+
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div,
+#edit_query form > div.ui.six.column.grid > div {
+  padding: .5rem 0 0 .5rem;
+}
+
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div input:first-child,
+#edit_query form > div.ui.six.column.grid > div input:first-child {
+  margin-bottom: .1rem;
+}
+
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(1),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(7),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(13),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(19),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(25),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(29),
+#edit_query form > div.ui.six.column.grid > div:nth-child(1),
+#edit_query form > div.ui.six.column.grid > div:nth-child(7),
+#edit_query form > div.ui.six.column.grid > div:nth-child(13),
+#edit_query form > div.ui.six.column.grid > div:nth-child(19),
+#edit_query form > div.ui.six.column.grid > div:nth-child(25),
+#edit_query form > div.ui.six.column.grid > div:nth-child(29) {
+  padding-right: 1rem;
+}
+
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(6),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(12),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(18),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(24),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(28),
+#p_admin_query_builder > div > form > div.ui.six.column.grid > div:nth-child(32),
+#edit_query form > div.ui.six.column.grid > div:nth-child(6),
+#edit_query form > div.ui.six.column.grid > div:nth-child(12),
+#edit_query form > div.ui.six.column.grid > div:nth-child(18),
+#edit_query form > div.ui.six.column.grid > div:nth-child(24),
+#edit_query form > div.ui.six.column.grid > div:nth-child(28),
+#edit_query form > div.ui.six.column.grid > div:nth-child(32) {
+  padding-left: 1rem;
+}
+
+#p_admin_reports .basic.query.label .icon.button {
+  margin: 0;
+}
+
+#p_admin_reports #query_view > div > form > div.ui.two.column.grid {
+  padding: .75rem;
+}
+
+#p_admin_reports #query_view > div > form > div.ui.two.column.grid > div {
+  padding: .25rem;
+}
+
+#edit_query [data-tooltip]:after {
+  font-size: .7rem;
+}
+
 .edit.modal .content {
   padding: .75em !important;
 }

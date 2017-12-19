@@ -959,6 +959,96 @@ function init_session_date_inputs(evaluation_sessions_modal) {
         }
     });
 }
+function calculate_column_btn_positions(add_column_btn,remove_column_btn,query_columns) {
+    add_column_btn.css('top',query_columns.find('div:last')[0].offsetTop);
+    remove_column_btn.css('top',query_columns.find('div:last')[0].offsetTop);
+    add_column_btn.css('left',query_columns.find('div:last')[0].offsetLeft);
+    remove_column_btn.css('left',query_columns.find('div:last')[0].offsetLeft);
+}
+function initialize_query_builder_form(create_query_form,add_column_btn,remove_column_btn,query_columns,add_parameter_btn,remove_parameter_btn,parameters_list,modal=[]) {
+    calculate_column_btn_positions(add_column_btn,remove_column_btn,query_columns);
+    add_column_btn.on('click', function () {
+        const column_number = (parseInt(query_columns.find('div:last').attr('data-number'))+1).toString();
+        create_query_form.find('[name=number_of_columns]').val(column_number);
+        query_columns.append(`
+            <div class="column" data-number="${column_number}">
+                <input type="text" name="column_id_${column_number}" placeholder="'id' of column ${column_number}"  style="direction: ltr" required>
+                <input type="text" name="column_name_${column_number}" placeholder="'نام فارسی' ستون ${column_number}" required>
+            </div>
+            `);
+        calculate_column_btn_positions(add_column_btn,remove_column_btn,query_columns);
+        if(modal.length != 0){
+            modal.modal('refresh');
+        }
+    });
+    remove_column_btn.on('click', function () {
+        if(query_columns.find('div').length>1){
+            create_query_form.find('[name=number_of_columns]').val((parseInt(query_columns.find('div:last').attr('data-number'))-1).toString());
+            query_columns.find('div:last').remove();
+        }
+        calculate_column_btn_positions(add_column_btn,remove_column_btn,query_columns);
+        if(modal.length != 0){
+            modal.modal('refresh');
+        }
+    });
+    add_parameter_btn.on('click', function () {
+        let parameter_number = 1;
+        if(parameters_list.find('.fields').length>0){
+            parameter_number = (parseInt(parameters_list.find('.fields:last').attr('data-number'))+1).toString();
+        }
+        create_query_form.find('[name=number_of_parameters]').val(parameter_number);
+        parameters_list.append(`
+            <div class="fields" data-number="${parameter_number}">
+                <div class="two wide field">
+                    <label class="fw-400">'id' پارامتر ${parameter_number}</label>
+                    <input type="text" name="p_id_${parameter_number}" placeholder="'p' in \${p}" style="direction: ltr" required>
+                </div>
+                <div class="three wide field">
+                    <label class="fw-400">نام فارسی پارامتر ${parameter_number}</label>
+                    <input type="text" name="p_name_${parameter_number}" placeholder="نام فارسی پارامتر ${parameter_number}" required>
+                </div>
+                <div class="two wide field">
+                    <label class="fw-400">نوع پارامتر ${parameter_number}</label>
+                    <select class="ui fluid dropdown" name="p_type_${parameter_number}" required>
+                        <option value="textbox">Textbox</option>
+                        <option value="dropdown">Dropdown</option>
+                    </select>
+                </div>
+                <div id="p_query" class="seven wide field disabled">
+                    <label class="fw-400">پرس و جوی پارامتر ${parameter_number}</label>
+                    <input type="text" name="p_query_${parameter_number}" placeholder="SELECT statement for dropdown parameter" style="direction: ltr">
+                </div>
+                <div id="p_query_column" class="two wide field disabled">
+                    <label class="fw-400">'id' پرس و جو</label>
+                    <input type="text" name="p_query_column_${parameter_number}" placeholder="column id" style="direction: ltr">
+                </div>
+            </div>
+            `);
+        parameters_list.find('.ui.dropdown').dropdown({
+            onChange: function (value, text, $choice) {
+                if(value === 'textbox'){
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled').addClass('disabled');
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').removeAttr('required');
+                }else if(value === 'dropdown'){
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled');
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').attr('required','required');
+                }
+            }
+        });
+        if(modal.length != 0){
+            modal.modal('refresh');
+        }
+    });
+    remove_parameter_btn.on('click', function () {
+        if(parameters_list.find('.fields').length !== 0) {
+            create_query_form.find('[name=number_of_parameters]').val((parseInt(parameters_list.find('.fields:last').attr('data-number')) - 1).toString());
+        }
+        parameters_list.find('.fields:last').remove();
+        if(modal.length != 0){
+            modal.modal('refresh');
+        }
+    });
+}
 
 function pagesInit() {
     // initialize footer date
@@ -1274,6 +1364,161 @@ function pagesInit() {
         // active menu icon
         window.$('.computer.menu .basic.icon.button:eq(5)').addClass('red');
         window.$('.vertical.menu a i:eq(5)').removeClass('grey').addClass('red');
+
+        const load_btn = window.$('.blue.segment .basic.query.label .green.icon.button');
+        const query_view = window.$('#query_view');
+        const query_result_modal = window.$('#query_result.modal');
+        load_btn.on('click', function () {
+            const query_id = $(this).attr('data-id');
+            const dimmer = $(this).parent().siblings('.dimmer');
+            dimmer.dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + '/admin/query/' + query_id,
+                type: "get",
+                success: function (result,status,xhr) {
+                    query_view.html(result);
+                    query_view.find('.ui.dropdown').dropdown();
+                    query_view.find('form').on('submit', function () {
+                        const url = $(this).attr('action');
+                        const data = $(this).serializeArray();
+                        const dimmer = $(this).find('.dimmer');
+                        dimmer.dimmer('toggle');
+                        window.$.ajax({
+                            url: url,
+                            type: "post",
+                            data: data,
+                            success: function(result,status,xhr){
+                                query_result_modal.find('.scrolling.content').html(result);
+                                query_result_modal.modal('show');
+                                dimmer.dimmer('toggle');
+                            },
+                            error: function (xhr,status,erro) {
+                                // TODO error handling logic
+                                dimmer.dimmer('toggle');
+                            }
+                        });
+                        return false;
+                    });
+                    dimmer.dimmer('toggle');
+                },
+                error: function (xhr,status,error) {
+                    // TODO error handling logic
+                    dimmer.dimmer('toggle');
+                }
+            });
+        });
+        const delete_btn = window.$('.blue.segment .basic.query.label .red.icon.button');
+        const delete_query_modal = window.$('#delete_query.modal');
+        delete_btn.on('click', function () {
+            const query_id = $(this).attr('data-id');
+            const query_name = $(this).parent().siblings('span').find('span').html();
+            delete_query_modal.find('.content span span').html(query_name);
+            const from_action = document.location.origin + '/admin/query/' + query_id;
+            delete_query_modal.find('form').attr('action', from_action);
+            delete_query_modal.modal('show');
+        });
+        delete_query_modal.modal({
+            onApprove: function () {
+                delete_query_modal.find('form').submit();
+            }
+        });
+        const edit_btn = window.$('.blue.segment .basic.query.label .orange.icon.button');
+        const edit_query_modal = window.$('#edit_query.modal');
+        edit_btn.on('click', function () {
+            const query_id = $(this).attr('data-id');
+            const dimmer = $(this).parent().siblings('.dimmer');
+            dimmer.dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + '/admin/query/' + query_id + '/edit',
+                type: 'get',
+                success: function (result,status,xhr) {
+                    edit_query_modal.find('.content').html(result);
+                    const create_query_form = edit_query_modal.find('form');
+                    const add_column_btn = edit_query_modal.find('#add_column');
+                    const remove_column_btn = edit_query_modal.find('#remove_column');
+                    const query_columns = edit_query_modal.find('#query_columns');
+                    const add_parameter_btn = edit_query_modal.find('#add_parameter');
+                    const remove_parameter_btn = edit_query_modal.find('#remove_parameter');
+                    const parameters_list = edit_query_modal.find('#parameters');
+                    parameters_list.find('.ui.dropdown').dropdown({
+                        onChange: function (value, text, $choice) {
+                            if(value === 'textbox'){
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled').addClass('disabled');
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').removeAttr('required');
+                            }else if(value === 'dropdown'){
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled');
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').attr('required','required');
+                            }
+                        }
+                    });
+                    const update_url = document.location.origin + '/admin/query/' + query_id;
+                    create_query_form.attr('action',update_url);
+                    edit_query_modal.modal({
+                        onApprove: function () {
+                            let form_is_valid = false;
+                            create_query_form.find('input,select').each(function(index,item){
+                                if(!$(item)[0].checkValidity()){
+                                    form_is_valid = false;
+                                }
+                            });
+                            if(form_is_valid){
+                                create_query_form.submit();
+                            }else{
+                                create_query_form.find('input[type=submit]').click();
+                                return false;
+                            }
+                        }
+                    });
+                    edit_query_modal.modal('show');
+                    initialize_query_builder_form(create_query_form,add_column_btn,remove_column_btn,query_columns,add_parameter_btn,remove_parameter_btn,parameters_list,edit_query_modal);
+                    dimmer.dimmer('toggle');
+                },
+                error: function (xhr,status,erro) {
+                    // TODO error handling logic
+                    dimmer.dimmer('toggle');
+                }
+            });
+        });
+        // init messages
+        if(elementExist('.message.session')){
+            window.$('.message.session .close').on('click', function() {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if(!window.$('.message.session').hasClass('hidden'))
+                    window.$('.message.session').transition('fade');
+            },4000);
+        }
+    }
+    if(elementExist('#p_admin_query_builder')){
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(5)').addClass('red');
+        window.$('.vertical.menu a i:eq(5)').removeClass('grey').addClass('red');
+
+        const create_query_form = window.$('#create_query');
+        const add_column_btn = window.$('#create_query #add_column');
+        const remove_column_btn = window.$('#create_query #remove_column');
+        const query_columns = window.$('#create_query #query_columns');
+        const add_parameter_btn = window.$('#create_query #add_parameter');
+        const remove_parameter_btn = window.$('#create_query #remove_parameter');
+        const parameters_list = window.$('#create_query #parameters');
+        initialize_query_builder_form(create_query_form,add_column_btn,remove_column_btn,query_columns,add_parameter_btn,remove_parameter_btn,parameters_list);
+        const view_database_btn = window.$('#create_query #view_database');
+        const database_map_modal = window.$('#database_map.modal');
+        view_database_btn.on('click', function () {
+            database_map_modal.modal('show');
+        });
+
+        // init messages
+        if(elementExist('.message.session')){
+            window.$('.message.session .close').on('click', function() {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if(!window.$('.message.session').hasClass('hidden'))
+                    window.$('.message.session').transition('fade');
+            },4000);
+        }
     }
     // scheduling page logic
     if(elementExist('#p_admin_scheduling')){

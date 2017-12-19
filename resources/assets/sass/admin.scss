@@ -322,6 +322,45 @@ body {
   color: #db2828!important;
 }
 
+#p_admin_query_builder > div > form > div.ui.six.column.grid, #edit_query form > div.ui.six.column.grid{
+  margin-bottom: 1rem;
+
+  > div{
+    padding: .5rem 0 0 .5rem;
+    input:first-child{
+      margin-bottom: .1rem;
+    }
+  }
+  > div:nth-child(1),> div:nth-child(7),
+  > div:nth-child(13), > div:nth-child(19),
+  > div:nth-child(25), > div:nth-child(29){
+    padding-right: 1rem;
+  }
+  > div:nth-child(6),> div:nth-child(12),
+  > div:nth-child(18), > div:nth-child(24),
+  > div:nth-child(28), > div:nth-child(32){
+    padding-left: 1rem;
+  }
+}
+#p_admin_reports{
+  .basic.query.label{
+    .icon.button{
+      margin: 0;
+    }
+  }
+  #query_view > div > form > div.ui.two.column.grid{
+    padding: .75rem;
+    > div{
+      padding: .25rem;
+    }
+  }
+}
+#edit_query {
+  [data-tooltip]:after{
+    font-size: .7rem;
+  }
+}
+
 .edit.modal {
   .content {
     padding: .75em !important;
