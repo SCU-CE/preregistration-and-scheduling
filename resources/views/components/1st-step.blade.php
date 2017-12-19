@@ -10,8 +10,8 @@
 @endif
     <div class="content">
         <div class="title">پیش ثبت نام</div>
-        @isset($date)
-        <div class="description">{{ $date }}</div>
+        @isset($dates)
+        <div class="description"><span class="unix date">{{$dates[0]}}</span> تا <span class="unix date">{{$dates[1]}}</span></div>
         @endisset
     </div>
 </div>

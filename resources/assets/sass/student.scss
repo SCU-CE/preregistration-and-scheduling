@@ -168,6 +168,13 @@ body {
   #units_summery.mobile{
     display: block;
   }
+  #p_student_home{
+    .ui.inverted.segment.center.aligned.orange{
+      h3{
+        font-size: .75rem;
+      }
+    }
+  }
 }
 
 #units_summery.desktop {
@@ -279,6 +286,12 @@ body {
 .disabled-color {
   color: lightgray !important;
 }
+.blue-color {
+  color: #2185d0!important;
+}
+.red-color {
+  color: #db2828!important;
+}
 
 .ui.steps .step.active {
   background: #fafafa;
@@ -300,6 +313,67 @@ body {
     padding: 0.5em;
     line-height: 1.75em;
   }
+}
+#p_student_evaluate_schedule,#p_student_final_schedule{
+  table{
+  margin: 0;
+  thead {
+    tr{
+      th:first-child{
+        width: 4em;
+      }
+    }
+    th{
+      font-weight: 400;
+    }
+  }
+  tbody {
+    tr {
+      height: 5rem;
+      td:first-child{
+        font-size: .8em;
+        font-weight: 400;
+      }
+      td {
+        padding: 0;
+      }
+    }
+  }
+  }
+  .schedule{
+    .course.lecture{
+      position: absolute;
+      text-align: center;
+      transform-origin: 100% 0;
+      transform: rotate(-90deg);
+      border-radius: 4px;
+      border-width: 0 8px;
+      border-color: rgba(0,0,0,.1);
+      border-style: solid;
+      cursor: pointer;
+      .title{
+        color: white;
+        padding: 0 0 2px 0;
+        font-size: .8em;
+      }
+      .ui.loader:after,
+      .ui.loader:before{
+        width: 1rem;
+        height: 1rem;
+        margin: .65rem -0.5rem 0 0;
+        font-size: .6rem;
+      }
+    }
+    [data-tooltip]:after{
+      font-size: .7rem;
+    }
+  }
+}
+#upvote,#downvote{
+  cursor: pointer;
+}
+#evaluate_lecture .divided.selection.list .item{
+  cursor: default;
 }
 
 .info.message{
@@ -353,4 +427,16 @@ body {
  .content{
    font-size: .7em;
  }
+}
+.ui-timepicker-standard{
+  z-index: 10000 !important;
+}
+.datepicker-plot-area{
+  font-family: IRANSans,Tahoma,Arial,Helvetica,sans-serif;
+}
+.ui.selection.dropdown{
+  word-wrap: normal;
+}
+.ui.divider{
+  letter-spacing: 0;
 }

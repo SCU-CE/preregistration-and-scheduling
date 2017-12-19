@@ -38,8 +38,29 @@ Route::group([
     Route::get('{course}/votes', 'SemesterController@voted_instructors');
     Route::post('{course}/vote', 'SemesterController@submit_vote');
 
-    Route::get('test', function(){
+    Route::get('evaluate-schedule', 'BaseController@evaluate');
+    Route::get('evaluate-schedule/{schedule}/modal', 'EvaluationController@evaluate_lecture_modal');
+    Route::resource('evaluation', 'EvaluationController', ['only' => ['store', 'update', 'destroy']]);
+    Route::post('evaluation/{evaluation}/upvote/{value}', 'EvaluationController@evaluation_upvote');
+    Route::post('evaluation/{evaluation}/downvote/{value}', 'EvaluationController@evaluation_downvote');
 
+    Route::get('final-schedule', 'BaseController@final_schedule');
+
+    Route::get('edit-information', 'StudentController@edit_information');
+    Route::patch('update-information', 'StudentController@update_information');
+    Route::get('change-password', 'StudentController@change_password');
+    Route::patch('update-password', 'StudentController@update_password');
+
+    Route::get('test', function(){
+        return DB::table('courses')
+                    ->join('course_schedule','courses.id','=','course_schedule.course_id')
+                    ->where('course_schedule.semester_id','=',12)
+                    ->join('schedule_evaluation','course_schedule.id','=','schedule_evaluation.schedule_id')
+                    ->where('session_id','=',1)
+                    ->groupBy('courses.id')
+                    ->select(DB::raw('courses.id, count(*) as evaluation_count'))
+                    ->orderBy('evaluation_count','desc')
+                    ->get();
     });
 });
 
@@ -61,6 +82,8 @@ Route::group([
     Route::get('scheduling/{course}/information', 'SchedulingController@course_information');
     Route::post('scheduling/store', 'SchedulingController@store_schedule');
     Route::post('scheduling/{course}/destroy', 'SchedulingController@remove_schedule');
+    Route::patch('scheduling/schedulingstage', 'SchedulingController@change_scheduling_stage');
+    Route::post('scheduling/evaluation-sessions', 'SchedulingController@store_evaluation_sessions');
 
     Route::get('messages', 'BaseController@messages');
     Route::get('messages/getinbox', 'FeedbackController@getInboxMessages');

@@ -285,6 +285,14 @@ body {
   font-size: .8em;
 }
 
+#p_admin_scheduling .schedule .course.lecture .ui.loader:after,
+#p_admin_scheduling .schedule .course.lecture .ui.loader:before {
+  width: 1rem;
+  height: 1rem;
+  margin: .65rem -0.5rem 0 0;
+  font-size: .6rem;
+}
+
 #p_admin_scheduling .schedule [data-tooltip]:after {
   font-size: .7rem;
 }
@@ -439,6 +447,14 @@ body {
 
 .disabled-color {
   color: lightgray !important;
+}
+
+.blue-color {
+  color: #2185d0 !important;
+}
+
+.red-color {
+  color: #db2828 !important;
 }
 
 .edit.modal .content {

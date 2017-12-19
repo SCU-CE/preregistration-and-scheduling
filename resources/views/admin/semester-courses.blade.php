@@ -14,6 +14,7 @@
         </div>
         @if(count($courses) > 0)
         <div class="ui segment">
+            @include('components.warning-message', ['message' => 'توجه داشته باشید در صورت حذف درس از ترم درخواست های دانشجویان نیز حذف می شوند!'])
             <table class="ui striped celled definition padded center aligned table">
                 <thead>
                 <tr>

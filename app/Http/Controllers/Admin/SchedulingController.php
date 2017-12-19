@@ -56,12 +56,50 @@ class SchedulingController extends Controller
         }
         array_multisort($course_interCount,SORT_DESC,$course_conflicts);
 
+        $course_evaluations = [];
+        $course_schedule = DB::table('course_schedule')
+                                    ->where('semester_id','=',$semester_id)
+                                    ->where('course_id','=',$course_id)
+                                    ->get();
+        $active_eval_session = DB::table('evaluation_sessions')
+                                    ->where('semester_id','=',$semester_id)
+                                    ->where('session_number','=',Option::find(13)->value)
+                                    ->first();
+        if(count($course_schedule)>0){
+            $course_evaluations = DB::table('schedule_evaluation')
+                                        ->where('schedule_id','=',$course_schedule[0]->id)
+                                        ->where('session_id','=',$active_eval_session->id)
+                                        ->join('course_schedule','schedule_evaluation.schedule_id','=','course_schedule.id')
+                                        ->select('schedule_evaluation.*','course_schedule.weekday_1','course_schedule.start_time_1','course_schedule.end_time_1','course_schedule.weekday_2','course_schedule.start_time_2','course_schedule.end_time_2','course_schedule.exam_date','course_schedule.exam_time')
+                                        ->orderBy('privacy','desc')
+                                        ->get();
+
+            foreach ($course_evaluations as $course_evaluation){
+                if($course_evaluation->privacy == 'public'){
+                    $upvotes = DB::table('evaluation_votes')
+                        ->where('evaluation_id','=',$course_evaluation->id)
+                        ->where('vote','=',1)
+                        ->count();
+
+                    $downvotes = DB::table('evaluation_votes')
+                        ->where('evaluation_id','=',$course_evaluation->id)
+                        ->where('vote','=',-1)
+                        ->count();
+
+                    $course_evaluation->upvotes = $upvotes;
+                    $course_evaluation->downvotes = -$downvotes;
+                }
+            }
+        }
+
         $course_information = [
             'schedule_info' => $schedule_info,
             'instructors_info' => $instructors_info,
             'course_conflicts' => $course_conflicts,
-            'course_students' => $selected_course_students
+            'course_students' => $selected_course_students,
+            'course_evaluation' => $course_evaluations
         ];
+
         return $course_information;
     }
     public function store_schedule(Request $request)
@@ -141,5 +179,68 @@ class SchedulingController extends Controller
                 ->where('semester_id','=',$semester_id)
                 ->where('course_id','=',$course_id)
                 ->delete();
+    }
+    public function change_scheduling_stage(Request $request){
+        $schedulingStage = Option::find(6);
+        $schedulingStage->value = $request->input('scheduling_stage');
+        $schedulingStage->save();
+        return redirect('admin/scheduling');
+    }
+    public function store_evaluation_sessions(Request $request){
+        $semester_id = Option::find(1)->value;
+        $number_of_existed_sessions = DB::table('evaluation_sessions')
+                                            ->where('semester_id','=',$semester_id)
+                                            ->count();
+        $number_of_submited_sessions = $request->input('number_of_sessions');
+        if((int)$number_of_submited_sessions > (int)$number_of_existed_sessions){
+            for ($i = 1; $i<=(int)$number_of_existed_sessions; $i++){
+                // update
+                DB::table('evaluation_sessions')
+                    ->where('semester_id','=',$semester_id)
+                    ->where('session_number','=',$i)
+                    ->update([
+                        'start_date' => $request->input('start_date_'.$i),
+                        'end_date' => $request->input('end_date_'.$i),
+                        'updated_at' => Carbon::now()
+                    ]);
+            }
+            for ($i=(int)$number_of_existed_sessions+1; $i<=(int)$number_of_submited_sessions; $i++){
+                // insert
+                DB::table('evaluation_sessions')
+                    ->insert([
+                        'semester_id' => $semester_id,
+                        'session_number' => $i,
+                        'start_date' => $request->input('start_date_'.$i),
+                        'end_date' => $request->input('end_date_'.$i),
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+            }
+        }else{
+            for ($i = 1; $i<=(int)$number_of_submited_sessions; $i++){
+                // update
+                DB::table('evaluation_sessions')
+                    ->where('semester_id','=',$semester_id)
+                    ->where('session_number','=',$i)
+                    ->update([
+                        'start_date' => $request->input('start_date_'.$i),
+                        'end_date' => $request->input('end_date_'.$i),
+                        'updated_at' => Carbon::now()
+                    ]);
+            }
+            for ($i=(int)$number_of_submited_sessions+1; $i<=(int)$number_of_existed_sessions; $i++){
+                // delete
+                DB::table('evaluation_sessions')
+                    ->where('semester_id','=',$semester_id)
+                    ->where('session_number','=',$i)
+                    ->delete();
+            }
+        }
+
+        $active_eval_session = Option::find(13);
+        $active_eval_session->value = $request->input('session_enable');
+        $active_eval_session->save();
+
+        return redirect('admin/scheduling');
     }
 }

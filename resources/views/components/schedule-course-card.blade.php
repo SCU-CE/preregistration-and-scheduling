@@ -16,37 +16,50 @@
         </div>
     </div>
     <div class="extra content center aligned">
-        @for($i=(int)$semester->year-1; $i>(int)$semester->year-6; $i--)
-            <?php
-            $student_course_count = DB::table('course_student')
-                                        ->where('semester_id','=',$semester->id)
-                                        ->where('course_id','=',$course->id)
-                                        ->join('students','course_student.student_id','=','students.id')
-                                        ->where('students.entry_year','=',$i)
-                                        ->count();
-            ?>
-            @if($student_course_count>0)
-                    <?php
-                    $student_semester = 0;
-                    if($semester->semester == 'بهار'){
-                        $student_semester = ((int)$semester->year-$i)*2;
-                    }else{
-                        $student_semester = ((int)$semester->year-$i)*2 + 1;
-                    }
-                    ?>
-                    <div class="left floated">
-                        <div class="student symbol">
-                            <i class="student icon{{$student_semester == $course->planned_semester ? ' green' : ''}}"></i>
-                            <div class="year{{$student_semester == $course->planned_semester ? ' green' : ''}}">{{$i}}</div>
+        @if($schedulingStage == '1st')
+            @for($i=(int)$semester->year-1; $i>(int)$semester->year-6; $i--)
+                <?php
+                $student_course_count = DB::table('course_student')
+                                            ->where('semester_id','=',$semester->id)
+                                            ->where('course_id','=',$course->id)
+                                            ->join('students','course_student.student_id','=','students.id')
+                                            ->where('students.entry_year','=',$i)
+                                            ->count();
+                ?>
+                @if($student_course_count>0)
+                        <?php
+                        $student_semester = 0;
+                        if($semester->semester == 'بهار'){
+                            $student_semester = ((int)$semester->year-$i)*2;
+                        }else{
+                            $student_semester = ((int)$semester->year-$i)*2 + 1;
+                        }
+                        ?>
+                        <div class="left floated">
+                            <div class="student symbol">
+                                <i class="student icon{{$student_semester == $course->planned_semester ? ' green' : ''}}"></i>
+                                <div class="year{{$student_semester == $course->planned_semester ? ' green' : ''}}">{{$i}}</div>
+                            </div>
+                            <div class="student count{{$student_semester == $course->planned_semester ? ' green-dark' : ''}}">{{$student_course_count}}</div>
                         </div>
-                        <div class="student count{{$student_semester == $course->planned_semester ? ' green-dark' : ''}}">{{$student_course_count}}</div>
-                    </div>
+                @endif
+            @endfor
+            <span class="right floated">
+                <span class="teal-dark">{{$course->count}}</span>
+                <i class="large user teal icon"></i>
+            </span>
+        @elseif($schedulingStage == '2nd')
+            @if(array_key_exists('evaluation_count',$course_by_eval_count))
+                <span class="right floated" style="margin-left: -3px">
+                    <span class="teal-dark" style="margin-left: 2px">{{$course_by_eval_count->evaluation_count}}</span>
+                    <i class="large mail teal icon"></i>
+                </span>
+            @else
+                <span class="right floated" style="margin-left: -3px">
+                    <span class="teal-dark" style="margin-left: 2px">0</span>
+                    <i class="large mail teal icon"></i>
+                </span>
             @endif
-        @endfor
-
-        <span class="right floated">
-            <span class="teal-dark">{{$course->count}}</span>
-            <i class="large user teal icon"></i>
-        </span>
+        @endif
     </div>
 </div>

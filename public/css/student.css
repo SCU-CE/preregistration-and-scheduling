@@ -306,6 +306,10 @@ body {
   #units_summery.mobile {
     display: block;
   }
+
+  #p_student_home .ui.inverted.segment.center.aligned.orange h3 {
+    font-size: .75rem;
+  }
 }
 
 #units_summery.desktop {
@@ -436,6 +440,14 @@ body {
   color: lightgray !important;
 }
 
+.blue-color {
+  color: #2185d0 !important;
+}
+
+.red-color {
+  color: #db2828 !important;
+}
+
 .ui.steps .step.active {
   background: #fafafa;
 }
@@ -457,6 +469,83 @@ body {
 #p_student_home .segment .huge.blue.basic.button {
   padding: 0.5em;
   line-height: 1.75em;
+}
+
+#p_student_evaluate_schedule table,
+#p_student_final_schedule table {
+  margin: 0;
+}
+
+#p_student_evaluate_schedule table thead tr th:first-child,
+#p_student_final_schedule table thead tr th:first-child {
+  width: 4em;
+}
+
+#p_student_evaluate_schedule table thead th,
+#p_student_final_schedule table thead th {
+  font-weight: 400;
+}
+
+#p_student_evaluate_schedule table tbody tr,
+#p_student_final_schedule table tbody tr {
+  height: 5rem;
+}
+
+#p_student_evaluate_schedule table tbody tr td:first-child,
+#p_student_final_schedule table tbody tr td:first-child {
+  font-size: .8em;
+  font-weight: 400;
+}
+
+#p_student_evaluate_schedule table tbody tr td,
+#p_student_final_schedule table tbody tr td {
+  padding: 0;
+}
+
+#p_student_evaluate_schedule .schedule .course.lecture,
+#p_student_final_schedule .schedule .course.lecture {
+  position: absolute;
+  text-align: center;
+  -webkit-transform-origin: 100% 0;
+          transform-origin: 100% 0;
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+  border-radius: 4px;
+  border-width: 0 8px;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-style: solid;
+  cursor: pointer;
+}
+
+#p_student_evaluate_schedule .schedule .course.lecture .title,
+#p_student_final_schedule .schedule .course.lecture .title {
+  color: white;
+  padding: 0 0 2px 0;
+  font-size: .8em;
+}
+
+#p_student_evaluate_schedule .schedule .course.lecture .ui.loader:after,
+#p_student_evaluate_schedule .schedule .course.lecture .ui.loader:before,
+#p_student_final_schedule .schedule .course.lecture .ui.loader:after,
+#p_student_final_schedule .schedule .course.lecture .ui.loader:before {
+  width: 1rem;
+  height: 1rem;
+  margin: .65rem -0.5rem 0 0;
+  font-size: .6rem;
+}
+
+#p_student_evaluate_schedule .schedule [data-tooltip]:after,
+#p_student_final_schedule .schedule [data-tooltip]:after {
+  font-size: .7rem;
+}
+
+#upvote,
+#downvote {
+  cursor: pointer;
+}
+
+#evaluate_lecture .divided.selection.list .item {
+  cursor: default;
 }
 
 .info.message {
@@ -521,5 +610,21 @@ body {
 
 .ui.instructor.card .content {
   font-size: .7em;
+}
+
+.ui-timepicker-standard {
+  z-index: 10000 !important;
+}
+
+.datepicker-plot-area {
+  font-family: IRANSans,Tahoma,Arial,Helvetica,sans-serif;
+}
+
+.ui.selection.dropdown {
+  word-wrap: normal;
+}
+
+.ui.divider {
+  letter-spacing: 0;
 }
 

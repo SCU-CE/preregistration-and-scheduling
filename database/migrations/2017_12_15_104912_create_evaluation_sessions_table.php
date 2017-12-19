@@ -15,6 +15,11 @@ class CreateEvaluationSessionsTable extends Migration
     {
         Schema::create('evaluation_sessions', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('semester_id')->unsigned()->index();
+            $table->integer('session_number');
+            $table->string('start_date');
+            $table->string('end_date');
+            $table->foreign('semester_id')->references('id')->on('semesters')->onDelete('cascade');
             $table->timestamps();
         });
     }

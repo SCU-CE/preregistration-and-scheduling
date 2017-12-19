@@ -24,8 +24,18 @@ function set_class(all_classes, selected_class, selector) {
 function fix_persian_numbers(selector) {
     const element = window.$(selector);
     element.each(function(index,item){
-        $(item).html(persianJs($(item).html()).englishNumber().toString());
+        if($(item).html() !== '')
+            $(item).html(persianJs($(item).html()).englishNumber().toString());
     });
+}
+function findIndexByKeyValue(arraytosearch, key, valuetosearch) {
+    let indexes = [];
+    for (var i = 0; i < arraytosearch.length; i++) {
+        if (arraytosearch[i][key] == valuetosearch) {
+            indexes.push(i);
+        }
+    }
+    return indexes;
 }
 
 function init_menu_btns () {
@@ -136,6 +146,107 @@ function adjust_to_screen_size() {
     }
 }
 
+function calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log) {
+    // for calculating position of parallel lectures in schedule
+    // TODO this algorithm needs improvement and doesn't work in some cases (ex. lecture continues between two other lectures)
+    let lecture_num = 1;
+    for (let i=0; i<lectures_log[weekday].length; i++){
+        if(st_minutes >= lectures_log[weekday][i].st && st_minutes <= lectures_log[weekday][i].et
+            || et_minutes >= lectures_log[weekday][i].st && et_minutes <= lectures_log[weekday][i].et){
+            lecture_num++;
+        }
+    }
+    return lecture_num;
+}
+function add_to_schedule(selector, lecture_info, weekday, start_time, end_time, color, pos_info, lectures_log) {
+    const $title = window.$('<div>', {'class': 'title'});
+    $title.html(lecture_info.course_name);
+    let data_tooltip = '';
+    if(lecture_info.group_number !== '')
+        data_tooltip += `گروه: ${lecture_info.group_number}`;
+    if(lecture_info.instructor_name !== '')
+        data_tooltip += ` | استاد درس: ${lecture_info.instructor_name}`;
+    if(lecture_info.classroom !== '')
+        data_tooltip += ` | کلاس: ${lecture_info.classroom}`;
+    if(lecture_info.exam_date !== '')
+        data_tooltip += ` | تاریخ امتحان: ${lecture_info.exam_date}`;
+    if(lecture_info.exam_time !== '')
+        data_tooltip += ` | ساعت امتحان: ${lecture_info.exam_time}`;
+
+    const $lecture = window.$('<div>', {
+        'class': 'course lecture',
+        'data-schedule-id': lecture_info.schedule_id,
+        'data-course-id': lecture_info.course_id,
+        'data-weekday': weekday,
+        'data-tooltip': data_tooltip,
+        'data-position': 'bottom center'
+    });
+    $lecture.html($title);
+    $lecture.prepend(`
+    <div class="ui inverted dimmer">
+        <div class="ui loader"></div>
+    </div>
+    `);
+
+    $lecture.css('background-color', color);
+
+    const st = start_time.split(':');
+    const et = end_time.split(':');
+    const minutes = (parseInt(et[0])-parseInt(st[0]))*60 + (parseInt(et[1])-parseInt(st[1]));
+    $lecture.css('width', pos_info.tblock_h*(minutes/15));
+
+    selector.append($lecture);
+
+    const st_minutes = parseInt(st[0])*60 + parseInt(st[1]) + 1;
+    const et_minutes = parseInt(et[0])*60 + parseInt(et[1]);
+
+    let lecture_num = 1;
+    switch (weekday){
+        case 'saturday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num*$lecture[0].offsetHeight + pos_info.timecol_w);
+            break;
+        case 'sunday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num*$lecture[0].offsetHeight + pos_info.timecol_w + pos_info.weekday_w);
+            break;
+        case 'monday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num*$lecture[0].offsetHeight + pos_info.timecol_w + 2*pos_info.weekday_w);
+            break;
+        case 'tuesday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num*$lecture[0].offsetHeight + pos_info.timecol_w + 3*pos_info.weekday_w);
+            break;
+        case 'wednesday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num*$lecture[0].offsetHeight + pos_info.timecol_w + 4*pos_info.weekday_w);
+            break;
+    }
+
+    lectures_log[weekday].push({
+        id:lecture_info.course_id,
+        st:st_minutes,
+        et:et_minutes
+    });
+
+    const st_offset = (((parseInt(st[0])-8)*60+parseInt(st[1]))/15)*pos_info.tblock_h;
+    $lecture.css('top', pos_info.top_offset + pos_info.header_h + pos_info.tblock_h + st_offset);
+}
+function draw_schedule(lectures_container,position_info) {
+    let lectures_log = {
+        saturday: [],
+        sunday: [],
+        monday: [],
+        tuesday: [],
+        wednesday: []
+    };
+    lectures_container.html('');
+    for (let i=0; i<schedule_data.length; i++) {
+        add_to_schedule(lectures_container, schedule_data[i].lecture_info, schedule_data[i].weekday, schedule_data[i].start_time, schedule_data[i].end_time, schedule_data[i].course_color, position_info, lectures_log);
+    }
+}
+
 function pagesInit() {
     // initialize footer date
     window.$('#month_year').html(new persianDate().format("MMMM YYYY"));
@@ -150,7 +261,12 @@ function pagesInit() {
     init_menu_btns();
     init_position();
     adjust_to_screen_size();
-
+    if(elementExist('#p_student_home')){
+        window.$('#p_student_home .unix.date').each(function (index,item) {
+            let date = new persianDate(parseInt($(item).html()));
+            $(item).html(date.format('D MMMM'));
+        });
+    }
     if(elementExist('#p_student_passedcourses')){
         // pass and unpass course
         const class_values = ['red', 'green', 'hidden', 'checkmark', 'remove'];
@@ -576,6 +692,308 @@ function pagesInit() {
                 });
             }
         });
+    }
+    if(elementExist('#p_student_evaluate_schedule')){
+        window.$('#p_student_evaluate_schedule .unix.date').each(function (index,item) {
+            let date = new persianDate(parseInt($(item).html()));
+            $(item).html(date.format('D MMMM'));
+        });
+        fix_persian_numbers('.p_number');
+
+        // scheduler info
+        const position_info = {
+            top_offset: window.$('#schedule_table table')[0].offsetTop,
+            header_h: window.$('#schedule_table table thead tr')[0].offsetHeight,
+            tblock_h: window.$('#schedule_table table tbody tr')[0].offsetHeight / 2,
+            timecol_w: window.$('#schedule_table table tbody tr td:first-child')[0].offsetWidth,
+            weekday_w: window.$('#schedule_table table thead tr th:last-child')[0].offsetWidth
+        };
+        const lectures_container = window.$('#schedule_table .schedule');
+        draw_schedule(lectures_container,position_info);
+
+        const lecture_blocks = lectures_container.find('.course.lecture');
+        const evaluate_lecture_modal = window.$('#evaluate_lecture');
+        lecture_blocks.on('click', function () {
+            const schedule_id = $(this).attr('data-schedule-id');
+            const lecture_blocks_dimmer = $(this).find('.ui.inverted.dimmer');
+            lecture_blocks_dimmer.dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + '/student/evaluate-schedule/' + schedule_id + '/modal',
+                type: "GET",
+                success: function (result,status,xhr) {
+                    evaluate_lecture_modal.html(result);
+                    evaluate_lecture_modal.find('input[name=schedule_id]').val(schedule_id);
+                    fix_persian_numbers('.p_number');
+                    evaluate_lecture_modal.find('.menu .item').tab({
+                        onLoad: function () {
+                            evaluate_lecture_modal.modal('refresh');
+                        }
+                    });
+                    evaluate_lecture_modal.find('.ui.dropdown').dropdown();
+                    evaluate_lecture_modal.find('.timepicker').timepicker({
+                        timeFormat: 'HH:mm:ss',
+                        interval: 15,
+                        minTime: '08:00',
+                        maxTime: '20:00',
+                        dynamic: false,
+                        dropdown: true,
+                        scrollbar: true
+                    });
+                    let dp = evaluate_lecture_modal.find('input[name=suggested_exam_date]').persianDatepicker({
+                        initialValue: false,
+                        observer: true,
+                        autoClose: true,
+                        format: 'YYYY/MM/DD',
+                        altField: '#evaluate_lecture input[name=suggested_exam_date_unix]',
+                        'toolbox': {
+                            'enabled': false
+                        }
+                    });
+                    if(elementExist('#evaluate_lecture input[name=suggested_exam_date_unix]')){
+                        if(evaluate_lecture_modal.find('input[name=suggested_exam_date_unix]').val() !== ''){
+                            dp.setDate(parseInt(evaluate_lecture_modal.find('input[name=suggested_exam_date_unix]').val()));
+                        }
+                    }
+                    evaluate_lecture_modal.find('form').form({
+                        fields: {
+                            suggestion_reason_1 : 'maxLength[250]',
+                            suggestion_reason_2 : 'maxLength[250]',
+                            exam_suggestion_reason : 'maxLength[250]',
+                            privacy : 'empty'
+                        }
+                    });
+                    evaluate_lecture_modal.find('form').on('submit', function () {
+                        let ret_value = true;
+                        if(evaluate_lecture_modal.find('select[name=suggested_weekday_1]').val() === ''
+                            && evaluate_lecture_modal.find('select[name=suggested_weekday_2]').val() === ''
+                            && evaluate_lecture_modal.find('input[name=suggested_exam_date]').val() === '')
+                        {
+                            if(ret_value)
+                                evaluate_lecture_modal.find('form,form .field,form .fields').removeClass('error');
+                            evaluate_lecture_modal.find('form').addClass('error');
+                            evaluate_lecture_modal.find('select[name=suggested_weekday_1]').parent().parent().parent().addClass('error');
+                            evaluate_lecture_modal.find('select[name=suggested_weekday_2]').parent().parent().parent().addClass('error');
+                            evaluate_lecture_modal.find('input[name=suggested_exam_date]').parent().parent().addClass('error');
+                            evaluate_lecture_modal.find('textarea[name=suggestion_reason_1]').parent().addClass('error');
+                            evaluate_lecture_modal.find('textarea[name=suggestion_reason_2]').parent().addClass('error');
+                            evaluate_lecture_modal.find('textarea[name=exam_suggestion_reason]').parent().addClass('error');
+                            ret_value = false;
+                        }
+                        if(evaluate_lecture_modal.find('select[name=suggested_weekday_1]').val() !== ''){
+                            if(evaluate_lecture_modal.find('input[name=suggested_start_time_1]').val() === ''
+                                || evaluate_lecture_modal.find('input[name=suggested_end_time_1]').val() === ''
+                                || evaluate_lecture_modal.find('textarea[name=suggestion_reason_1]').val() === '')
+                            {
+                                if(ret_value)
+                                    evaluate_lecture_modal.find('form,form .field,form .fields').removeClass('error');
+                                evaluate_lecture_modal.find('form').addClass('error');
+                                evaluate_lecture_modal.find('select[name=suggested_weekday_1]').parent().parent().parent().addClass('error');
+                                evaluate_lecture_modal.find('textarea[name=suggestion_reason_1]').parent().addClass('error');
+                                ret_value = false;
+                            }
+                        }
+                        if(evaluate_lecture_modal.find('select[name=suggested_weekday_2]').val() !== ''){
+                            if(evaluate_lecture_modal.find('input[name=suggested_start_time_2]').val() === ''
+                                || evaluate_lecture_modal.find('input[name=suggested_end_time_2]').val() === ''
+                                || evaluate_lecture_modal.find('textarea[name=suggestion_reason_2]').val() === '')
+                            {
+                                if(ret_value)
+                                    evaluate_lecture_modal.find('form,form .field,form .fields').removeClass('error');
+                                evaluate_lecture_modal.find('form').addClass('error');
+                                evaluate_lecture_modal.find('select[name=suggested_weekday_2]').parent().parent().parent().addClass('error');
+                                evaluate_lecture_modal.find('textarea[name=suggestion_reason_2]').parent().addClass('error');
+                                ret_value = false;
+                            }
+                        }
+                        if(evaluate_lecture_modal.find('input[name=suggested_exam_date]').val() !== ''){
+                            if(evaluate_lecture_modal.find('input[name=suggested_exam_date_unix]').val() === ''
+                                || evaluate_lecture_modal.find('input[name=suggested_exam_time]').val() === ''
+                                || evaluate_lecture_modal.find('textarea[name=exam_suggestion_reason]').val() === '')
+                            {
+                                if(ret_value)
+                                    evaluate_lecture_modal.find('form,form .field,form .fields').removeClass('error');
+                                evaluate_lecture_modal.find('form').addClass('error');
+                                evaluate_lecture_modal.find('input[name=suggested_exam_date]').parent().parent().addClass('error');
+                                evaluate_lecture_modal.find('textarea[name=exam_suggestion_reason]').parent().addClass('error');
+                                ret_value = false;
+                            }
+                        }
+                        return ret_value;
+                    });
+                    evaluate_lecture_modal.find('#erase_form').on('click', function () {
+                        evaluate_lecture_modal.find('form').form('clear');
+                        evaluate_lecture_modal.find('select[name=privacy]').val('private');
+                        evaluate_lecture_modal.find('form,form .field,form .fields').removeClass('error');
+                        evaluate_lecture_modal.find('.ui.dropdown').dropdown();
+                    });
+                    evaluate_lecture_modal.find('#delete_btn').on('click', function (){
+                        evaluate_lecture_modal.find('#delete_form').submit();
+                    });
+                    let upvote_btn = evaluate_lecture_modal.find('.card #upvote');
+                    let downvote_btn = evaluate_lecture_modal.find('.card #downvote');
+                    upvote_btn.hover(
+                        function () {
+                            $(this).toggleClass('blue-color');
+                            if($(this).hasClass('blue-color')){
+                                $(this).find('span').html((parseInt($(this).find('span').html())+1).toString());
+                            }else{
+                                $(this).find('span').html((parseInt($(this).find('span').html())-1).toString());
+                            }
+                        },
+                        function () {
+                            $(this).toggleClass('blue-color');
+                            if($(this).hasClass('blue-color')){
+                                $(this).find('span').html((parseInt($(this).find('span').html())+1).toString());
+                            }else{
+                                $(this).find('span').html((parseInt($(this).find('span').html())-1).toString());
+                            }
+                        }
+                    );
+                    downvote_btn.hover(
+                        function () {
+                            $(this).toggleClass('red-color');
+                            if($(this).hasClass('red-color')){
+                                $(this).find('span').html((parseInt($(this).find('span').html())-1).toString());
+                            }else{
+                                $(this).find('span').html((parseInt($(this).find('span').html())+1).toString());
+                            }
+                        },
+                        function () {
+                            $(this).toggleClass('red-color');
+                            if($(this).hasClass('red-color')){
+                                $(this).find('span').html((parseInt($(this).find('span').html())-1).toString());
+                            }else{
+                                $(this).find('span').html((parseInt($(this).find('span').html())+1).toString());
+                            }
+                        }
+                    );
+                    upvote_btn.on('click', function () {
+                        let evaluation_id = $(this).attr('data-id');
+                        let card_dimmer = $(this).parent().siblings('.dimmer');
+                        let value = '0';
+                        if($(this).hasClass('blue-color')){
+                            value = '1';
+                        }
+                        let this_upvote = $(this);
+                        card_dimmer.dimmer('toggle');
+                        window.$.ajax({
+                            url: document.location.origin + '/student/evaluation/' + evaluation_id + '/upvote/' + value,
+                            type: "POST",
+                            success: function (result,status,xhr) {
+                                this_upvote.find('span').html(result[0]);
+                                this_upvote.siblings('#downvote').find('span').html(result[1]);
+
+                                if(!this_upvote.hasClass('blue-color') && value === '1'){
+                                    this_upvote.addClass('blue-color');
+                                }else{
+                                    this_upvote.removeClass('blue-color');
+                                }
+
+                                if(this_upvote.siblings('#downvote').hasClass('red-color')){
+                                    this_upvote.siblings('#downvote').removeClass('red-color')
+                                }
+                                card_dimmer.dimmer('toggle');
+                            },
+                            error: function (xhr,status,error) {
+                                // TODO error handling logic
+                                card_dimmer.dimmer('toggle');
+                            }
+                        });
+                    });
+                    downvote_btn.on('click', function () {
+                        let evaluation_id = $(this).attr('data-id');
+                        let card_dimmer = $(this).parent().siblings('.dimmer');
+                        let value = '0';
+                        if($(this).hasClass('red-color')){
+                            value = '1';
+                        }
+                        let this_downvote = $(this);
+                        card_dimmer.dimmer('toggle');
+                        window.$.ajax({
+                            url: document.location.origin + '/student/evaluation/' + evaluation_id + '/downvote/' + value,
+                            type: "POST",
+                            success: function (result,status,xhr) {
+                                this_downvote.find('span').html(result[1]);
+                                this_downvote.siblings('#upvote').find('span').html(result[0]);
+
+                                if(!this_downvote.hasClass('red-color') && value === '1'){
+                                    this_downvote.addClass('red-color');
+                                }else{
+                                    this_downvote.removeClass('red-color');
+                                }
+
+                                if(this_downvote.siblings('#upvote').hasClass('blue-color')){
+                                    this_downvote.siblings('#upvote').removeClass('blue-color')
+                                }
+                                card_dimmer.dimmer('toggle');
+                            },
+                            error: function (xhr,status,error) {
+                                // TODO error handling logic
+                                card_dimmer.dimmer('toggle');
+                            }
+                        });
+                    });
+                    evaluate_lecture_modal.modal('show');
+                    lecture_blocks_dimmer.dimmer('toggle');
+                },
+                error: function (xhr,status,error) {
+                    // TODO error handling logic
+                    lecture_blocks_dimmer.dimmer('toggle');
+                }
+            });
+        });
+
+        // init messages
+        if(elementExist('#p_student_evaluate_schedule .message.session')){
+            const message_box = window.$('#p_student_evaluate_schedule .message.session');
+            const container_width = window.$('.ui.container')[0].offsetWidth;
+            message_box.css('left',((window.innerWidth-container_width-16)/2).toString()+'px');
+            message_box.css('display','block');
+            window.$('#p_student_evaluate_schedule .message.session .close').on('click', function() {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if(!window.$('#p_student_evaluate_schedule .message.session').hasClass('hidden'))
+                    window.$('#p_student_evaluate_schedule .message.session').transition('fade');
+            },4000);
+        }
+    }
+    if(elementExist('#p_student_final_schedule')){
+        // scheduler info
+        const position_info = {
+            top_offset: window.$('#schedule_table table')[0].offsetTop,
+            header_h: window.$('#schedule_table table thead tr')[0].offsetHeight,
+            tblock_h: window.$('#schedule_table table tbody tr')[0].offsetHeight / 2,
+            timecol_w: window.$('#schedule_table table tbody tr td:first-child')[0].offsetWidth,
+            weekday_w: window.$('#schedule_table table thead tr th:last-child')[0].offsetWidth
+        };
+        const lectures_container = window.$('#schedule_table .schedule');
+        draw_schedule(lectures_container,position_info);
+    }
+    if(elementExist('#p_student_edit_information')){
+        window.$('.ui.dropdown').dropdown();
+        // init messages
+        if(elementExist('.message.session')){
+            window.$('.message.session .close').on('click', function() {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if(!window.$('.message.session').hasClass('hidden'))
+                    window.$('.message.session').transition('fade');
+            },4000);
+        }
+    }
+    if(elementExist('#p_student_change_password')){
+        // init messages
+        if(elementExist('.message.session')){
+            window.$('.message.session .close').on('click', function() {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if(!window.$('.message.session').hasClass('hidden'))
+                    window.$('.message.session').transition('fade');
+            },4000);
+        }
     }
 }
 

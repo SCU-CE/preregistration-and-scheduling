@@ -24,7 +24,9 @@ class OptionSeeder extends Seeder
             ['id'=>'8','name'=>'prereg_end_date','value'=>'','created_at'=>Carbon::now(),'updated_at'=>Carbon::now()],
             ['id'=>'9','name'=>'eval_start_date','value'=>'','created_at'=>Carbon::now(),'updated_at'=>Carbon::now()],
             ['id'=>'10','name'=>'eval_end_date','value'=>'','created_at'=>Carbon::now(),'updated_at'=>Carbon::now()],
-            ['id'=>'11','name'=>'final_date','value'=>'','created_at'=>Carbon::now(),'updated_at'=>Carbon::now()]
+            ['id'=>'11','name'=>'final_date','value'=>'','created_at'=>Carbon::now(),'updated_at'=>Carbon::now()],
+            ['id'=>'12','name'=>'process_stage_state','value'=>'disable','created_at'=>Carbon::now(),'updated_at'=>Carbon::now()],
+            ['id'=>'13','name'=>'active_eval_session','value'=>'0','created_at'=>Carbon::now(),'updated_at'=>Carbon::now()]
         ]);
     }
 }

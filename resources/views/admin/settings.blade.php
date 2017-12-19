@@ -63,7 +63,7 @@
                         <input name="final_date" type="hidden" value="{{$options->get(10)->value}}">
                     </div>
                     <div class="four wide field">
-                        <label class="fw-400">وضعیت فعالیت سیستم</label>
+                        <label class="fw-400">مرحله فعالیت سیستم</label>
                         <select name="process_stage" class="ui fluid dropdown">
                             <option value="disable"{{ $options->get(4)->value == 'disable' ? ' selected' : '' }}>عدم فعالیت</option>
                             <option value="1st"{{ $options->get(4)->value == '1st' ? ' selected' : '' }}>پیش ثبت نام</option>
@@ -71,11 +71,23 @@
                             <option value="3rd"{{ $options->get(4)->value == '3rd' ? ' selected' : '' }}>برنامه نهایی</option>
                         </select>
                     </div>
+                    <div class="four wide field">
+                        <label class="fw-400">وضعیت مرحله</label>
+                        <select name="process_stage_state" class="ui fluid dropdown">
+                            <option value="enable"{{ $options->get(11)->value == 'enable' ? ' selected' : '' }}>فعال</option>
+                            <option value="disable"{{ $options->get(11)->value == 'disable' ? ' selected' : '' }}>غیرفعال</option>
+                        </select>
+                    </div>
+                    <div class="four wide field">
+                        <label class="fw-400">&nbsp</label>
+                        <button type="submit" class="ui fluid green submit button fw-400">ذخیره اطلاعات</button>
+                    </div>
                 </div>
-                <button type="submit" class="ui fluid green submit button fw-400">ذخیره اطلاعات</button>
             </form>
         </div>
+        <div class="ui hidden divider"></div>
         <div class="ui divider"></div>
+        <div class="ui hidden divider"></div>
         <div>
             <form class="ui form{{ $errors->change_password->any() ? ' error' : '' }}" role="form" method="POST" action="{{ url('/admin/settings/changepassword') }}">
                 {{ csrf_field() }}
@@ -114,7 +126,9 @@
                 </div>
             </form>
         </div>
+        <div class="ui hidden divider"></div>
         <div class="ui divider"></div>
+        <div class="ui hidden divider"></div>
         <div id="manage_admin_panel">
             @if(Session::has('message'))
                 <div class="ui {{ Session::get('message_color') }} message session" style="text-align: center">

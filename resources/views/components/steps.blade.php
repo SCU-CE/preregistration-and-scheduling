@@ -1,17 +1,17 @@
 <div class="ui{{$fluid?' fluid':''}} {{$size}} main steps{{$extraclasses}}">
     @isset($dates)
         @if($active == '1st')
-            @include('components.1st-step', ['state' => 'active', 'date' => $dates[0]])
-            @include('components.2nd-step', ['state' => 'deactive', 'date' => $dates[1]])
-            @include('components.3rd-step', ['state' => 'deactive', 'date' => $dates[2]])
+            @include('components.1st-step', ['state' => 'active', 'dates' => $dates])
+            @include('components.2nd-step', ['state' => 'deactive', 'dates' => $dates])
+            @include('components.3rd-step', ['state' => 'deactive', 'dates' => $dates])
         @elseif($active == '2nd')
-            @include('components.1st-step', ['state' => 'complete', 'date' => $dates[0]])
-            @include('components.2nd-step', ['state' => 'active', 'date' => $dates[1]])
-            @include('components.3rd-step', ['state' => 'deactive', 'date' => $dates[2]])
+            @include('components.1st-step', ['state' => 'complete', 'dates' => $dates])
+            @include('components.2nd-step', ['state' => 'active', 'dates' => $dates])
+            @include('components.3rd-step', ['state' => 'deactive', 'dates' => $dates])
         @elseif($active == '3rd')
-            @include('components.1st-step', ['state' => 'complete', 'date' => $dates[0]])
-            @include('components.2nd-step', ['state' => 'complete', 'date' => $dates[1]])
-            @include('components.3rd-step', ['state' => 'active', 'date' => $dates[2]])
+            @include('components.1st-step', ['state' => 'complete', 'dates' => $dates])
+            @include('components.2nd-step', ['state' => 'complete', 'dates' => $dates])
+            @include('components.3rd-step', ['state' => 'active', 'dates' => $dates])
         @endif
     @endisset
 

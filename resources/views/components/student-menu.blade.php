@@ -5,7 +5,9 @@
                 <i class="big flipped home icon"></i>
             </a>
             <div class="five-px-element"></div>
-            @include('components.steps', ['size' => 'mini', 'fluid' => false, 'active' => $active, 'extraclasses' => ''])
+            @if(in_array($active, ['1st','2nd','3rd']))
+                @include('components.steps', ['size' => 'mini', 'fluid' => false, 'active' => $active, 'extraclasses' => ''])
+            @endif
         @endif
         <div class="right menu">
             <div class="five-px-element"></div>
@@ -20,11 +22,11 @@
     </div>
 </div>
 <div class="ui computer menu vertical transition hidden">
-    <a class="item">
+    <a class="item" href="{{url('student/edit-information')}}">
         <i class="configure icon"></i>
         <span>ویرایش اطلاعات</span>
     </a>
-    <a class="item">
+    <a class="item" href="{{url('student/change-password')}}">
         <i class="lock icon"></i>
         <span>تغییر رمز عبور</span>
     </a>
@@ -36,9 +38,11 @@
                 <i class="large home icon"></i>
             </a>
             <div class="five-px-element"></div>
+            @if(in_array($active, ['1st','2nd','3rd']))
             <button id="steps_btn" class="ui basic icon button">
                 <i class="large map outline icon"></i>
             </button>
+            @endif
         @endif
         <div class="right menu">
             <div class="five-px-element"></div>
@@ -53,14 +57,16 @@
     </div>
 </div>
 @if($hasSteps)
-    @include('components.steps', ['size' => 'mini', 'fluid' => false, 'active' => $active, 'extraclasses' => ' mobile transition hidden'])
+    @if(in_array($active, ['1st','2nd','3rd']))
+        @include('components.steps', ['size' => 'mini', 'fluid' => false, 'active' => $active, 'extraclasses' => ' mobile transition hidden'])
+    @endif
 @endif
 <div class="ui mobile menu vertical tiny transition hidden">
-    <a class="item">
+    <a class="item" href="{{url('student/edit-information')}}">
         <i class="configure icon"></i>
         <span>ویرایش اطلاعات</span>
     </a>
-    <a class="item">
+    <a class="item" href="{{url('student/change-password')}}">
         <i class="lock icon"></i>
         <span>تغییر رمز عبور</span>
     </a>

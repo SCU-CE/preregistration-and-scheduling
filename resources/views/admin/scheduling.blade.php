@@ -2,20 +2,48 @@
 
 @section('content')
 
-    <div id="p_admin_scheduling">
-        @include('components.scheduling-steps', ['active' => '1st'])
-        <div class="ui menu">
-            <button class="ui large green labeled icon button">
+    <div id="p_admin_scheduling" data-stage="{{$schedulingStage}}">
+        <!-- Header -->
+        @include('components.scheduling-steps', ['active' => $schedulingStage])
+        @if($prereg_time)
+            @include('components.warning-message', ['message' => 'توجه داشته باشید که دانشجویان هم اکنون در حال پیش ثبت نام می باشند!'])
+        @endif
+        @if($schedulingStage == '1st')
+        <div class="ui basic segment" style="padding: 0">
+            <button id="add_to_schedule_btn" class="ui large green labeled icon button">
                 <i class="plus icon"></i>
                 <span class="fw-400">افزرودن به برنامه</span>
             </button>
-            <div class="right menu">
-                <button class="ui large red labeled icon button">
-                    <i class="checkmark icon"></i>
-                    <span class="fw-400">تایید برنامه و رفتن به ارزیابی</span>
-                </button>
-            </div>
         </div>
+        @elseif($schedulingStage == '2nd')
+            @if($any_eval_session)
+                @if($eval_time)
+                    @include('components.warning-message', ['message' => 'توجه داشته باشید که دانشجویان هم اکنون در حال ثبت درخواست های خود برای مرحله '.$active_eval_session.' ارزیابی هستند! لطفا قبل از تغییر برنامه، با توجه به مهلت مرحله، وضعیت سیستم را در حالت غیر فعال قرار دهید تا تداخلی در درخواست های دانشجویان به وجود نیاید!'])
+                @else
+                    @include('components.warning-message', ['message' => 'لطفا در بخش تنظیمات وضعیت سیستم را بر روی حالت درست قرار دهید تا دانشجویان بتوانند درخواست های خود را برای این مرحله ارزیابی ثبت کنند.'])
+                @endif
+            @else
+                @include('components.warning-message', ['message' => 'لطفا به کمک بخش مراحل ارزیابی حداقل یک مرحله ی ارزیابی برای برنامه تعریف کنید.'])
+            @endif
+            <div class="ui menu" style="padding: 0;border: none;box-shadow: none;">
+                <button id="add_to_schedule_btn" class="ui large blue labeled icon button">
+                    <i class="mail icon"></i>
+                    <span class="fw-400">درس ها بر اساس درخواست</span>
+                </button>
+                <div class="right menu">
+                    <button id="evaluation_sessions_btn" class="ui large orange right labeled icon button" style="margin: 0">
+                        <i class="road icon"></i>
+                        <span class="fw-400">مراحل ارزیابی</span>
+                    </button>
+                </div>
+            </div>
+        @elseif($schedulingStage == '3rd')
+            @if(!$final_time)
+                @include('components.warning-message', ['message' => 'لطفا در بخش تنظیمات وضعیت سیستم را بر روی حالت درست قرار دهید تا برنامه برای دانشجویان قابل مشاهده شود.'])
+            @endif
+        @endif
+
+        <!-- Content -->
         <div id="schedule_table">
             <div class="schedule"></div>
             <table class="ui unstackable fixed center aligned celled striped definition table">
@@ -57,22 +85,90 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Footer -->
+        @if($schedulingStage == '1st')
+        <div class="ui basic center aligned segment" style="padding: 0">
+            <form action="{{url('admin/scheduling/schedulingstage')}}" method="post" style="display: inline-block;">
+                {{ csrf_field() }}
+                {{ method_field('patch') }}
+                <input type="hidden" name="scheduling_stage" value="2nd">
+                <button type="submit" class="ui large red right labeled icon button">
+                    <i class="checkmark icon"></i>
+                    <span class="fw-400">تایید برنامه و رفتن به مرحله ارزیابی</span>
+                </button>
+            </form>
+        </div>
+        @elseif($schedulingStage == '2nd')
+        <div class="ui basic center aligned segment" style="padding: 0">
+            <form action="{{url('admin/scheduling/schedulingstage')}}" method="post" style="display: inline-block;">
+                {{ csrf_field() }}
+                {{ method_field('patch') }}
+                <input type="hidden" name="scheduling_stage" value="1st">
+                <button class="ui large blue labeled icon button">
+                    <i class="right arrow icon"></i>
+                    <span class="fw-400">بازگشت به مرحله برنامه ریزی اولیه</span>
+                </button>
+            </form>
+            <form action="{{url('admin/scheduling/schedulingstage')}}" method="post" style="display: inline-block;">
+                {{ csrf_field() }}
+                {{ method_field('patch') }}
+                <input type="hidden" name="scheduling_stage" value="3rd">
+                <button class="ui large red right labeled icon button">
+                    <i class="checkmark icon"></i>
+                    <span class="fw-400">تایید برنامه و رفتن به مرحله نهایی</span>
+                </button>
+            </form>
+        </div>
+        @elseif($schedulingStage == '3rd')
+        <div class="ui basic center aligned segment" style="padding: 0">
+            <form action="{{url('admin/scheduling/schedulingstage')}}" method="post" style="display: inline-block;">
+                {{ csrf_field() }}
+                {{ method_field('patch') }}
+                <input type="hidden" name="scheduling_stage" value="2nd">
+                <button class="ui large blue labeled icon button">
+                    <i class="right arrow icon"></i>
+                    <span class="fw-400">بازگشت به مرحله ارزیابی برنامه</span>
+                </button>
+            </form>
+        </div>
+        @endif
+
+        <!-- Modals -->
         <div class="ui dimmer modals page transition hidden">
+            @if(in_array($schedulingStage, ['1st','2nd']))
             <div id="courses" class="ui large longer modal transition hidden">
                 <div class="scrolling content">
                     <div class="ui four course cards">
-                        @foreach($courses as $course)
-                            <?php
+                        @if($schedulingStage == '1st')
+                            @foreach($courses as $course)
+                                <?php
+                                    $is_scheduled = DB::table('course_schedule')
+                                                            ->where('semester_id','=',$semester->id)
+                                                            ->where('course_id','=',$course->id)
+                                                            ->count() > 0;
+                                ?>
+                                @include('components.schedule-course-card', ['course' => $course, 'semester' => $semester, 'is_scheduled' => $is_scheduled])
+                            @endforeach
+                        @elseif($schedulingStage == '2nd')
+                            @foreach($courses_by_eval_count as $course_by_eval_count)
+                                <?php
+                                $course = $courses->where('id',$course_by_eval_count->id);
                                 $is_scheduled = DB::table('course_schedule')
-                                                        ->where('semester_id','=',$semester->id)
-                                                        ->where('course_id','=',$course->id)
-                                                        ->count() > 0;
-                            ?>
-                            @include('components.schedule-course-card', ['course' => $course, 'semester' => $semester, 'is_scheduled' => $is_scheduled])
-                        @endforeach
+                                        ->where('semester_id','=',$semester->id)
+                                        ->where('course_id','=',$course->first()->id)
+                                        ->count() > 0;
+                                ?>
+                                @include('components.schedule-course-card', ['course' => $course->first(), 'semester' => $semester, 'is_scheduled' => $is_scheduled, 'schedulingStage' => $schedulingStage, 'course_by_eval_count' => $course_by_eval_count])
+                            @endforeach
+                        @endif
                     </div>
                 </div>
                 <div class="actions">
+                    <div style="float:right;">
+                        <span class="ui green large tag label fw-400">درس های به حد نصاب رسیده</span>
+                        <span class="ui red large tag label fw-400">درس های به حد نصاب نرسیده</span>
+                    </div>
                     <div class="ui negative right labeled icon button fw-300">
                         <span>انصراف</span>
                         <i class="remove icon"></i>
@@ -194,7 +290,7 @@
                         </div>
                     </div>
                     <div class="ui hidden divider"></div>
-                    <div>
+                    <div id="course_info">
                         <div class="ui top attached tabular menu">
                             <a class="item active fw-400" data-tab="instructors">اساتید پیشنهادی</a>
                             <a class="item fw-400" data-tab="conflicts">تداخل های درس</a>
@@ -249,12 +345,113 @@
                         <span>حذف برنامه</span>
                         <i class="minus icon"></i>
                     </div>
-                    <div class="ui positive yellow right labeled icon button fw-300">
+                    <div class="ui positive right labeled icon button fw-300">
                         <span>ثبت در برنامه</span>
                         <i class="checkmark icon"></i>
                     </div>
                 </div>
             </div>
+            @endif
+            @if($schedulingStage == '2nd')
+            <div id="evaluation_sessions" class="ui longer modal transition hidden">
+                <div class="scrolling content">
+                    @include('components.warning-message', ['message' => 'توجه داشته باشید در صورت حذف مرحله ی ارزیابی درخواست های مرتبط با آن نیز حذف می شوند!'])
+                    <form class="ui form" action="{{url('admin/scheduling/evaluation-sessions')}}" method="post">
+                        {{ csrf_field() }}
+                        <table class="ui center aligned celled definition table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="fw-400">مرحله</th>
+                                    <th class="fw-400">تاریخ شروع</th>
+                                    <th class="fw-400">تاریخ پایان</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @if(count($evaluation_sessions) > 0)
+                                <input type="hidden" name="number_of_sessions" value="{{count($evaluation_sessions)}}">
+                                @foreach($evaluation_sessions as $evaluation_session)
+                                    <tr id="session_{{$evaluation_session->session_number}}" data-number="{{$evaluation_session->session_number}}">
+                                        <td class="collapsing">
+                                            <div class="ui toggle checkbox" style="display: block;">
+                                                <input name="session_enable" type="radio" value="{{$evaluation_session->session_number}}"{{$evaluation_session->session_number == $active_eval_session ? ' checked' : ''}}>
+                                                <label style="padding-right: 3.5rem;"></label>
+                                            </div>
+                                        </td>
+                                        <td>مرحله <span class="p_number">{{$evaluation_session->session_number}}</span>
+                                            <input type="hidden" name="session_number_{{$evaluation_session->session_number}}" value="{{$evaluation_session->session_number}}">
+                                        </td>
+                                        <td>
+                                            <div class="fluid field">
+                                                <input type="text" name="start_date_p_{{$evaluation_session->session_number}}" placeholder="تاریخ شروع" style="text-align: center">
+                                                <input type="hidden" name="start_date_{{$evaluation_session->session_number}}" value="{{$evaluation_session->start_date}}">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="fluid field">
+                                                <input type="text" name="end_date_p_{{$evaluation_session->session_number}}" placeholder="تاریخ پایان" style="text-align: center">
+                                                <input type="hidden" name="end_date_{{$evaluation_session->session_number}}" value="{{$evaluation_session->end_date}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <input type="hidden" name="number_of_sessions" value="1">
+                                <tr id="session_1" data-number="1">
+                                    <td class="collapsing">
+                                        <div class="ui toggle checkbox" style="display: block;">
+                                            <input name="session_enable" type="radio" value="1" checked>
+                                            <label style="padding-right: 3.5rem;"></label>
+                                        </div>
+                                    </td>
+                                    <td>مرحله <span class="p_number">1</span>
+                                        <input type="hidden" name="session_number_1" value="1">
+                                    </td>
+                                    <td>
+                                        <div class="fluid field">
+                                            <input type="text" name="start_date_p_1" placeholder="تاریخ شروع" style="text-align: center">
+                                            <input type="hidden" name="start_date_1">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="fluid field">
+                                            <input type="text" name="end_date_p_1" placeholder="تاریخ پایان" style="text-align: center">
+                                            <input type="hidden" name="end_date_1">
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                            </tbody>
+                            <tfoot class="full-width">
+                            <tr>
+                                <th></th>
+                                <th colspan="3">
+                                    <div id="add_session" class="ui right floated blue labeled icon button">
+                                        <i class="plus icon"></i>
+                                        <span class="fw-300">افزوردن مرحله جدید</span>
+                                    </div>
+                                    <div id="remove_session" class="ui right floated orange labeled icon button{{count($evaluation_sessions) > 0 ? '' : ' disabled'}}">
+                                        <i class="remove icon"></i>
+                                        <span class="fw-300">حذف آخرین مرحله</span>
+                                    </div>
+                                </th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </form>
+                </div>
+                <div class="actions">
+                    <div class="ui negative right labeled icon button fw-300">
+                        <span>انصراف</span>
+                        <i class="remove icon"></i>
+                    </div>
+                    <div class="ui positive right labeled icon button fw-300">
+                        <span>ثبت اطلاعات</span>
+                        <i class="checkmark icon"></i>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
         <script>
             var schedule_data = [

@@ -10,6 +10,7 @@ use App\Models\Student;
 use App\Models\User;
 use App\Models\Option;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -102,7 +103,52 @@ class BaseController extends Controller
                             ->select('course_schedule.*', 'courses.name as course_name', 'instructors.name as instructor_name')
                             ->get();
 
-        return view('admin.scheduling', compact('courses','instructors', 'semester', 'schedules'));
+        $schedulingStage = Option::find(6)->value;
+
+        $evaluation_sessions = DB::table('evaluation_sessions')
+                                    ->where('semester_id','=',$semester->id)
+                                    ->get();
+
+        $prereg_time = false;
+        $eval_time = false;
+        $final_time = false;
+
+        $process_stage = Option::find(5)->value;
+        $process_stage_state = Option::find(12)->value;
+        if($process_stage_state == 'enable'){
+            if($process_stage == '1st'){
+                $prereg_time = true;
+            }elseif ($process_stage == '2nd'){
+                $eval_time = true;
+            }elseif ($process_stage == '3rd'){
+                $final_time = true;
+            }
+        }
+
+        $any_eval_session = false;
+        $active_eval_session = Option::find(13)->value;
+        if(DB::table('evaluation_sessions')->where('semester_id','=',$semester->id)->count()>0 && $active_eval_session != '0'){
+            $any_eval_session = true;
+        }
+
+        $active_eval_session_id = DB::table('evaluation_sessions')
+                                        ->where('semester_id','=',$semester->id)
+                                        ->where('session_number','=',$active_eval_session)
+                                        ->first()->id;
+
+        $courses_by_eval_count = DB::table('courses')
+                                        ->join('course_schedule','courses.id','=','course_schedule.course_id')
+                                        ->where('course_schedule.semester_id','=',$semester->id)
+                                        ->join('schedule_evaluation','course_schedule.id','=','schedule_evaluation.schedule_id')
+                                        ->where('session_id','=',$active_eval_session_id)
+                                        ->groupBy('courses.id')
+                                        ->select(DB::raw('courses.id, count(*) as evaluation_count'))
+                                        ->orderBy('evaluation_count','desc')
+                                        ->get();
+
+        $courses_by_eval_count = $courses_by_eval_count->merge($courses->whereNotIn('id', $courses_by_eval_count->pluck('id')));
+
+        return view('admin.scheduling', compact('courses','instructors', 'semester', 'schedules','schedulingStage', 'evaluation_sessions', 'active_eval_session', 'prereg_time', 'eval_time', 'final_time', 'any_eval_session', 'courses_by_eval_count'));
     }
     public function messages()
     {

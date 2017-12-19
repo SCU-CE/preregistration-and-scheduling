@@ -72,6 +72,10 @@ class OptionController extends Controller
                 'id' => '11',
                 'name' => 'final_date'
             ],
+            [
+                'id' => '12',
+                'name' => 'process_stage_state'
+            ]
         ];
         foreach ($options as $option){
             $row = Option::find($option['id']);
