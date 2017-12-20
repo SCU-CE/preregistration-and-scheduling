@@ -1470,7 +1470,7 @@ function pagesInit() {
             const query_id = $(this).attr('data-id');
             const query_name = $(this).parent().siblings('span').find('span').html();
             delete_query_modal.find('.content span span').html(query_name);
-            const from_action = document.location.origin + '/admin/query/' + query_id;
+            const from_action = (document.location.origin+document.location.pathname).replace('reports','query/') + query_id;
             delete_query_modal.find('form').attr('action', from_action);
             delete_query_modal.modal('show');
         });
@@ -1508,7 +1508,7 @@ function pagesInit() {
                             }
                         }
                     });
-                    const update_url = document.location.origin + '/admin/query/' + query_id;
+                    const update_url = (document.location.origin+document.location.pathname).replace('reports','query/') + query_id;
                     create_query_form.attr('action',update_url);
                     edit_query_modal.modal({
                         onApprove: function () {
