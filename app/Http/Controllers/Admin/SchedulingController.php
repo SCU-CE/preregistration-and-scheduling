@@ -57,22 +57,31 @@ class SchedulingController extends Controller
         array_multisort($course_interCount,SORT_DESC,$course_conflicts);
 
         $course_evaluations = [];
-        $course_schedule = DB::table('course_schedule')
-                                    ->where('semester_id','=',$semester_id)
-                                    ->where('course_id','=',$course_id)
-                                    ->get();
-        $active_eval_session = DB::table('evaluation_sessions')
-                                    ->where('semester_id','=',$semester_id)
-                                    ->where('session_number','=',Option::find(13)->value)
-                                    ->first();
-        if(count($course_schedule)>0){
+
+        $any_eval_session = false;
+        $active_eval_session_number = Option::find(13)->value;
+        if(DB::table('evaluation_sessions')->where('semester_id','=',$semester_id)->count()>0 && $active_eval_session_number != '0'){
+            $any_eval_session = true;
+        }
+        $schedulingStage = Option::find(6)->value;
+
+        if($any_eval_session && $schedulingStage == '2nd'){
+            $course_schedule = DB::table('course_schedule')
+                ->where('semester_id','=',$semester_id)
+                ->where('course_id','=',$course_id)
+                ->get();
+            $active_eval_session = DB::table('evaluation_sessions')
+                ->where('semester_id','=',$semester_id)
+                ->where('session_number','=',Option::find(13)->value)
+                ->first();
+            if(count($course_schedule)>0){
             $course_evaluations = DB::table('schedule_evaluation')
-                                        ->where('schedule_id','=',$course_schedule[0]->id)
-                                        ->where('session_id','=',$active_eval_session->id)
-                                        ->join('course_schedule','schedule_evaluation.schedule_id','=','course_schedule.id')
-                                        ->select('schedule_evaluation.*','course_schedule.weekday_1','course_schedule.start_time_1','course_schedule.end_time_1','course_schedule.weekday_2','course_schedule.start_time_2','course_schedule.end_time_2','course_schedule.exam_date','course_schedule.exam_time')
-                                        ->orderBy('privacy','desc')
-                                        ->get();
+                ->where('schedule_id','=',$course_schedule[0]->id)
+                ->where('session_id','=',$active_eval_session->id)
+                ->join('course_schedule','schedule_evaluation.schedule_id','=','course_schedule.id')
+                ->select('schedule_evaluation.*','course_schedule.weekday_1','course_schedule.start_time_1','course_schedule.end_time_1','course_schedule.weekday_2','course_schedule.start_time_2','course_schedule.end_time_2','course_schedule.exam_date','course_schedule.exam_time')
+                ->orderBy('privacy','desc')
+                ->get();
 
             foreach ($course_evaluations as $course_evaluation){
                 if($course_evaluation->privacy == 'public'){
@@ -91,7 +100,7 @@ class SchedulingController extends Controller
                 }
             }
         }
-
+        }
         $course_information = [
             'schedule_info' => $schedule_info,
             'instructors_info' => $instructors_info,
