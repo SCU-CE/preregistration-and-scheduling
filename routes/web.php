@@ -50,18 +50,6 @@ Route::group([
     Route::patch('update-information', 'StudentController@update_information');
     Route::get('change-password', 'StudentController@change_password');
     Route::patch('update-password', 'StudentController@update_password');
-
-    Route::get('test', function(){
-        return DB::table('courses')
-                    ->join('course_schedule','courses.id','=','course_schedule.course_id')
-                    ->where('course_schedule.semester_id','=',12)
-                    ->join('schedule_evaluation','course_schedule.id','=','schedule_evaluation.schedule_id')
-                    ->where('session_id','=',1)
-                    ->groupBy('courses.id')
-                    ->select(DB::raw('courses.id, count(*) as evaluation_count'))
-                    ->orderBy('evaluation_count','desc')
-                    ->get();
-    });
 });
 
 // Admin Routes

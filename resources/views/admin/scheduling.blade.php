@@ -143,23 +143,24 @@
                         @if($schedulingStage == '1st')
                             @foreach($courses as $course)
                                 <?php
-                                    $is_scheduled = DB::table('course_schedule')
-                                                            ->where('semester_id','=',$semester->id)
-                                                            ->where('course_id','=',$course->id)
-                                                            ->count() > 0;
+                                $is_scheduled = DB::table('course_schedule')
+                                                        ->where('semester_id','=',$semester->id)
+                                                        ->where('course_id','=',$course->id)
+                                                        ->count() > 0;
                                 ?>
                                 @include('components.schedule-course-card', ['course' => $course, 'semester' => $semester, 'is_scheduled' => $is_scheduled])
                             @endforeach
                         @elseif($schedulingStage == '2nd')
                             @foreach($courses_by_eval_count as $course_by_eval_count)
-                                <?php
-                                $course = $courses->where('id',$course_by_eval_count->id);
-                                $is_scheduled = DB::table('course_schedule')
-                                        ->where('semester_id','=',$semester->id)
-                                        ->where('course_id','=',$course->first()->id)
-                                        ->count() > 0;
-                                ?>
-                                @include('components.schedule-course-card', ['course' => $course->first(), 'semester' => $semester, 'is_scheduled' => $is_scheduled, 'schedulingStage' => $schedulingStage, 'course_by_eval_count' => $course_by_eval_count])
+                                @if($course = $courses->where('id',$course_by_eval_count->id)->first())
+                                    <?php
+                                    $is_scheduled = DB::table('course_schedule')
+                                            ->where('semester_id','=',$semester->id)
+                                            ->where('course_id','=',$course->id)
+                                            ->count() > 0;
+                                    ?>
+                                    @include('components.schedule-course-card', ['course' => $course, 'semester' => $semester, 'is_scheduled' => $is_scheduled, 'schedulingStage' => $schedulingStage, 'course_by_eval_count' => $course_by_eval_count])
+                                @endif
                             @endforeach
                         @endif
                     </div>

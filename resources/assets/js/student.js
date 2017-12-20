@@ -28,15 +28,6 @@ function fix_persian_numbers(selector) {
             $(item).html(persianJs($(item).html()).englishNumber().toString());
     });
 }
-function findIndexByKeyValue(arraytosearch, key, valuetosearch) {
-    let indexes = [];
-    for (var i = 0; i < arraytosearch.length; i++) {
-        if (arraytosearch[i][key] == valuetosearch) {
-            indexes.push(i);
-        }
-    }
-    return indexes;
-}
 
 function init_menu_btns () {
     // cache map btn and steps dom elements
@@ -943,7 +934,6 @@ function pagesInit() {
                 }
             });
         });
-
         // init messages
         if(elementExist('#p_student_evaluate_schedule .message.session')){
             const message_box = window.$('#p_student_evaluate_schedule .message.session');
