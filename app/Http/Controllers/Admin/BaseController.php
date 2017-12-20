@@ -156,22 +156,26 @@ class BaseController extends Controller
             $any_eval_session = true;
         }
 
-        $active_eval_session_id = DB::table('evaluation_sessions')
-                                        ->where('semester_id','=',$semester->id)
-                                        ->where('session_number','=',$active_eval_session)
-                                        ->first()->id;
+        $courses_by_eval_count = [];
 
-        $courses_by_eval_count = DB::table('courses')
-                                        ->join('course_schedule','courses.id','=','course_schedule.course_id')
-                                        ->where('course_schedule.semester_id','=',$semester->id)
-                                        ->join('schedule_evaluation','course_schedule.id','=','schedule_evaluation.schedule_id')
-                                        ->where('session_id','=',$active_eval_session_id)
-                                        ->groupBy('courses.id')
-                                        ->select(DB::raw('courses.id, count(*) as evaluation_count'))
-                                        ->orderBy('evaluation_count','desc')
-                                        ->get();
+        if($any_eval_session) {
+            $active_eval_session_id = DB::table('evaluation_sessions')
+                ->where('semester_id', '=', $semester->id)
+                ->where('session_number', '=', $active_eval_session)
+                ->first()->id;
 
-        $courses_by_eval_count = $courses_by_eval_count->merge($courses->whereNotIn('id', $courses_by_eval_count->pluck('id')));
+            $courses_by_eval_count = DB::table('courses')
+                ->join('course_schedule', 'courses.id', '=', 'course_schedule.course_id')
+                ->where('course_schedule.semester_id', '=', $semester->id)
+                ->join('schedule_evaluation', 'course_schedule.id', '=', 'schedule_evaluation.schedule_id')
+                ->where('session_id', '=', $active_eval_session_id)
+                ->groupBy('courses.id')
+                ->select(DB::raw('courses.id, count(*) as evaluation_count'))
+                ->orderBy('evaluation_count', 'desc')
+                ->get();
+
+            $courses_by_eval_count = $courses_by_eval_count->merge($courses->whereNotIn('id', $courses_by_eval_count->pluck('id')));
+        }
 
         return view('admin.scheduling', compact('courses','instructors', 'semester', 'schedules','schedulingStage', 'evaluation_sessions', 'active_eval_session', 'prereg_time', 'eval_time', 'final_time', 'any_eval_session', 'courses_by_eval_count'));
     }
