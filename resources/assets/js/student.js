@@ -676,7 +676,7 @@ function pagesInit() {
                     contentType: "application/json",
                     success: function (result, status, xhr) {
                         // TODO show success before redirect
-                        window.location = document.location.origin + '/student/instructor-suggestion';
+                        window.location = document.location.origin+document.location.pathname;
                     },
                     error: function (xhr, status, error) {
                         // TODO error handling logic

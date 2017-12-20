@@ -2252,7 +2252,7 @@ function pagesInit() {
                     evaluation_sessions_modal.find('form').submit();
                 },
                 onDeny: function () {
-                    document.location = document.location.origin + '/admin/scheduling'
+                    document.location = document.location.origin + document.location.pathname
                 }
             });
         }
