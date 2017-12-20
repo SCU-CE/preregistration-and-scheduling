@@ -81,14 +81,14 @@
         <div class="ui dimmer modals page transition hidden">
             <div id="database_map" class="ui longer modal transition hidden">
                 <div class="scrolling content">
-                    <img class="ui image" src="{{Storage::url('database.png')}}" alt="">
+                    <img class="ui image" src="{{url(Storage::url('database.png'))}}" alt="">
                 </div>
                 <div class="actions">
                     <div class="ui negative right labeled icon button fw-300">
                         <span>انصراف</span>
                         <i class="remove icon"></i>
                     </div>
-                    <a class="ui blue right labeled icon button fw-300" target="_blank" href="{{Storage::url('database.png')}}">
+                    <a class="ui blue right labeled icon button fw-300" target="_blank" href="{{url(Storage::url('database.png'))}}">
                         <span>مشاهده در صفحه جدید</span>
                         <i class="external icon"></i>
                     </a>
