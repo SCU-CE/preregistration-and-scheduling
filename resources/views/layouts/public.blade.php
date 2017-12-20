@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/vendor.css') }}">
     <link rel="stylesheet" href="{{ asset('css/public.css') }}">
 </head>
-<body>
+<body style="background-image: url({{asset('imgs/class-image.jpg')}});">
 
     @yield('content')
 

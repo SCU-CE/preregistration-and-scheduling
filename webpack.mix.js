@@ -11,8 +11,7 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.setResourceRoot("")
-    .sass('resources/assets/sass/public.scss', 'public/css')
+mix.sass('resources/assets/sass/public.scss', 'public/css')
     .sass('resources/assets/sass/student.scss', 'public/css')
     .sass('resources/assets/sass/admin.scss', 'public/css');
 
