@@ -11,7 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.sass('resources/assets/sass/public.scss', 'public/css')
+mix.setResourceRoot("")
+    .sass('resources/assets/sass/public.scss', 'public/css')
     .sass('resources/assets/sass/student.scss', 'public/css')
     .sass('resources/assets/sass/admin.scss', 'public/css');
 
@@ -33,7 +34,7 @@ mix.scripts([
 mix.styles([
     'resources/assets/css/IRANSans.css',
     'resources/assets/semantic/semantic.rtl.min.css',
-    'node_modules/persian-datepicker/dist/css/persian-datepicker.min.css',
+    'node_modules/persian-datepicker/dist/css/persian-datepicker.css',
     'node_modules/jquery-timepicker/jquery.timepicker.css'
 ], 'public/css/vendor.css');
 

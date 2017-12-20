@@ -1,1 +1,2131 @@
-!function(e){function t(a){if(n[a])return n[a].exports;var i=n[a]={i:a,l:!1,exports:{}};return e[a].call(i.exports,i,i.exports,t),i.l=!0,i.exports}var n={};t.m=e,t.c=n,t.d=function(e,n,a){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:a})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=8)}({8:function(e,t,n){e.exports=n(9)},9:function(e,t){function n(e){return 0!=window.$(e).length}function a(e,t,n){for(var a=0;a<e.length;a++)n.removeClass(e[a]);n.addClass(t)}function i(e){window.$(e).each(function(e,t){""!==$(t).html()&&$(t).html(persianJs($(t).html()).englishNumber().toString())})}function o(e){return isNaN(e)?"00":u[(e-e%16)/16]+u[e%16]}function d(e){switch(e){case"saturday":return"شنبه";case"sunday":return"یکشنبه";case"monday":return"دوشنبه";case"tuesday":return"سه شنبه";case"wednesday":return"چهارشنبه"}}function s(e,t,n,a){for(var i=1,o=0;o<a[e].length;o++)(t>=a[e][o].st&&t<=a[e][o].et||n>=a[e][o].st&&n<=a[e][o].et)&&i++;return i}function r(e,t){var n=e.find(".msg.card");n.find(".star-bt").hover(function(){$(this).toggleClass("yellow")},function(){$(this).toggleClass("yellow")}),n.find(".archive-bt").hover(function(){$(this).toggleClass("brown")},function(){$(this).toggleClass("brown")}),n.find(".later-bt").hover(function(){$(this).toggleClass("orange")},function(){$(this).toggleClass("orange")}),n.find(".trash-bt").hover(function(){$(this).toggleClass("black")},function(){$(this).toggleClass("black")}),n.find(".left.floated .icon").on("click",function(){var e=$(this).attr("data-id"),n=$(this).attr("data-state"),a=$(this).attr("data-color"),i=void 0;i=$(this).hasClass(a)?n:"inbox";var o=$(this).find("input").serializeArray();window.$.ajax({url:t+"/"+e+"/"+i,type:"PATCH",data:o,success:function(){window.$("#messages_menu .item.active").trigger("click")},error:function(){}})}),n.find(".trash.icon").on("click",function(){var e=$(this).attr("data-id");window.$(".small.modal .content").html(window.$("#message_"+e).clone());var n=window.$(".small.modal :input").serializeArray();window.$(".small.modal").modal({onApprove:function(){window.$.ajax({url:t+"/"+e,type:"DELETE",data:n,success:function(){window.$("#messages_menu .item.active").trigger("click")}})}}).modal("show")})}function l(e){e.find("[id^=session_]").each(function(e,t){var n=$(t).attr("data-number"),a=$(t).find("[name=start_date_p_"+n+"]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#evaluation_sessions.modal tbody #session_"+n+" [name=start_date_"+n+"]",toolbox:{enabled:!1}});""!==$(t).find("[name=start_date_"+n+"]").val()&&a.setDate(parseInt($(t).find("[name=start_date_"+n+"]").val()));var i=$(t).find("[name=end_date_p_"+n+"]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#evaluation_sessions.modal tbody #session_"+n+" [name=end_date_"+n+"]",toolbox:{enabled:!1}});""!==$(t).find("[name=end_date_"+n+"]").val()&&i.setDate(parseInt($(t).find("[name=end_date_"+n+"]").val()))})}function c(e,t,n){e.css("top",n.find("div:last")[0].offsetTop),t.css("top",n.find("div:last")[0].offsetTop),e.css("left",n.find("div:last")[0].offsetLeft),t.css("left",n.find("div:last")[0].offsetLeft)}function m(e,t,n,a,i,o,d){var s=arguments.length>7&&void 0!==arguments[7]?arguments[7]:[];c(t,n,a),t.on("click",function(){var i=(parseInt(a.find("div:last").attr("data-number"))+1).toString();e.find("[name=number_of_columns]").val(i),a.append('\n            <div class="column" data-number="'+i+'">\n                <input type="text" name="column_id_'+i+"\" placeholder=\"'id' of column "+i+'"  style="direction: ltr" required>\n                <input type="text" name="column_name_'+i+"\" placeholder=\"'نام فارسی' ستون "+i+'" required>\n            </div>\n            '),c(t,n,a),0!=s.length&&s.modal("refresh")}),n.on("click",function(){a.find("div").length>1&&(e.find("[name=number_of_columns]").val((parseInt(a.find("div:last").attr("data-number"))-1).toString()),a.find("div:last").remove()),c(t,n,a),0!=s.length&&s.modal("refresh")}),i.on("click",function(){var t=1;d.find(".fields").length>0&&(t=(parseInt(d.find(".fields:last").attr("data-number"))+1).toString()),e.find("[name=number_of_parameters]").val(t),d.append('\n            <div class="fields" data-number="'+t+'">\n                <div class="two wide field">\n                    <label class="fw-400">\'id\' پارامتر '+t+'</label>\n                    <input type="text" name="p_id_'+t+'" placeholder="\'p\' in ${p}" style="direction: ltr" required>\n                </div>\n                <div class="three wide field">\n                    <label class="fw-400">نام فارسی پارامتر '+t+'</label>\n                    <input type="text" name="p_name_'+t+'" placeholder="نام فارسی پارامتر '+t+'" required>\n                </div>\n                <div class="two wide field">\n                    <label class="fw-400">نوع پارامتر '+t+'</label>\n                    <select class="ui fluid dropdown" name="p_type_'+t+'" required>\n                        <option value="textbox">Textbox</option>\n                        <option value="dropdown">Dropdown</option>\n                    </select>\n                </div>\n                <div id="p_query" class="seven wide field disabled">\n                    <label class="fw-400">پرس و جوی پارامتر '+t+'</label>\n                    <input type="text" name="p_query_'+t+'" placeholder="SELECT statement for dropdown parameter" style="direction: ltr">\n                </div>\n                <div id="p_query_column" class="two wide field disabled">\n                    <label class="fw-400">\'id\' پرس و جو</label>\n                    <input type="text" name="p_query_column_'+t+'" placeholder="column id" style="direction: ltr">\n                </div>\n            </div>\n            '),d.find(".ui.dropdown").dropdown({onChange:function(e,t,n){"textbox"===e?(n.parents(".field").siblings("#p_query,#p_query_column").removeClass("disabled").addClass("disabled"),n.parents(".field").siblings("#p_query,#p_query_column").find("input").removeAttr("required")):"dropdown"===e&&(n.parents(".field").siblings("#p_query,#p_query_column").removeClass("disabled"),n.parents(".field").siblings("#p_query,#p_query_column").find("input").attr("required","required"))}}),0!=s.length&&s.modal("refresh")}),o.on("click",function(){0!==d.find(".fields").length&&e.find("[name=number_of_parameters]").val((parseInt(d.find(".fields:last").attr("data-number"))-1).toString()),d.find(".fields:last").remove(),0!=s.length&&s.modal("refresh")})}Chart.defaults.global.maintainAspectRatio=!1,Chart.defaults.global.defaultFontFamily="'IRANSans', 'Tahoma', 'Arial', sans-serif",String.prototype.replaceAll=function(e,t){return this.replace(new RegExp(e,"g"),t)};var u=new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");window.$(function(){!function(){if(window.$("#month_year").html((new persianDate).format("MMMM YYYY")),window.$.ajaxSetup({headers:{"X-CSRF-TOKEN":document.head.querySelector('meta[name="csrf-token"]').content}}),function(){var e=window.$(".mobile.menu #sidebar_btn"),t=window.$(".mobile.vertical.menu");e.on("click",function(){t.transition("fade down")}),function(e,t){var n=window.$(t),a=window.$(e+","+t);window.$(document).mouseup(function(e){n.hasClass("hidden")||a.is(e.target)||0!==a.has(e.target).length||n.transition("fade down")})}(".mobile.menu #sidebar_btn",".mobile.vertical.menu"),window.$(".basic.logout.icon.button").on("click",function(){window.$("#logout_form").submit()})}(),n("#p_admin_home")){if(window.$(".computer.menu .basic.icon.button:eq(0)").addClass("blue"),window.$(".vertical.menu a i:eq(0)").removeClass("grey").addClass("blue"),i(".p_number"),window.$(".ui.indicating.progress").progress({label:"ratio",text:{ratio:"{value}/{total}"}}),n("#feedback_chart canvas")){var e={type:"pie",data:feedback_data,options:{tooltips:{enabled:!1},responsive:!0,legend:{display:!1},animation:{animateScale:!0,animateRotate:!0}}},t=window.$("#feedback_chart canvas")[0].getContext("2d");new Chart(t,e)}if(n("#students_chart canvas")){var a={type:"pie",data:students_data,options:{responsive:!0,legend:{position:"bottom",labels:{boxWidth:14,fontSize:14}},tooltips:{displayColors:!1,bodyFontSize:14}}},c=window.$("#students_chart canvas")[0].getContext("2d");new Chart(c,a)}window.$(".unix.date").each(function(e,t){var n=new persianDate(parseInt($(t).html()));$(t).html(n.format("D MMMM"))})}if(n("#p_admin_courses")){window.$(".computer.menu .basic.icon.button:eq(1)").addClass("green"),window.$(".vertical.menu a i:eq(1)").removeClass("grey").addClass("green");var u=window.$(".grey.segment table tr .orange.button"),p=window.$("#edit_course.modal"),f=p.find("form"),_=f.attr("action");u.on("click",function(){var e=$(this).data("id"),t=window.$("#course_"+e);window.$("#edit_course .ui.form").form("reset"),window.$("#edit_course .ui.form .error.message").html(""),f.find("[name=course_name]").val(t.find("td:nth-child(1)").html()),f.find("[name=course_code]").val(t.find("td:nth-child(2)").html()),f.find("[name=units]").val(t.find("td:nth-child(3)").html()),f.find("[name=default_min_capacity_fall]").val(t.find("td:nth-child(4)").html()),f.find("[name=default_min_capacity_spring]").val(t.find("td:nth-child(5)").html()),f.find("[name=category]").val(t.find("td:nth-child(6)").html()),f.find("[name=planned_semester]").val(t.find("td:nth-child(7)").html()),window.$(".ui.dropdown").dropdown(),f.attr("action",_+"/"+e),p.modal({onApprove:function(){return window.$("#edit_course .ui.form").form("is valid")}}).modal("show")}),!0===window.$("#edit_course.modal").data("error")&&p.modal("show");var h=window.$(".grey.segment table tr .red.button"),w=window.$("#delete_course.modal"),g=w.find("table tbody tr"),v=w.find("form"),b=v.attr("action");h.on("click",function(){var e=$(this).data("id"),t=window.$("#course_"+e);g.find("td:nth-child(1)").html(t.find("td:nth-child(1)").html()),g.find("td:nth-child(2)").html(t.find("td:nth-child(2)").html()),g.find("td:nth-child(3)").html(t.find("td:nth-child(3)").html()),v.attr("action",b+"/"+e),w.modal("show")}),window.$("#p_admin_courses .ui.form").form({fields:{course_name:{identifier:"course_name",rules:[{type:"empty",prompt:"لطفا نام درس را وارد کنید"}]},course_code:{identifier:"course_code",rules:[{type:"empty",prompt:"کد درس را وارد کنید"},{type:"integer",prompt:"کد درس باید به شکل عددی باشد"}]},units:{identifier:"units",rules:[{type:"empty",prompt:"تعداد واحد های درس را وارد کنید"},{type:"integer",prompt:"تعداد واحد های درس باید به شکل عددی باشد"},{type:"exactLength[1]",prompt:"تعداد واحد های درس باید 1 کاراکتر باشد"}]},default_min_capacity_fall:{identifier:"default_min_capacity_fall",rules:[{type:"empty",prompt:"حداقل ظرفیت پاییز را وارد کنید"},{type:"integer",prompt:"حداقل ظرفیت پاییز باید به شکل عددی باشد"},{type:"maxLength[2]",prompt:"حداقل ظرفیت پاییز باید حداکثر 2 کاراکتر باشد"}]},default_min_capacity_spring:{identifier:"default_min_capacity_spring",rules:[{type:"empty",prompt:"حداقل ظرفیت بهار را وارد کنید"},{type:"integer",prompt:"حداقل ظرفیت بهار باید به شکل عددی باشد"},{type:"maxLength[2]",prompt:"حداقل ظرفیت بهار باید حداکثر 2 کاراکتر باشد"}]},category:{identifier:"category",rules:[{type:"empty",prompt:"لطفا دسته بندی درس مورد نظر را انتخاب کنید"}]}}}),window.$("#edit_course .ui.form").form({fields:{course_name:{identifier:"course_name",rules:[{type:"empty",prompt:"لطفا نام درس را وارد کنید"}]},course_code:{identifier:"course_code",rules:[{type:"empty",prompt:"کد درس را وارد کنید"},{type:"integer",prompt:"کد درس باید به شکل عددی باشد"}]},units:{identifier:"units",rules:[{type:"empty",prompt:"تعداد واحد های درس را وارد کنید"},{type:"integer",prompt:"تعداد واحد های درس باید به شکل عددی باشد"},{type:"exactLength[1]",prompt:"تعداد واحد های درس باید 1 کاراکتر باشد"}]},default_min_capacity_fall:{identifier:"default_min_capacity_fall",rules:[{type:"empty",prompt:"حداقل ظرفیت پاییز را وارد کنید"},{type:"integer",prompt:"حداقل ظرفیت پاییز باید به شکل عددی باشد"},{type:"maxLength[2]",prompt:"حداقل ظرفیت پاییز باید حداکثر 2 کاراکتر باشد"}]},default_min_capacity_spring:{identifier:"default_min_capacity_spring",rules:[{type:"empty",prompt:"حداقل ظرفیت بهار را وارد کنید"},{type:"integer",prompt:"حداقل ظرفیت بهار باید به شکل عددی باشد"},{type:"maxLength[2]",prompt:"حداقل ظرفیت بهار باید حداکثر 2 کاراکتر باشد"}]},category:{identifier:"category",rules:[{type:"empty",prompt:"لطفا دسته بندی درس مورد نظر را انتخاب کنید"}]}}}),window.$(".ui.dropdown").dropdown(),n(".grey.segment .message")&&(window.$(".grey.segment .message .close").on("click",function(){$(this).closest(".message").transition("fade")}),setTimeout(function(){window.$(".grey.segment .message").hasClass("hidden")||window.$(".grey.segment .message").transition("fade")},4e3))}if(n("#p_admin_instructors")){window.$(".computer.menu .basic.icon.button:eq(2)").addClass("violet"),window.$(".vertical.menu a i:eq(2)").removeClass("grey").addClass("violet");var y=window.$(".grey.segment table tr .orange.button"),k=window.$("#edit_instructor.modal"),C=k.find("form"),x=C.attr("action");y.on("click",function(){var e=$(this).data("id"),t=window.$("#instructor_"+e);window.$("#edit_instructor .ui.form").form("reset"),window.$("#edit_instructor .ui.form .error.message").html(""),C.find("[name=instructor_name]").val(t.find("td:nth-child(1)").html()),C.find("[name=sex]").val(t.find("td:nth-child(2)").html()),""!==t.find("td:nth-child(3) a").html()&&C.find("[name=profile_link]").val(t.find("td:nth-child(3) a").html()),window.$(".ui.dropdown").dropdown(),C.attr("action",x+"/"+e),k.modal({onApprove:function(){return window.$("#edit_instructor .ui.form").form("is valid")}}).modal("show")}),!0===window.$("#edit_instructor.modal").data("error")&&k.modal("show");var q=window.$(".grey.segment table tr .red.button"),D=window.$("#delete_instructor.modal"),Y=D.find("table tbody tr"),S=D.find("form"),T=S.attr("action");q.on("click",function(){var e=$(this).data("id"),t=window.$("#instructor_"+e);Y.find("td:nth-child(1)").html(t.find("td:nth-child(1)").html()),Y.find("td:nth-child(2)").html(t.find("td:nth-child(2)").html()),Y.find("td:nth-child(3)").html(t.find("td:nth-child(3)").html()),Y.find("td:nth-child(4)").html(t.find("td:nth-child(4)").html()),S.attr("action",T+"/"+e),D.modal("show")}),window.$("#p_admin_instructors .ui.form").form({fields:{instructor_name:{identifier:"instructor_name",rules:[{type:"empty",prompt:"لطفا نام استاد را وارد کنید."}]},sex:{identifier:"sex",rules:[{type:"empty",prompt:"لطفا جنسیت استاد را انتخاب کنید."}]},profile_link:{identifier:"profile_link",rules:[]},photo:{identifier:"photo",rules:[]}}}),window.$("#edit_instructor .ui.form").form({fields:{instructor_name:{identifier:"instructor_name",rules:[{type:"empty",prompt:"لطفا نام استاد را وارد کنید."}]},sex:{identifier:"sex",rules:[{type:"empty",prompt:"لطفا جنسیت استاد را انتخاب کنید."}]},profile_link:{identifier:"profile_link",rules:[]},photo:{identifier:"photo",rules:[]}}}),window.$(".ui.dropdown").dropdown(),n(".grey.segment .message")&&(window.$(".grey.segment .message .close").on("click",function(){$(this).closest(".message").transition("fade")}),setTimeout(function(){window.$(".grey.segment .message").hasClass("hidden")||window.$(".grey.segment .message").transition("fade")},4e3))}if(n("#p_admin_semesters")){window.$(".computer.menu .basic.icon.button:eq(3)").addClass("brown"),window.$(".vertical.menu a i:eq(3)").removeClass("grey").addClass("brown");var I=window.$(".grey.segment table tr .orange.button"),M=window.$("#edit_semester.modal"),z=M.find("form"),A=z.attr("action");I.on("click",function(){var e=$(this).data("id"),t=window.$("#semester_"+e);window.$("#edit_semester .ui.form").form("reset"),window.$("#edit_semester .ui.form .error.message").html(""),z.find("[name=semester]").val(t.find("td:nth-child(1)").html()),z.find("[name=year]").val(t.find("td:nth-child(2)").html()),window.$(".ui.dropdown").dropdown(),z.attr("action",A+"/"+e),M.modal({onApprove:function(){return window.$("#edit_semester .ui.form").form("is valid")}}).modal("show")}),!0===window.$("#edit_semester.modal").data("error")&&M.modal("show");var j=window.$(".grey.segment table tr .red.button"),F=window.$("#delete_semester.modal"),H=F.find("table tbody tr"),E=F.find("form"),L=E.attr("action");j.on("click",function(){var e=$(this).data("id"),t=window.$("#semester_"+e);H.find("td:nth-child(1)").html(t.find("td:nth-child(1)").html()),H.find("td:nth-child(2)").html(t.find("td:nth-child(2)").html()),E.attr("action",L+"/"+e),F.modal("show")}),window.$("#p_admin_semesters .ui.form").form({fields:{semester:{identifier:"semester",rules:[{type:"empty",prompt:"لطفا نوبت ترم را انتخاب کنید."}]},year:{identifier:"year",rules:[{type:"empty",prompt:"لطفا سال ترم را وارد کنید."},{type:"number",prompt:"سال ترم باید به شکل عددی باشد."},{type:"exactLength[4]",prompt:"سال ترم باید 4 رقم داشته باشد."}]}}}),window.$("#edit_semester .ui.form").form({fields:{semester:{identifier:"semester",rules:[{type:"empty",prompt:"لطفا نوبت ترم را انتخاب کنید."}]},year:{identifier:"year",rules:[{type:"empty",prompt:"لطفا سال ترم را وارد کنید."},{type:"number",prompt:"سال ترم باید به شکل عددی باشد."},{type:"exactLength[4]",prompt:"سال ترم باید 4 رقم داشته باشد."}]}}}),window.$(".ui.dropdown").dropdown(),n(".grey.segment .message")&&(window.$(".grey.segment .message .close").on("click",function(){$(this).closest(".message").transition("fade")}),setTimeout(function(){window.$(".grey.segment .message").hasClass("hidden")||window.$(".grey.segment .message").transition("fade")},4e3))}if(n("#p_admin_semester_courses")&&(window.$(".computer.menu .basic.icon.button:eq(3)").addClass("brown"),window.$(".vertical.menu a i:eq(3)").removeClass("grey").addClass("brown"),window.$(".ui.checkbox").checkbox({onChecked:function(){$(this).parents("tr").find(".ui.input").removeClass("disabled")},onUnchecked:function(){$(this).parents("tr").find(".ui.input").addClass("disabled")}}),window.$("#select_all").on("click",function(){window.$(".ui.checkbox").checkbox("check")}),window.$("#deselect_all").on("click",function(){window.$(".ui.checkbox").checkbox("uncheck")}),window.$("#submit_changes").on("click",function(){for(var e=window.$("tbody tr"),t=[],n=0;n<e.length;n++){var a=e[n].id;t.push({id:a,checked:window.$("#"+a+" .ui.checkbox").checkbox("is checked"),min_capacity:window.$("#"+a+" .ui.input input").val()})}window.$.ajax({url:document.location.href+"/updatecourses",type:"POST",data:JSON.stringify(t),contentType:"application/json",success:function(e,t,n){window.location=window.$(".ui.breadcrumb a").attr("href")},error:function(e,t,n){}})})),n("#p_admin_students")){window.$(".computer.menu .basic.icon.button:eq(4)").addClass("teal"),window.$(".vertical.menu a i:eq(4)").removeClass("grey").addClass("teal");var V=window.$(".grey.segment table tr .red.button"),O=window.$("#delete_student.modal"),G=O.find("table tbody tr"),N=O.find("form"),P=N.attr("action");V.on("click",function(){var e=$(this).data("id"),t=window.$("#student_"+e);G.find("td:nth-child(1)").html(t.find("td:nth-child(1)").html()),G.find("td:nth-child(2)").html(t.find("td:nth-child(2)").html()),G.find("td:nth-child(3)").html(t.find("td:nth-child(3)").html()),G.find("td:nth-child(4)").html(t.find("td:nth-child(4)").html()),G.find("td:nth-child(5)").html(t.find("td:nth-child(5)").html()),N.attr("action",P+"/"+e),O.modal("show")}),n(".grey.segment .message")&&(window.$(".grey.segment .message .close").on("click",function(){$(this).closest(".message").transition("fade")}),setTimeout(function(){window.$(".grey.segment .message").hasClass("hidden")||window.$(".grey.segment .message").transition("fade")},4e3))}if(n("#p_admin_student_courses")&&(window.$(".computer.menu .basic.icon.button:eq(4)").addClass("teal"),window.$(".vertical.menu a i:eq(4)").removeClass("grey").addClass("teal"),window.$(".menu .item").tab()),n("#p_admin_reports")){window.$(".computer.menu .basic.icon.button:eq(5)").addClass("red"),window.$(".vertical.menu a i:eq(5)").removeClass("grey").addClass("red");var W=window.$(".blue.segment .basic.query.label .green.icon.button"),R=window.$("#query_view"),J=window.$("#query_result.modal");W.on("click",function(){var e=$(this).attr("data-id"),t=$(this).parent().siblings(".dimmer");t.dimmer("toggle"),window.$.ajax({url:document.location.origin+"/admin/query/"+e,type:"get",success:function(e,n,a){R.html(e),R.find(".ui.dropdown").dropdown(),R.find("form").on("submit",function(){var e=$(this).attr("action"),t=$(this).serializeArray(),n=$(this).find(".dimmer");return n.dimmer("toggle"),window.$.ajax({url:e,type:"post",data:t,success:function(e,t,a){J.find(".scrolling.content").html(e),J.modal("show"),n.dimmer("toggle")},error:function(e,t,a){n.dimmer("toggle")}}),!1}),t.dimmer("toggle")},error:function(e,n,a){t.dimmer("toggle")}})});var K=window.$(".blue.segment .basic.query.label .red.icon.button"),U=window.$("#delete_query.modal");K.on("click",function(){var e=$(this).attr("data-id"),t=$(this).parent().siblings("span").find("span").html();U.find(".content span span").html(t);var n=document.location.origin+"/admin/query/"+e;U.find("form").attr("action",n),U.modal("show")}),U.modal({onApprove:function(){U.find("form").submit()}});var X=window.$(".blue.segment .basic.query.label .orange.icon.button"),B=window.$("#edit_query.modal");X.on("click",function(){var e=$(this).attr("data-id"),t=$(this).parent().siblings(".dimmer");t.dimmer("toggle"),window.$.ajax({url:document.location.origin+"/admin/query/"+e+"/edit",type:"get",success:function(n,a,i){B.find(".content").html(n);var o=B.find("form"),d=B.find("#add_column"),s=B.find("#remove_column"),r=B.find("#query_columns"),l=B.find("#add_parameter"),c=B.find("#remove_parameter"),u=B.find("#parameters");u.find(".ui.dropdown").dropdown({onChange:function(e,t,n){"textbox"===e?(n.parents(".field").siblings("#p_query,#p_query_column").removeClass("disabled").addClass("disabled"),n.parents(".field").siblings("#p_query,#p_query_column").find("input").removeAttr("required")):"dropdown"===e&&(n.parents(".field").siblings("#p_query,#p_query_column").removeClass("disabled"),n.parents(".field").siblings("#p_query,#p_query_column").find("input").attr("required","required"))}});var p=document.location.origin+"/admin/query/"+e;o.attr("action",p),B.modal({onApprove:function(){var e=!1;if(o.find("input,select").each(function(t,n){$(n)[0].checkValidity()||(e=!1)}),!e)return o.find("input[type=submit]").click(),!1;o.submit()}}),B.modal("show"),m(o,d,s,r,l,c,u,B),t.dimmer("toggle")},error:function(e,n,a){t.dimmer("toggle")}})}),n(".message.session")&&(window.$(".message.session .close").on("click",function(){$(this).closest(".message").transition("fade")}),setTimeout(function(){window.$(".message.session").hasClass("hidden")||window.$(".message.session").transition("fade")},4e3))}if(n("#p_admin_query_builder")){window.$(".computer.menu .basic.icon.button:eq(5)").addClass("red"),window.$(".vertical.menu a i:eq(5)").removeClass("grey").addClass("red"),m(window.$("#create_query"),window.$("#create_query #add_column"),window.$("#create_query #remove_column"),window.$("#create_query #query_columns"),window.$("#create_query #add_parameter"),window.$("#create_query #remove_parameter"),window.$("#create_query #parameters"));var Q=window.$("#create_query #view_database"),Z=window.$("#database_map.modal");Q.on("click",function(){Z.modal("show")}),n(".message.session")&&(window.$(".message.session .close").on("click",function(){$(this).closest(".message").transition("fade")}),setTimeout(function(){window.$(".message.session").hasClass("hidden")||window.$(".message.session").transition("fade")},4e3))}if(n("#p_admin_scheduling")){window.$(".computer.menu .basic.icon.button:eq(6)").addClass("orange"),window.$(".vertical.menu a i:eq(6)").removeClass("grey").addClass("orange");var ee=window.$("#add_schedule.modal"),te=ee.find(".actions .orange.right.labeled.icon.button"),ne=window.$("#add_schedule.modal .actions .blue.labeled.icon.button"),ae=window.$("#add_schedule.modal .scrolling.content #course_groups"),ie=ae.find(".top.attached.menu .left.menu"),oe=ee.find(".actions .positive.right.labeled.icon.button"),de=window.$("#p_admin_scheduling").attr("data-stage");if(-1!==window.$.inArray(de,["1st","2nd"])){var se=window.$("#courses.modal");window.$("#add_to_schedule_btn.large.labeled.icon.button").on("click",function(){se.modal("show")});var re=window.$(".ui.course.card");re.on("click",function(){var e=$(this).attr("data-id"),t=$(this).find(".ui.inverted.dimmer");if(ee.find("#course_info .top.attached.tabular.menu a").removeClass("active"),ee.find("#course_info .top.attached.tabular.menu a:first").addClass("active"),ee.find("#course_info .bottom.attached.tab.segment").removeClass("active"),ee.find("#course_info .bottom.attached.tab.segment:first").addClass("active"),ne.show(),"notscheduled"===$(this).attr("data-state")){oe.find("span").html("ثبت در برنامه"),oe.find("i").removeClass("write").addClass("checkmark"),te.hide(),ie.find("a.new").remove(),ie.find("a:first-child").removeClass("active").addClass("active"),ae.find(".top.attached.menu .right.menu .red.labeled.icon.button").addClass("disabled"),ae.find(".bottom.attached.tab.segment.new").remove(),ae.find(".bottom.attached.tab.segment").removeClass("active").addClass("active"),window.$("#add_schedule.modal .scrolling.content form").form("clear"),i("#add_schedule.modal .scrolling.content .menu .item"),window.$("#add_schedule.modal .scrolling.content .menu .item").tab(),window.$("#add_schedule.modal .scrolling.content .ui.dropdown").dropdown(),ae.find(".bottom.attached.tab.segment form input[name=course_id]").val(e),ae.find(".bottom.attached.tab.segment form input[name=group_number]").val(1);var n=window.$("#add_schedule.modal .scrolling.content .tab.segment .block.preview"),a=randomColor();n.css("background-color",a),n.siblings("input").val(a),n.on("click",function(){a=randomColor(),$(this).css("background-color",a),$(this).siblings("input").val(a)}),n.html($(this).find(".content .header").html()),window.$("#add_schedule.modal .scrolling.content input.timepicker").timepicker({timeFormat:"HH:mm:ss",interval:15,minTime:"08:00",maxTime:"20:00",dynamic:!1,dropdown:!0,scrollbar:!0}),window.$("#add_schedule.modal .scrolling.content input[name=exam_date]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#add_schedule.modal .scrolling.content form:eq(0) input[name=exam_date_unix]",toolbox:{enabled:!1}}),t.dimmer("toggle"),window.$.ajax({url:document.location.origin+"/admin/scheduling/"+e+"/information",type:"GET",success:function(e,n,a){for(var i=e.instructors_info,o="",d=0;d<i.length;d++)null===i[d].photo&&("مرد"===i[d].sex?i[d].photo="instructor_photos/img_male.png":i[d].photo="instructor_photos/img_female.png"),o+='\n                            <div class="row">\n                                <div class="photo" data-tooltip="'+i[d].name+'" data-position="right center">\n                                    <img class="ui mini circular image" src="/storage/'+i[d].photo+'">\n                                </div>\n                                <div class="progress">\n                                    <div class="ui indicating progress" data-value="'+i[d].votes+'" data-total="'+i[0].votes+'">\n                                        <div class="bar"></div>\n                                    </div>\n                                </div>\n                                <div class="votes">\n                                    '+i[d].votes+"\n                                </div>\n                            </div>\n                        ";""!==o?(window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors").html(o),window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors .progress").progress()):window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors").html("برای این درس استادی پیشنهاد نشده است.");for(var s=e.course_conflicts,r="",l=0;l<s.length;l++)r+="<tr><td>"+(l+1)+"</td><td>"+s[l].code+"</td><td>"+s[l].name+"</td><td>"+s[l].count+"</td></tr>";""!==r?window.$("#add_schedule.modal .scrolling.content table.conflicts tbody").html(r):window.$("#add_schedule.modal .scrolling.content table.conflicts tbody").html('<tr><td colspan="4">برای این درس تداخلی وجود ندارد.</td></tr>');for(var c=e.course_students,m="",u=0;u<c.length;u++)m+="<tr><td>"+(u+1)+"</td><td>"+c[u].first_name+"</td><td>"+c[u].last_name+"</td><td>"+c[u].student_id+"</td><td>"+c[u].entry_year+"</td></tr>";""!==m?window.$("#add_schedule.modal .scrolling.content table.students tbody").html(m):window.$("#add_schedule.modal .scrolling.content table.students tbody").html('<tr><td colspan="5">دانشجویی این درس را اخذ نکرده است.</td></tr>'),t.dimmer("toggle"),ee.modal("show")},error:function(e,t,n){}})}else t.dimmer("toggle"),window.$.ajax({url:document.location.origin+"/admin/scheduling/"+e+"/information",type:"GET",success:function(e,n,a){ie.find("a.new").remove();var o=ie.find("a:first-child");o.removeClass("active").addClass("active"),ae.find(".top.attached.menu .right.menu .red.labeled.icon.button").addClass("disabled"),ae.find(".bottom.attached.tab.segment.new").remove();var s=ae.find(".bottom.attached.tab.segment");s.removeClass("active").addClass("active");for(var r=e.schedule_info,l=0;l<r.length;l++)if(0==l){s.find("form").form("clear"),s.find("form input[name=course_id]").val(r[l].course_id),s.find("form input[name=group_number]").val(r[l].group_number),s.find("form select[name=instructor_id]").val(r[l].instructor_id),s.find("form input[name=course_color]").val(r[l].course_color),s.find("form select[name=weekday_1]").val(r[l].weekday_1),s.find("form input[name=classroom_1]").val(r[l].classroom_1),s.find("form input[name=start_time_1]").val(r[l].start_time_1),s.find("form input[name=end_time_1]").val(r[l].end_time_1),s.find("form select[name=weekday_2]").val(r[l].weekday_2),s.find("form input[name=classroom_2]").val(r[l].classroom_2),s.find("form input[name=start_time_2]").val(r[l].start_time_2),s.find("form input[name=end_time_2]").val(r[l].end_time_2),s.find("form input[name=exam_time]").val(r[l].exam_time);var c=s.find(".block.preview");c.html(r[l].course_name),c.css("background-color",r[l].course_color),c.on("click",function(){random_color=randomColor(),$(this).css("background-color",random_color),$(this).siblings("input").val(random_color)});var m=s.find("form input[name=exam_date]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#add_schedule.modal .scrolling.content form:eq("+(parseInt(r[l].group_number)-1).toString()+") input[name=exam_date_unix]",toolbox:{enabled:!1}});null!==r[l].exam_date_unix&&m.setDate(parseInt(r[l].exam_date_unix))}else{var u=o.clone().removeClass("active").addClass("new");u.attr("data-tab",(l+1).toString()),u.html("گروه "+(l+1).toString()),ie.append(u),ae.find(".top.attached.menu .right.menu .red.labeled.icon.button").removeClass("disabled");var p=s.clone().removeClass("active").addClass("new");p.attr("data-tab",(l+1).toString()),p.find("form").form("clear"),p.find("form input[name=course_id]").val(r[l].course_id),p.find("form input[name=group_number]").val(r[l].group_number),p.find("form select[name=instructor_id]").val(r[l].instructor_id),p.find("form input[name=course_color]").val(r[l].course_color),p.find("form select[name=weekday_1]").val(r[l].weekday_1),p.find("form input[name=classroom_1]").val(r[l].classroom_1),p.find("form input[name=start_time_1]").val(r[l].start_time_1),p.find("form input[name=end_time_1]").val(r[l].end_time_1),p.find("form select[name=weekday_2]").val(r[l].weekday_2),p.find("form input[name=classroom_2]").val(r[l].classroom_2),p.find("form input[name=start_time_2]").val(r[l].start_time_2),p.find("form input[name=end_time_2]").val(r[l].end_time_2),p.find("form input[name=exam_time]").val(r[l].exam_time);var f=p.find(".block.preview");f.html(r[l].course_name),f.css("background-color",r[l].course_color),f.on("click",function(){random_color=randomColor(),$(this).css("background-color",random_color),$(this).siblings("input").val(random_color)});var _=p.find("form input[name=exam_date]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#add_schedule.modal .scrolling.content form:eq("+(parseInt(r[l].group_number)-1).toString()+") input[name=exam_date_unix]",toolbox:{enabled:!1}});null!==r[l].exam_date_unix&&_.setDate(parseInt(r[l].exam_date_unix)),ae.append(p)}window.$("#add_schedule.modal .scrolling.content .menu .item").tab(),window.$("#add_schedule.modal .scrolling.content .ui.dropdown").dropdown(),window.$("#add_schedule.modal .scrolling.content input.timepicker").timepicker({timeFormat:"HH:mm:ss",interval:15,minTime:"08:00",maxTime:"20:00",dynamic:!1,dropdown:!0,scrollbar:!0}),i("#add_schedule.modal .scrolling.content .menu .item");for(var h=e.instructors_info,w="",g=0;g<h.length;g++)null===h[g].photo&&("مرد"===h[g].sex?h[g].photo="instructor_photos/img_male.png":h[g].photo="instructor_photos/img_female.png"),w+='\n                            <div class="row">\n                                <div class="photo" data-tooltip="'+h[g].name+'" data-position="right center">\n                                    <img class="ui mini circular image" src="/storage/'+h[g].photo+'">\n                                </div>\n                                <div class="progress">\n                                    <div class="ui indicating progress" data-value="'+h[g].votes+'" data-total="'+h[0].votes+'">\n                                        <div class="bar"></div>\n                                    </div>\n                                </div>\n                                <div class="votes">\n                                    '+h[g].votes+"\n                                </div>\n                            </div>\n                        ";""!==w?(window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors").html(w),window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors .progress").progress()):window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors").html("برای این درس استادی پیشنهاد نشده است.");for(var v=e.course_conflicts,b="",y=0;y<v.length;y++)b+="<tr><td>"+(y+1)+"</td><td>"+v[y].code+"</td><td>"+v[y].name+"</td><td>"+v[y].count+"</td></tr>";""!==b?window.$("#add_schedule.modal .scrolling.content table.conflicts tbody").html(b):window.$("#add_schedule.modal .scrolling.content table.conflicts tbody").html('<tr><td colspan="4">برای این درس تداخلی وجود ندارد.</td></tr>');for(var k=e.course_students,C="",x=0;x<k.length;x++)C+="<tr><td>"+(x+1)+"</td><td>"+k[x].first_name+"</td><td>"+k[x].last_name+"</td><td>"+k[x].student_id+"</td><td>"+k[x].entry_year+"</td></tr>";if(""!==C?window.$("#add_schedule.modal .scrolling.content table.students tbody").html(C):window.$("#add_schedule.modal .scrolling.content table.students tbody").html('<tr><td colspan="5">دانشجویی این درس را اخذ نکرده است.</td></tr>'),"2nd"===de){var q=e.course_evaluation;if(q.length>0){ee.find("#course_info .top.attached.tabular.menu").append('\n                                    <a class="item fw-400" data-tab="evaluations">درخواست های دانشجویان</a>\n                                ');var D="";D+='<div class="ui bottom attached tab segment" data-tab="evaluations"><div class="ui text container">';for(var Y=0;Y<q.length;Y++)if(D+='\n                                    <div class="ui fluid inverted card">\n                                        <div class="ui inverted dimmer">\n                                            <div class="ui loader"></div>\n                                        </div>\n                                        <div class="content">\n                                            <div class="ui divided selection list">\n                                    ',null!==q[Y].suggested_weekday_1&&(D+='\n                                        <a class="item">\n                                            <div class="ui blue large horizontal label fw-400" style="padding: 1rem">تغییر جلسه اول</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>از </span>\n                                                <span>'+d(q[Y].weekday_1)+'</span>\n                                                <span class="p_number">'+q[Y].start_time_1.substr(0,5)+'</span><span> تا </span><span class="p_number">'+q[Y].end_time_1.substr(0,5)+"</span>\n                                                <span> به </span>\n                                                <span>"+d(q[Y].suggested_weekday_1)+'</span>\n                                                <span class="p_number">'+q[Y].suggested_start_time_1.substr(0,5)+'</span><span> تا </span><span class="p_number">'+q[Y].suggested_end_time_1.substr(0,5)+'</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">دلیل</div>\n                                                    <span style="line-height: 2rem">'+q[Y].suggestion_reason_1+"</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        "),null!==q[Y].suggested_weekday_2&&(D+='\n                                        <a class="item">\n                                            <div class="ui blue large horizontal label fw-400" style="padding: 1rem">تغییر جلسه اول</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>از </span>\n                                                <span>'+d(q[Y].weekday_2)+'</span>\n                                                <span class="p_number">'+q[Y].start_time_2.substr(0,5)+'</span><span> تا </span><span class="p_number">'+q[Y].end_time_2.substr(0,5)+"</span>\n                                                <span> به </span>\n                                                <span>"+d(q[Y].suggested_weekday_2)+'</span>\n                                                <span class="p_number">'+q[Y].suggested_start_time_2.substr(0,5)+'</span><span> تا </span><span class="p_number">'+q[Y].suggested_end_time_2.substr(0,5)+'</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">دلیل</div>\n                                                    <span style="line-height: 2rem">'+q[Y].suggestion_reason_2+"</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        "),null!==q[Y].suggested_exam_date&&(D+='\n                                        <a class="item">\n                                            <div class="ui red large horizontal label fw-400" style="padding: 1rem">تغییر امتحان</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>از </span>\n                                                <span>'+q[Y].exam_date+'</span>\n                                                <span> ساعت </span><span class="p_number">'+q[Y].exam_time.substr(0,5)+"</span>\n                                                <span> به </span>\n                                                <span>"+q[Y].suggested_exam_date+'</span>\n                                                <span> ساعت </span><span class="p_number">'+q[Y].suggested_exam_time.substr(0,5)+'</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">دلیل</div>\n                                                    <span style="line-height: 2rem">'+q[Y].exam_suggestion_reason+"</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        "),D+="</div></div>","public"===q[Y].privacy){var S="",T="";q[Y].upvotes>0&&(S=" blue-color"),q[Y].downvotes<0&&(T=" red-color"),D+='\n                                            <div class="extra content">\n                                                <div class="left floated'+S+'" style="direction: ltr">\n                                                    <i class="thumbs outline up big icon"></i>\n                                                    <span>'+q[Y].upvotes+'</span>\n                                                </div>\n                                                <div class="right floated'+T+'" style="direction: ltr">\n                                                    <i class="thumbs outline down big icon"></i>\n                                                    <span>'+q[Y].downvotes+"</span>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        "}else D+='\n                                            <div class="extra content" style="text-align: center">\n                                                <span>درخواست شخصی</span>\n                                            </div>\n                                        </div>\n                                        ';D+="</div></div>",ee.find("#course_info").append(D),ee.find("#course_info .menu .item").tab(),i(".p_number")}}oe.find("span").html("ویرایش برنامه"),oe.find("i").removeClass("checkmark").addClass("write"),te.show(),t.dimmer("toggle"),ee.modal("show")},error:function(e,t,n){}})}),re.hover(function(){"scheduled"===$(this).attr("data-state")?$(this).find(".right.corner.label i").transition("flash"):$(this).find(".right.corner.label i").addClass("checkmark")},function(){"notscheduled"===$(this).attr("data-state")&&$(this).find(".right.corner.label i").removeClass("checkmark")}),ae.find(".top.attached.menu .right.menu .green.labeled.icon.button").on("click",function(){var e=ie.find("a:last-child").clone().removeClass("active").addClass("new"),t=parseInt(e.attr("data-tab"));e.html("گروه "+(t+1).toString()),e.attr("data-tab",(t+1).toString()),ie.append(e),ae.find(".top.attached.menu .right.menu .red.labeled.icon.button").removeClass("disabled");var n=ae.find(".bottom.attached.tab.segment:last-child").clone().removeClass("active").addClass("new");n.attr("data-tab",(t+1).toString());var a=n.find("form input[name=course_id]").val();n.find("form").form("clear"),n.find("form input[name=course_id]").val(a),n.find("form input[name=group_number]").val((t+1).toString()),ae.append(n),ie.find("a").removeClass("active"),ie.find("a:last-child").addClass("active"),ae.find(".bottom.attached.tab.segment").removeClass("active"),ae.find(".bottom.attached.tab.segment:last-child").addClass("active"),window.$("#add_schedule.modal .scrolling.content .menu .item").tab(),n.find(".ui.dropdown").dropdown();var d=n.find(".block.preview");d.siblings("input").val(function(e){return e=e.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/),"#"+o(e[1])+o(e[2])+o(e[3])}(d.css("background-color"))),d.on("click",function(){var e=randomColor();$(this).css("background-color",e),$(this).siblings("input").val(e)}),i("#add_schedule.modal .scrolling.content .menu .item"),window.$("#add_schedule.modal .scrolling.content input.timepicker").timepicker({timeFormat:"HH:mm:ss",interval:15,minTime:"08:00",maxTime:"20:00",dynamic:!1,dropdown:!0,scrollbar:!0}),window.$("#add_schedule.modal .scrolling.content input[name=exam_date]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#add_schedule.modal .scrolling.content form:eq("+t.toString()+") input[name=exam_date_unix]",toolbox:{enabled:!1}})}),ae.find(".top.attached.menu .right.menu .red.labeled.icon.button").on("click",function(){ie.find("a.new:last").remove(),n(ie.find("a.new:last"))?ie.find("a.new:last").addClass("active"):(ie.find("a:first").addClass("active"),ae.find(".top.attached.menu .right.menu .red.labeled.icon.button").addClass("disabled")),ae.find(".bottom.attached.tab.segment.new:last").remove(),n(ae.find(".bottom.attached.tab.segment.new:last"))?ae.find(".bottom.attached.tab.segment.new:last").addClass("active"):ae.find(".bottom.attached.tab.segment:first").addClass("active")}),ne.on("click",function(){ee.find("#course_info .top.attached.tabular.menu a[data-tab=evaluations]").remove(),ee.find("#course_info .bottom.attached.tab.segment[data-tab=evaluations]").remove(),se.modal("show")}),ee.modal({onApprove:function(){var e=[],t=!0;if(ae.find("form").each(function(n,a){$(a).form({fields:{instructor_id:"empty",weekday_1:"empty",start_time_1:"empty",end_time_1:"empty"}}),$(a).form("is valid")?($(a).removeClass("error"),$(a).find(".field").removeClass("error")):($(a).submit(),t=!1);for(var i=$(a).serializeArray(),o={},d=0;d<i.length;d++)o[[i[d].name]]=i[d].value;e[n]=o}),!t)return!1;window.$.ajax({url:document.location.origin+"/admin/scheduling/store",type:"POST",data:JSON.stringify(e),contentType:"application/json",success:function(e,t,n){document.location=document.location.origin+"/admin/scheduling"},error:function(e,t,n){document.location=document.location.origin+"/admin/scheduling"}})}}),te.on("click",function(){var e=ae.find("form:first input[name=course_id]").val();window.$.ajax({url:document.location.origin+"/admin/scheduling/"+e+"/destroy",type:"POST",success:function(e,t,n){document.location=document.location.origin+"/admin/scheduling/"},error:function(e,t,n){document.location=document.location.origin+"/admin/scheduling"}})});var le=window.$("#evaluation_sessions.modal");le.find("#add_session").on("click",function(){var e=le.find("[id^=session_]:last").attr("data-number");e=(parseInt(e)+1).toString(),le.find("table tbody").append('\n                <tr id="session_'+e+'" data-number="'+e+'">\n                    <td class="collapsing">\n                        <div class="ui toggle checkbox" style="display: block;">\n                            <input name="session_enable" type="radio" value="'+e+'">\n                            <label style="padding-right: 3.5rem;"></label>\n                        </div>\n                    </td>\n                    <td>مرحله <span class="p_number">'+e+'</span>\n                        <input type="hidden" name="session_number_'+e+'" value="'+e+'">\n                    </td>\n                    <td>\n                        <div class="fluid field">\n                            <input type="text" name="start_date_p_'+e+'" placeholder="تاریخ شروع" style="text-align: center">\n                            <input type="hidden" name="start_date_'+e+'">\n                        </div>\n                    </td>\n                    <td>\n                        <div class="fluid field">\n                            <input type="text" name="end_date_p_'+e+'" placeholder="تاریخ پایان" style="text-align: center">\n                            <input type="hidden" name="end_date_'+e+'">\n                        </div>\n                    </td>\n                </tr>\n                '),le.find("table tbody input[name=number_of_sessions]").val(e),le.find("#remove_session").removeClass("disabled"),l(le)}),l(le),le.find("#remove_session").on("click",function(){var e=le.find("[id^=session_]");if(e.length>1){2===e.length&&$(this).addClass("disabled"),le.find("table tbody input[name=number_of_sessions]").val(e.length-1);var t=le.find("[id^=session_]:last");t.find("input[name=session_enable]").is(":checked")&&le.find("[id^=session_]:eq("+(e.length-2).toString()+") .ui.toggle.checkbox").checkbox("check"),t.remove()}}),window.$("#evaluation_sessions_btn.labeled.button").on("click",function(){le.modal("show")}),le.modal({onApprove:function(){for(var e=parseInt(le.find("form input[name=number_of_sessions]").val()),t={},n=0;n<e;n++)t["start_date_p_"+(n+1)]="empty",t["start_date_"+(n+1)]="empty",t["end_date_p_"+(n+1)]="empty",t["end_date_"+(n+1)]="empty";if(le.find("form").form({fields:t}),!le.find("form").form("is valid"))return le.find("form").submit(),!1;le.find("form").submit()},onDeny:function(){document.location=document.location.origin+"/admin/scheduling"}})}var ce={top_offset:window.$("#schedule_table table")[0].offsetTop,header_h:window.$("#schedule_table table thead tr")[0].offsetHeight,tblock_h:window.$("#schedule_table table tbody tr")[0].offsetHeight/2,timecol_w:window.$("#schedule_table table tbody tr td:first-child")[0].offsetWidth,weekday_w:window.$("#schedule_table table thead tr th:last-child")[0].offsetWidth};!function(e,t,n,a,o,r,l,c,m){var u={saturday:[],sunday:[],monday:[],tuesday:[],wednesday:[]};e.html("");for(var p=0;p<schedule_data.length;p++)!function(e,t,n,a,i,o,d,r){var l=window.$("<div>",{class:"title"});l.html(t.course_name);var c="";""!==t.group_number&&(c+="گروه: "+t.group_number),""!==t.instructor_name&&(c+=" | استاد درس: "+t.instructor_name),""!==t.classroom&&(c+=" | کلاس: "+t.classroom),""!==t.exam_date&&(c+=" | تاریخ امتحان: "+t.exam_date),""!==t.exam_time&&(c+=" | ساعت امتحان: "+t.exam_time);var m=window.$("<div>",{class:"course lecture","data-schedule-id":t.schedule_id,"data-course-id":t.course_id,"data-weekday":n,"data-tooltip":c,"data-position":"bottom center"});m.html(l),m.prepend('\n    <div class="ui inverted dimmer">\n        <div class="ui loader"></div>\n    </div>\n    '),m.css("background-color",o);var u=a.split(":"),p=i.split(":"),f=60*(parseInt(p[0])-parseInt(u[0]))+(parseInt(p[1])-parseInt(u[1]));m.css("width",d.tblock_h*(f/15)),e.append(m);var _=60*parseInt(u[0])+parseInt(u[1])+1,h=60*parseInt(p[0])+parseInt(p[1]),w=1;switch(n){case"saturday":w=s(n,_,h,r),m.css("right",16+w*m[0].offsetHeight+d.timecol_w);break;case"sunday":w=s(n,_,h,r),m.css("right",16+w*m[0].offsetHeight+d.timecol_w+d.weekday_w);break;case"monday":w=s(n,_,h,r),m.css("right",16+w*m[0].offsetHeight+d.timecol_w+2*d.weekday_w);break;case"tuesday":w=s(n,_,h,r),m.css("right",16+w*m[0].offsetHeight+d.timecol_w+3*d.weekday_w);break;case"wednesday":w=s(n,_,h,r),m.css("right",16+w*m[0].offsetHeight+d.timecol_w+4*d.weekday_w)}r[n].push({id:t.course_id,st:_,et:h});var g=(60*(parseInt(u[0])-8)+parseInt(u[1]))/15*d.tblock_h;m.css("top",d.top_offset+d.header_h+d.tblock_h+g)}(e,schedule_data[p].lecture_info,schedule_data[p].weekday,schedule_data[p].start_time,schedule_data[p].end_time,schedule_data[p].course_color,c,u);-1!==window.$.inArray(m,["1st","2nd"])&&e.find(".course.lecture").each(function(e,s){!function(e,t,n,a,o,s,r,l){e.on("click",function(){var e=$(this).find(".ui.inverted.dimmer");e.dimmer("toggle"),course_id=$(this).attr("data-course-id"),s.find("#course_info .top.attached.tabular.menu a[data-tab=evaluations]").remove(),s.find("#course_info .bottom.attached.tab.segment[data-tab=evaluations]").remove(),s.find("#course_info .top.attached.tabular.menu a").removeClass("active"),s.find("#course_info .top.attached.tabular.menu a:first").addClass("active"),s.find("#course_info .bottom.attached.tab.segment").removeClass("active"),s.find("#course_info .bottom.attached.tab.segment:first").addClass("active"),window.$.ajax({url:document.location.origin+"/admin/scheduling/"+course_id+"/information",type:"GET",success:function(c,m,u){t.find("a.new").remove();var p=t.find("a:first-child");p.removeClass("active").addClass("active"),n.find(".top.attached.menu .right.menu .red.labeled.icon.button").addClass("disabled"),n.find(".bottom.attached.tab.segment.new").remove();var f=n.find(".bottom.attached.tab.segment");f.removeClass("active").addClass("active");for(var _=c.schedule_info,h=0;h<_.length;h++)if(0==h){f.find("form").form("clear"),f.find("form input[name=course_id]").val(_[h].course_id),f.find("form input[name=group_number]").val(_[h].group_number),f.find("form select[name=instructor_id]").val(_[h].instructor_id),f.find("form input[name=course_color]").val(_[h].course_color),f.find("form select[name=weekday_1]").val(_[h].weekday_1),f.find("form input[name=classroom_1]").val(_[h].classroom_1),f.find("form input[name=start_time_1]").val(_[h].start_time_1),f.find("form input[name=end_time_1]").val(_[h].end_time_1),f.find("form select[name=weekday_2]").val(_[h].weekday_2),f.find("form input[name=classroom_2]").val(_[h].classroom_2),f.find("form input[name=start_time_2]").val(_[h].start_time_2),f.find("form input[name=end_time_2]").val(_[h].end_time_2),f.find("form input[name=exam_time]").val(_[h].exam_time);var w=f.find(".block.preview");w.html(_[h].course_name),w.css("background-color",_[h].course_color),w.on("click",function(){random_color=randomColor(),$(this).css("background-color",random_color),$(this).siblings("input").val(random_color)});var g=f.find("form input[name=exam_date]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#add_schedule.modal .scrolling.content form:eq("+(parseInt(_[h].group_number)-1).toString()+") input[name=exam_date_unix]",toolbox:{enabled:!1}});null!==_[h].exam_date_unix&&g.setDate(parseInt(_[h].exam_date_unix))}else{var v=p.clone().removeClass("active").addClass("new");v.attr("data-tab",(h+1).toString()),v.html("گروه "+(h+1).toString()),t.append(v),n.find(".top.attached.menu .right.menu .red.labeled.icon.button").removeClass("disabled");var b=f.clone().removeClass("active").addClass("new");b.attr("data-tab",(h+1).toString()),b.find("form").form("clear"),b.find("form input[name=course_id]").val(_[h].course_id),b.find("form input[name=group_number]").val(_[h].group_number),b.find("form select[name=instructor_id]").val(_[h].instructor_id),b.find("form input[name=course_color]").val(_[h].course_color),b.find("form select[name=weekday_1]").val(_[h].weekday_1),b.find("form input[name=classroom_1]").val(_[h].classroom_1),b.find("form input[name=start_time_1]").val(_[h].start_time_1),b.find("form input[name=end_time_1]").val(_[h].end_time_1),b.find("form select[name=weekday_2]").val(_[h].weekday_2),b.find("form input[name=classroom_2]").val(_[h].classroom_2),b.find("form input[name=start_time_2]").val(_[h].start_time_2),b.find("form input[name=end_time_2]").val(_[h].end_time_2),b.find("form input[name=exam_time]").val(_[h].exam_time);var y=b.find(".block.preview");y.html(_[h].course_name),y.css("background-color",_[h].course_color),y.on("click",function(){random_color=randomColor(),$(this).css("background-color",random_color),$(this).siblings("input").val(random_color)});var k=b.find("form input[name=exam_date]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#add_schedule.modal .scrolling.content form:eq("+(parseInt(_[h].group_number)-1).toString()+") input[name=exam_date_unix]",toolbox:{enabled:!1}});null!==_[h].exam_date_unix&&k.setDate(parseInt(_[h].exam_date_unix)),n.append(b)}window.$("#add_schedule.modal .scrolling.content .menu .item").tab(),window.$("#add_schedule.modal .scrolling.content .ui.dropdown").dropdown(),window.$("#add_schedule.modal .scrolling.content input.timepicker").timepicker({timeFormat:"HH:mm:ss",interval:15,minTime:"08:00",maxTime:"20:00",dynamic:!1,dropdown:!0,scrollbar:!0}),i("#add_schedule.modal .scrolling.content .menu .item");for(var C=c.instructors_info,x="",q=0;q<C.length;q++)null===C[q].photo&&("مرد"===C[q].sex?C[q].photo="instructor_photos/img_male.png":C[q].photo="instructor_photos/img_female.png"),x+='\n                            <div class="row">\n                                <div class="photo" data-tooltip="'+C[q].name+'" data-position="right center">\n                                    <img class="ui mini circular image" src="/storage/'+C[q].photo+'">\n                                </div>\n                                <div class="progress">\n                                    <div class="ui indicating progress" data-value="'+C[q].votes+'" data-total="'+C[0].votes+'">\n                                        <div class="bar"></div>\n                                    </div>\n                                </div>\n                                <div class="votes">\n                                    '+C[q].votes+"\n                                </div>\n                            </div>\n                        ";""!==x?(window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors").html(x),window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors .progress").progress()):window.$("#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors").html("برای این درس استادی پیشنهاد نشده است.");for(var D=c.course_conflicts,Y="",S=0;S<D.length;S++)Y+="<tr><td>"+(S+1)+"</td><td>"+D[S].code+"</td><td>"+D[S].name+"</td><td>"+D[S].count+"</td></tr>";""!==Y?window.$("#add_schedule.modal .scrolling.content table.conflicts tbody").html(Y):window.$("#add_schedule.modal .scrolling.content table.conflicts tbody").html('<tr><td colspan="4">برای این درس تداخلی وجود ندارد.</td></tr>');for(var T=c.course_students,I="",M=0;M<T.length;M++)I+="<tr><td>"+(M+1)+"</td><td>"+T[M].first_name+"</td><td>"+T[M].last_name+"</td><td>"+T[M].student_id+"</td><td>"+T[M].entry_year+"</td></tr>";if(""!==I?window.$("#add_schedule.modal .scrolling.content table.students tbody").html(I):window.$("#add_schedule.modal .scrolling.content table.students tbody").html('<tr><td colspan="5">دانشجویی این درس را اخذ نکرده است.</td></tr>'),"2nd"===l){var z=c.course_evaluation;if(z.length>0){s.find("#course_info .top.attached.tabular.menu").append('\n                                    <a class="item fw-400" data-tab="evaluations">درخواست های دانشجویان</a>\n                                ');var A="";A+='<div class="ui bottom attached tab segment" data-tab="evaluations"><div class="ui text container">';for(var j=0;j<z.length;j++)if(A+='\n                                    <div class="ui fluid inverted card">\n                                        <div class="ui inverted dimmer">\n                                            <div class="ui loader"></div>\n                                        </div>\n                                        <div class="content">\n                                            <div class="ui divided selection list">\n                                    ',null!==z[j].suggested_weekday_1&&(A+='\n                                        <a class="item">\n                                            <div class="ui blue large horizontal label fw-400" style="padding: 1rem">تغییر جلسه اول</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>از </span>\n                                                <span>'+d(z[j].weekday_1)+'</span>\n                                                <span class="p_number">'+z[j].start_time_1.substr(0,5)+'</span><span> تا </span><span class="p_number">'+z[j].end_time_1.substr(0,5)+"</span>\n                                                <span> به </span>\n                                                <span>"+d(z[j].suggested_weekday_1)+'</span>\n                                                <span class="p_number">'+z[j].suggested_start_time_1.substr(0,5)+'</span><span> تا </span><span class="p_number">'+z[j].suggested_end_time_1.substr(0,5)+'</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">دلیل</div>\n                                                    <span style="line-height: 2rem">'+z[j].suggestion_reason_1+"</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        "),null!==z[j].suggested_weekday_2&&(A+='\n                                        <a class="item">\n                                            <div class="ui blue large horizontal label fw-400" style="padding: 1rem">تغییر جلسه اول</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>از </span>\n                                                <span>'+d(z[j].weekday_2)+'</span>\n                                                <span class="p_number">'+z[j].start_time_2.substr(0,5)+'</span><span> تا </span><span class="p_number">'+z[j].end_time_2.substr(0,5)+"</span>\n                                                <span> به </span>\n                                                <span>"+d(z[j].suggested_weekday_2)+'</span>\n                                                <span class="p_number">'+z[j].suggested_start_time_2.substr(0,5)+'</span><span> تا </span><span class="p_number">'+z[j].suggested_end_time_2.substr(0,5)+'</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">دلیل</div>\n                                                    <span style="line-height: 2rem">'+z[j].suggestion_reason_2+"</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        "),null!==z[j].suggested_exam_date&&(A+='\n                                        <a class="item">\n                                            <div class="ui red large horizontal label fw-400" style="padding: 1rem">تغییر امتحان</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>از </span>\n                                                <span>'+z[j].exam_date+'</span>\n                                                <span> ساعت </span><span class="p_number">'+z[j].exam_time.substr(0,5)+"</span>\n                                                <span> به </span>\n                                                <span>"+z[j].suggested_exam_date+'</span>\n                                                <span> ساعت </span><span class="p_number">'+z[j].suggested_exam_time.substr(0,5)+'</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">دلیل</div>\n                                                    <span style="line-height: 2rem">'+z[j].exam_suggestion_reason+"</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        "),A+="</div></div>","public"===z[j].privacy){var F="",H="";z[j].upvotes>0&&(F=" blue-color"),z[j].downvotes<0&&(H=" red-color"),A+='\n                                            <div class="extra content">\n                                                <div class="left floated'+F+'" style="direction: ltr">\n                                                    <i class="thumbs outline up big icon"></i>\n                                                    <span>'+z[j].upvotes+'</span>\n                                                </div>\n                                                <div class="right floated'+H+'" style="direction: ltr">\n                                                    <i class="thumbs outline down big icon"></i>\n                                                    <span>'+z[j].downvotes+"</span>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        "}else A+='\n                                            <div class="extra content" style="text-align: center">\n                                                <span>درخواست شخصی</span>\n                                            </div>\n                                        </div>\n                                        ';A+="</div></div>",s.find("#course_info").append(A),s.find("#course_info .menu .item").tab(),i(".p_number")}}a.find("span").html("ویرایش برنامه"),a.find("i").removeClass("checkmark").addClass("write"),o.show(),r.hide(),e.dimmer("toggle"),s.modal("show")},error:function(t,n,a){e.dimmer("toggle")}})})}($(s),t,n,a,o,r,l,m)})}(window.$("#schedule_table .schedule"),ie,ae,oe,te,ee,ne,ce,de)}if(n("#p_admin_messages")){window.$(".computer.menu .basic.icon.button:eq(7)").addClass("olive"),window.$(".vertical.menu a i:eq(7)").removeClass("grey").addClass("olive");var me=document.location.origin+"/admin/messages",ue=window.$("#messages_menu .item"),pe=window.$("#messages_dimmer"),fe=window.$("#messages_list"),_e=window.$("#no_messages");r(fe,me),ue.on("click",function(){ue.removeClass("active"),$(this).addClass("active");var e=$(this).attr("data-state");"inbox"===e?(pe.dimmer("toggle"),window.$.ajax({url:me+"/getinbox",type:"GET",success:function(e){""===e?_e.show():_e.hide(),fe.html(e),r(fe,me),pe.dimmer("toggle")},error:function(){pe.dimmer("toggle")}})):"star"===e?(pe.dimmer("toggle"),window.$.ajax({url:me+"/getstar",type:"GET",success:function(e){""===e?_e.show():_e.hide(),fe.html(e),r(fe,me),pe.dimmer("toggle")},error:function(){pe.dimmer("toggle")}})):"later"===e?(pe.dimmer("toggle"),window.$.ajax({url:me+"/getlater",type:"GET",success:function(e){""===e?_e.show():_e.hide(),fe.html(e),r(fe,me),pe.dimmer("toggle")},error:function(){pe.dimmer("toggle")}})):"archive"===e&&(pe.dimmer("toggle"),window.$.ajax({url:me+"/getarchive",type:"GET",success:function(e){""===e?_e.show():_e.hide(),fe.html(e),r(fe,me),pe.dimmer("toggle")},error:function(){pe.dimmer("toggle")}}))})}if(n("#p_admin_settings")){window.$(".computer.menu .basic.icon.button:eq(8)").addClass("black"),window.$(".vertical.menu a i:eq(8)").removeClass("grey").addClass("black"),window.$(".ui.dropdown").dropdown();var he=window.$("#delete_admin.modal"),we=window.$("#registered_admin_list tr .red.button"),ge=he.find("form");we.on("click",function(){var e=$(this).attr("data-id");he.find("table tbody td:eq(0)").html(window.$("#registered_admin_list #admin_"+e+" td:eq(0)").html()),he.find("table tbody td:eq(1)").html(window.$("#registered_admin_list #admin_"+e+" td:eq(1)").html()),ge.attr("action",ge.attr("action")+"/"+e+"/unregisteradmin"),he.modal("show")}),he.modal({onApprove:function(){ge.submit()}});for(var ve=["prereg_start_date","prereg_end_date","eval_start_date","eval_end_date","final_date"],be=window.$("#p_admin_settings form:eq(0)"),ye=0;ye<ve.length;ye++){var $e=be.find("input[name="+ve[ye]+"_p]").persianDatepicker({initialValue:!1,observer:!0,autoClose:!0,format:"YYYY/MM/DD",altField:"#p_admin_settings form input[name="+ve[ye]+"]",toolbox:{enabled:!1}});""!==be.find("input[name="+ve[ye]+"]").val()&&$e.setDate(parseInt(be.find("input[name="+ve[ye]+"]").val()))}n("#manage_admin_panel .message.session")&&(window.$("#manage_admin_panel .message.session .close").on("click",function(){$(this).closest(".message").transition("fade")}),setTimeout(function(){window.$("#manage_admin_panel .message.session").hasClass("hidden")||window.$("#manage_admin_panel .message.session").transition("fade")},4e3))}}(),window.$(window).resize(function(){!function(){n("#p_admin_scheduling")&&function(){var e=window.$(".ui.course.cards"),t=["one","two","three","four"];window.innerWidth>1199?a(t,"four",e):window.innerWidth>991?a(t,"three",e):window.innerWidth>559?a(t,"two",e):a(t,"one",e)}();var e=window.$(".mobile.vertical.menu");screen.width<768||e.hasClass("hidden")||(e.removeClass("visible"),e.addClass("hidden"))}()})})}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 8:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(9);
+
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, exports) {
+
+Chart.defaults.global.maintainAspectRatio = false;
+Chart.defaults.global.defaultFontFamily = "'IRANSans', 'Tahoma', 'Arial', sans-serif";
+
+// utility functions
+function elementExist(selector) {
+    return window.$(selector).length != 0;
+}
+function autohide_menu(btn_selector, menu_selector) {
+    var menu = window.$(menu_selector);
+    var container = window.$(btn_selector + ',' + menu_selector);
+    window.$(document).mouseup(function (e) {
+        if (!menu.hasClass('hidden') // if menu is not hidden
+        && !container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+            {
+                menu.transition('fade down');
+            }
+    });
+}
+function set_class(all_classes, selected_class, selector) {
+    for (var i = 0; i < all_classes.length; i++) {
+        selector.removeClass(all_classes[i]);
+    }
+    selector.addClass(selected_class);
+}
+function fix_persian_numbers(selector) {
+    var element = window.$(selector);
+    element.each(function (index, item) {
+        if ($(item).html() !== '') $(item).html(persianJs($(item).html()).englishNumber().toString());
+    });
+}
+String.prototype.replaceAll = function (search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+var hexDigits = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
+function hex(x) {
+    return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+}
+//Function to convert rgb color to hex format
+function rgb2hex(rgb) {
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+function persian_weekday(weekday) {
+    switch (weekday) {
+        case 'saturday':
+            return 'شنبه';
+            break;
+        case 'sunday':
+            return 'یکشنبه';
+            break;
+        case 'monday':
+            return 'دوشنبه';
+            break;
+        case 'tuesday':
+            return 'سه شنبه';
+            break;
+        case 'wednesday':
+            return 'چهارشنبه';
+            break;
+    }
+}
+
+// validations
+function add_course_validation() {
+    window.$('#p_admin_courses .ui.form').form({
+        fields: {
+            course_name: {
+                identifier: 'course_name',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نام درس را وارد کنید'
+                }]
+            },
+            course_code: {
+                identifier: 'course_code',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'کد درس را وارد کنید'
+                }, {
+                    type: 'integer',
+                    prompt: 'کد درس باید به شکل عددی باشد'
+                }]
+            },
+            units: {
+                identifier: 'units',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'تعداد واحد های درس را وارد کنید'
+                }, {
+                    type: 'integer',
+                    prompt: 'تعداد واحد های درس باید به شکل عددی باشد'
+                }, {
+                    type: 'exactLength[1]',
+                    prompt: 'تعداد واحد های درس باید 1 کاراکتر باشد'
+                }]
+            },
+            default_min_capacity_fall: {
+                identifier: 'default_min_capacity_fall',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'حداقل ظرفیت پاییز را وارد کنید'
+                }, {
+                    type: 'integer',
+                    prompt: 'حداقل ظرفیت پاییز باید به شکل عددی باشد'
+                }, {
+                    type: 'maxLength[2]',
+                    prompt: 'حداقل ظرفیت پاییز باید حداکثر 2 کاراکتر باشد'
+                }]
+            },
+            default_min_capacity_spring: {
+                identifier: 'default_min_capacity_spring',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'حداقل ظرفیت بهار را وارد کنید'
+                }, {
+                    type: 'integer',
+                    prompt: 'حداقل ظرفیت بهار باید به شکل عددی باشد'
+                }, {
+                    type: 'maxLength[2]',
+                    prompt: 'حداقل ظرفیت بهار باید حداکثر 2 کاراکتر باشد'
+                }]
+            },
+            category: {
+                identifier: 'category',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا دسته بندی درس مورد نظر را انتخاب کنید'
+                }]
+            }
+        }
+    });
+}
+function edit_course_validation() {
+    window.$('#edit_course .ui.form').form({
+        fields: {
+            course_name: {
+                identifier: 'course_name',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نام درس را وارد کنید'
+                }]
+            },
+            course_code: {
+                identifier: 'course_code',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'کد درس را وارد کنید'
+                }, {
+                    type: 'integer',
+                    prompt: 'کد درس باید به شکل عددی باشد'
+                }]
+            },
+            units: {
+                identifier: 'units',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'تعداد واحد های درس را وارد کنید'
+                }, {
+                    type: 'integer',
+                    prompt: 'تعداد واحد های درس باید به شکل عددی باشد'
+                }, {
+                    type: 'exactLength[1]',
+                    prompt: 'تعداد واحد های درس باید 1 کاراکتر باشد'
+                }]
+            },
+            default_min_capacity_fall: {
+                identifier: 'default_min_capacity_fall',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'حداقل ظرفیت پاییز را وارد کنید'
+                }, {
+                    type: 'integer',
+                    prompt: 'حداقل ظرفیت پاییز باید به شکل عددی باشد'
+                }, {
+                    type: 'maxLength[2]',
+                    prompt: 'حداقل ظرفیت پاییز باید حداکثر 2 کاراکتر باشد'
+                }]
+            },
+            default_min_capacity_spring: {
+                identifier: 'default_min_capacity_spring',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'حداقل ظرفیت بهار را وارد کنید'
+                }, {
+                    type: 'integer',
+                    prompt: 'حداقل ظرفیت بهار باید به شکل عددی باشد'
+                }, {
+                    type: 'maxLength[2]',
+                    prompt: 'حداقل ظرفیت بهار باید حداکثر 2 کاراکتر باشد'
+                }]
+            },
+            category: {
+                identifier: 'category',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا دسته بندی درس مورد نظر را انتخاب کنید'
+                }]
+            }
+        }
+    });
+}
+function add_instructor_validation() {
+    window.$('#p_admin_instructors .ui.form').form({
+        fields: {
+            instructor_name: {
+                identifier: 'instructor_name',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نام استاد را وارد کنید.'
+                }]
+            },
+            sex: {
+                identifier: 'sex',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا جنسیت استاد را انتخاب کنید.'
+                }]
+            },
+            profile_link: {
+                identifier: 'profile_link',
+                rules: []
+            },
+            photo: {
+                identifier: 'photo',
+                rules: []
+            }
+        }
+    });
+}
+function edit_instructor_validation() {
+    window.$('#edit_instructor .ui.form').form({
+        fields: {
+            instructor_name: {
+                identifier: 'instructor_name',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نام استاد را وارد کنید.'
+                }]
+            },
+            sex: {
+                identifier: 'sex',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا جنسیت استاد را انتخاب کنید.'
+                }]
+            },
+            profile_link: {
+                identifier: 'profile_link',
+                rules: []
+            },
+            photo: {
+                identifier: 'photo',
+                rules: []
+            }
+        }
+    });
+}
+function add_semester_validation() {
+    window.$('#p_admin_semesters .ui.form').form({
+        fields: {
+            semester: {
+                identifier: 'semester',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نوبت ترم را انتخاب کنید.'
+                }]
+            },
+            year: {
+                identifier: 'year',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا سال ترم را وارد کنید.'
+                }, {
+                    type: 'number',
+                    prompt: 'سال ترم باید به شکل عددی باشد.'
+                }, {
+                    type: 'exactLength[4]',
+                    prompt: 'سال ترم باید 4 رقم داشته باشد.'
+                }]
+            }
+        }
+    });
+}
+function edit_semester_validation() {
+    window.$('#edit_semester .ui.form').form({
+        fields: {
+            semester: {
+                identifier: 'semester',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا نوبت ترم را انتخاب کنید.'
+                }]
+            },
+            year: {
+                identifier: 'year',
+                rules: [{
+                    type: 'empty',
+                    prompt: 'لطفا سال ترم را وارد کنید.'
+                }, {
+                    type: 'number',
+                    prompt: 'سال ترم باید به شکل عددی باشد.'
+                }, {
+                    type: 'exactLength[4]',
+                    prompt: 'سال ترم باید 4 رقم داشته باشد.'
+                }]
+            }
+        }
+    });
+}
+
+function init_menu_btns() {
+    // cache map btn and steps dom elements
+    var sidebar_btn = window.$('.mobile.menu #sidebar_btn');
+    var mobile_vmenu = window.$('.mobile.vertical.menu');
+    // show/hide steps if map btn clicked
+    sidebar_btn.on('click', function () {
+        mobile_vmenu.transition('fade down');
+    });
+    // hide steps if clicked elsewhere
+    autohide_menu('.mobile.menu #sidebar_btn', '.mobile.vertical.menu');
+
+    //
+    var logout_btns = window.$('.basic.logout.icon.button');
+    logout_btns.on('click', function () {
+        window.$('#logout_form').submit();
+    });
+}
+function adjust_cards_number() {
+    var course_cards = window.$('.ui.course.cards');
+    var class_values = ['one', 'two', 'three', 'four'];
+    if (window.innerWidth > 1199) {
+        set_class(class_values, 'four', course_cards);
+    } else if (window.innerWidth > 991) {
+        set_class(class_values, 'three', course_cards);
+    } else if (window.innerWidth > 559) {
+        set_class(class_values, 'two', course_cards);
+    } else {
+        set_class(class_values, 'one', course_cards);
+    }
+}
+function adjust_to_screen_size() {
+    if (elementExist('#p_admin_scheduling')) {
+        adjust_cards_number();
+    }
+
+    var mobile_vmenu = window.$('.mobile.vertical.menu');
+
+    if (screen.width < 768) {} else {
+        if (!mobile_vmenu.hasClass('hidden')) {
+            mobile_vmenu.removeClass('visible');
+            mobile_vmenu.addClass('hidden');
+        }
+    }
+}
+
+function calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log) {
+    // for calculating position of parallel lectures in schedule
+    // TODO this algorithm needs improvement and doesn't work in some cases (ex. lecture continues between two other lectures)
+    var lecture_num = 1;
+    for (var i = 0; i < lectures_log[weekday].length; i++) {
+        if (st_minutes >= lectures_log[weekday][i].st && st_minutes <= lectures_log[weekday][i].et || et_minutes >= lectures_log[weekday][i].st && et_minutes <= lectures_log[weekday][i].et) {
+            lecture_num++;
+        }
+    }
+    return lecture_num;
+}
+function add_to_schedule(selector, lecture_info, weekday, start_time, end_time, color, pos_info, lectures_log) {
+    var $title = window.$('<div>', { 'class': 'title' });
+    $title.html(lecture_info.course_name);
+    var data_tooltip = '';
+    if (lecture_info.group_number !== '') data_tooltip += '\u06AF\u0631\u0648\u0647: ' + lecture_info.group_number;
+    if (lecture_info.instructor_name !== '') data_tooltip += ' | \u0627\u0633\u062A\u0627\u062F \u062F\u0631\u0633: ' + lecture_info.instructor_name;
+    if (lecture_info.classroom !== '') data_tooltip += ' | \u06A9\u0644\u0627\u0633: ' + lecture_info.classroom;
+    if (lecture_info.exam_date !== '') data_tooltip += ' | \u062A\u0627\u0631\u06CC\u062E \u0627\u0645\u062A\u062D\u0627\u0646: ' + lecture_info.exam_date;
+    if (lecture_info.exam_time !== '') data_tooltip += ' | \u0633\u0627\u0639\u062A \u0627\u0645\u062A\u062D\u0627\u0646: ' + lecture_info.exam_time;
+
+    var $lecture = window.$('<div>', {
+        'class': 'course lecture',
+        'data-schedule-id': lecture_info.schedule_id,
+        'data-course-id': lecture_info.course_id,
+        'data-weekday': weekday,
+        'data-tooltip': data_tooltip,
+        'data-position': 'bottom center'
+    });
+    $lecture.html($title);
+    $lecture.prepend('\n    <div class="ui inverted dimmer">\n        <div class="ui loader"></div>\n    </div>\n    ');
+
+    $lecture.css('background-color', color);
+
+    var st = start_time.split(':');
+    var et = end_time.split(':');
+    var minutes = (parseInt(et[0]) - parseInt(st[0])) * 60 + (parseInt(et[1]) - parseInt(st[1]));
+    $lecture.css('width', pos_info.tblock_h * (minutes / 15));
+
+    selector.append($lecture);
+
+    var st_minutes = parseInt(st[0]) * 60 + parseInt(st[1]) + 1;
+    var et_minutes = parseInt(et[0]) * 60 + parseInt(et[1]);
+
+    var lecture_num = 1;
+    switch (weekday) {
+        case 'saturday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num * $lecture[0].offsetHeight + pos_info.timecol_w);
+            break;
+        case 'sunday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num * $lecture[0].offsetHeight + pos_info.timecol_w + pos_info.weekday_w);
+            break;
+        case 'monday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num * $lecture[0].offsetHeight + pos_info.timecol_w + 2 * pos_info.weekday_w);
+            break;
+        case 'tuesday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num * $lecture[0].offsetHeight + pos_info.timecol_w + 3 * pos_info.weekday_w);
+            break;
+        case 'wednesday':
+            lecture_num = calculate_lecture_num(weekday, st_minutes, et_minutes, lectures_log);
+            $lecture.css('right', 16 + lecture_num * $lecture[0].offsetHeight + pos_info.timecol_w + 4 * pos_info.weekday_w);
+            break;
+    }
+
+    lectures_log[weekday].push({
+        id: lecture_info.course_id,
+        st: st_minutes,
+        et: et_minutes
+    });
+
+    var st_offset = ((parseInt(st[0]) - 8) * 60 + parseInt(st[1])) / 15 * pos_info.tblock_h;
+    $lecture.css('top', pos_info.top_offset + pos_info.header_h + pos_info.tblock_h + st_offset);
+}
+function lecture_blocks_click(selector, course_group_tab_btns, course_groups_tab, approve_btn, remove_schedule_btn, add_schedule_modal, return_btn, scheduling_stage) {
+    selector.on('click', function () {
+        var lecture_blocks_dimmer = $(this).find('.ui.inverted.dimmer');
+        lecture_blocks_dimmer.dimmer('toggle');
+        course_id = $(this).attr('data-course-id');
+        add_schedule_modal.find('#course_info .top.attached.tabular.menu a[data-tab=evaluations]').remove();
+        add_schedule_modal.find('#course_info .bottom.attached.tab.segment[data-tab=evaluations]').remove();
+        add_schedule_modal.find('#course_info .top.attached.tabular.menu a').removeClass('active');
+        add_schedule_modal.find('#course_info .top.attached.tabular.menu a:first').addClass('active');
+        add_schedule_modal.find('#course_info .bottom.attached.tab.segment').removeClass('active');
+        add_schedule_modal.find('#course_info .bottom.attached.tab.segment:first').addClass('active');
+        window.$.ajax({
+            url: document.location.origin + '/admin/scheduling/' + course_id + '/information',
+            type: "GET",
+            success: function success(result, status, xhr) {
+                //
+                course_group_tab_btns.find('a.new').remove();
+                var tab_btn = course_group_tab_btns.find('a:first-child');
+                tab_btn.removeClass('active').addClass('active');
+                course_groups_tab.find('.top.attached.menu .right.menu .red.labeled.icon.button').addClass('disabled');
+                course_groups_tab.find('.bottom.attached.tab.segment.new').remove();
+                var tab_content = course_groups_tab.find('.bottom.attached.tab.segment');
+                tab_content.removeClass('active').addClass('active');
+
+                var schedule_info = result.schedule_info;
+                for (var i = 0; i < schedule_info.length; i++) {
+                    if (i == 0) {
+                        tab_content.find('form').form('clear');
+                        tab_content.find('form input[name=course_id]').val(schedule_info[i].course_id);
+                        tab_content.find('form input[name=group_number]').val(schedule_info[i].group_number);
+                        tab_content.find('form select[name=instructor_id]').val(schedule_info[i].instructor_id);
+                        tab_content.find('form input[name=course_color]').val(schedule_info[i].course_color);
+                        tab_content.find('form select[name=weekday_1]').val(schedule_info[i].weekday_1);
+                        tab_content.find('form input[name=classroom_1]').val(schedule_info[i].classroom_1);
+                        tab_content.find('form input[name=start_time_1]').val(schedule_info[i].start_time_1);
+                        tab_content.find('form input[name=end_time_1]').val(schedule_info[i].end_time_1);
+                        tab_content.find('form select[name=weekday_2]').val(schedule_info[i].weekday_2);
+                        tab_content.find('form input[name=classroom_2]').val(schedule_info[i].classroom_2);
+                        tab_content.find('form input[name=start_time_2]').val(schedule_info[i].start_time_2);
+                        tab_content.find('form input[name=end_time_2]').val(schedule_info[i].end_time_2);
+                        tab_content.find('form input[name=exam_time]').val(schedule_info[i].exam_time);
+                        var course_color_preview = tab_content.find('.block.preview');
+                        course_color_preview.html(schedule_info[i].course_name);
+                        course_color_preview.css('background-color', schedule_info[i].course_color);
+                        course_color_preview.on('click', function () {
+                            random_color = randomColor();
+                            $(this).css('background-color', random_color);
+                            $(this).siblings('input').val(random_color);
+                        });
+                        var dp = tab_content.find('form input[name=exam_date]').persianDatepicker({
+                            initialValue: false,
+                            observer: true,
+                            autoClose: true,
+                            format: 'YYYY/MM/DD',
+                            altField: '#add_schedule.modal .scrolling.content form:eq(' + (parseInt(schedule_info[i].group_number) - 1).toString() + ') input[name=exam_date_unix]',
+                            'toolbox': {
+                                'enabled': false
+                            }
+                        });
+                        if (schedule_info[i].exam_date_unix !== null) dp.setDate(parseInt(schedule_info[i].exam_date_unix));
+                    } else {
+                        var new_tab_btn = tab_btn.clone().removeClass('active').addClass('new');
+                        new_tab_btn.attr('data-tab', (i + 1).toString());
+                        new_tab_btn.html('گروه ' + (i + 1).toString());
+                        course_group_tab_btns.append(new_tab_btn);
+                        course_groups_tab.find('.top.attached.menu .right.menu .red.labeled.icon.button').removeClass('disabled');
+
+                        var new_tab_content = tab_content.clone().removeClass('active').addClass('new');
+                        new_tab_content.attr('data-tab', (i + 1).toString());
+                        new_tab_content.find('form').form('clear');
+                        new_tab_content.find('form input[name=course_id]').val(schedule_info[i].course_id);
+                        new_tab_content.find('form input[name=group_number]').val(schedule_info[i].group_number);
+                        new_tab_content.find('form select[name=instructor_id]').val(schedule_info[i].instructor_id);
+                        new_tab_content.find('form input[name=course_color]').val(schedule_info[i].course_color);
+                        new_tab_content.find('form select[name=weekday_1]').val(schedule_info[i].weekday_1);
+                        new_tab_content.find('form input[name=classroom_1]').val(schedule_info[i].classroom_1);
+                        new_tab_content.find('form input[name=start_time_1]').val(schedule_info[i].start_time_1);
+                        new_tab_content.find('form input[name=end_time_1]').val(schedule_info[i].end_time_1);
+                        new_tab_content.find('form select[name=weekday_2]').val(schedule_info[i].weekday_2);
+                        new_tab_content.find('form input[name=classroom_2]').val(schedule_info[i].classroom_2);
+                        new_tab_content.find('form input[name=start_time_2]').val(schedule_info[i].start_time_2);
+                        new_tab_content.find('form input[name=end_time_2]').val(schedule_info[i].end_time_2);
+                        new_tab_content.find('form input[name=exam_time]').val(schedule_info[i].exam_time);
+                        var _course_color_preview = new_tab_content.find('.block.preview');
+                        _course_color_preview.html(schedule_info[i].course_name);
+                        _course_color_preview.css('background-color', schedule_info[i].course_color);
+                        _course_color_preview.on('click', function () {
+                            random_color = randomColor();
+                            $(this).css('background-color', random_color);
+                            $(this).siblings('input').val(random_color);
+                        });
+                        var _dp = new_tab_content.find('form input[name=exam_date]').persianDatepicker({
+                            initialValue: false,
+                            observer: true,
+                            autoClose: true,
+                            format: 'YYYY/MM/DD',
+                            altField: '#add_schedule.modal .scrolling.content form:eq(' + (parseInt(schedule_info[i].group_number) - 1).toString() + ') input[name=exam_date_unix]',
+                            'toolbox': {
+                                'enabled': false
+                            }
+                        });
+                        if (schedule_info[i].exam_date_unix !== null) _dp.setDate(parseInt(schedule_info[i].exam_date_unix));
+                        course_groups_tab.append(new_tab_content);
+                    }
+                }
+                window.$('#add_schedule.modal .scrolling.content .menu .item').tab();
+                window.$('#add_schedule.modal .scrolling.content .ui.dropdown').dropdown();
+                window.$('#add_schedule.modal .scrolling.content input.timepicker').timepicker({
+                    timeFormat: 'HH:mm:ss',
+                    interval: 15,
+                    minTime: '08:00',
+                    maxTime: '20:00',
+                    dynamic: false,
+                    dropdown: true,
+                    scrollbar: true
+                });
+                fix_persian_numbers('#add_schedule.modal .scrolling.content .menu .item');
+                //
+                var instructors_info = result.instructors_info;
+                var instructors_info_rows = '';
+                for (var _i = 0; _i < instructors_info.length; _i++) {
+                    if (instructors_info[_i].photo === null) {
+                        if (instructors_info[_i].sex === 'مرد') {
+                            instructors_info[_i].photo = 'instructor_photos/img_male.png';
+                        } else {
+                            instructors_info[_i].photo = 'instructor_photos/img_female.png';
+                        }
+                    }
+                    instructors_info_rows += '\n                            <div class="row">\n                                <div class="photo" data-tooltip="' + instructors_info[_i].name + '" data-position="right center">\n                                    <img class="ui mini circular image" src="/storage/' + instructors_info[_i].photo + '">\n                                </div>\n                                <div class="progress">\n                                    <div class="ui indicating progress" data-value="' + instructors_info[_i].votes + '" data-total="' + instructors_info[0].votes + '">\n                                        <div class="bar"></div>\n                                    </div>\n                                </div>\n                                <div class="votes">\n                                    ' + instructors_info[_i].votes + '\n                                </div>\n                            </div>\n                        ';
+                }
+                if (instructors_info_rows !== '') {
+                    window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors').html(instructors_info_rows);
+                    window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors .progress').progress();
+                } else {
+                    window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors').html('برای این درس استادی پیشنهاد نشده است.');
+                }
+                //
+                var course_conflicts = result.course_conflicts;
+                var course_conflicts_tbody = '';
+                for (var _i2 = 0; _i2 < course_conflicts.length; _i2++) {
+                    course_conflicts_tbody += '<tr><td>' + (_i2 + 1) + '</td><td>' + course_conflicts[_i2].code + '</td><td>' + course_conflicts[_i2].name + '</td><td>' + course_conflicts[_i2].count + '</td></tr>';
+                }
+                if (course_conflicts_tbody !== '') {
+                    window.$('#add_schedule.modal .scrolling.content table.conflicts tbody').html(course_conflicts_tbody);
+                } else {
+                    window.$('#add_schedule.modal .scrolling.content table.conflicts tbody').html('<tr><td colspan="4">برای این درس تداخلی وجود ندارد.</td></tr>');
+                }
+                //
+                var course_students = result.course_students;
+                var course_students_tbody = '';
+                for (var _i3 = 0; _i3 < course_students.length; _i3++) {
+                    course_students_tbody += '<tr><td>' + (_i3 + 1) + '</td><td>' + course_students[_i3].first_name + '</td><td>' + course_students[_i3].last_name + '</td><td>' + course_students[_i3].student_id + '</td><td>' + course_students[_i3].entry_year + '</td></tr>';
+                }
+                if (course_students_tbody !== '') {
+                    window.$('#add_schedule.modal .scrolling.content table.students tbody').html(course_students_tbody);
+                } else {
+                    window.$('#add_schedule.modal .scrolling.content table.students tbody').html('<tr><td colspan="5">دانشجویی این درس را اخذ نکرده است.</td></tr>');
+                }
+                //
+                if (scheduling_stage === '2nd') {
+                    var course_evaluation = result.course_evaluation;
+                    if (course_evaluation.length > 0) {
+                        add_schedule_modal.find('#course_info .top.attached.tabular.menu').append('\n                                    <a class="item fw-400" data-tab="evaluations">\u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0647\u0627\u06CC \u062F\u0627\u0646\u0634\u062C\u0648\u06CC\u0627\u0646</a>\n                                ');
+                        var course_evaluation_tab_content = '';
+                        course_evaluation_tab_content += '<div class="ui bottom attached tab segment" data-tab="evaluations"><div class="ui text container">';
+                        for (var _i4 = 0; _i4 < course_evaluation.length; _i4++) {
+                            course_evaluation_tab_content += '\n                                    <div class="ui fluid inverted card">\n                                        <div class="ui inverted dimmer">\n                                            <div class="ui loader"></div>\n                                        </div>\n                                        <div class="content">\n                                            <div class="ui divided selection list">\n                                    ';
+                            if (course_evaluation[_i4].suggested_weekday_1 !== null) {
+                                course_evaluation_tab_content += '\n                                        <a class="item">\n                                            <div class="ui blue large horizontal label fw-400" style="padding: 1rem">\u062A\u063A\u06CC\u06CC\u0631 \u062C\u0644\u0633\u0647 \u0627\u0648\u0644</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>\u0627\u0632 </span>\n                                                <span>' + persian_weekday(course_evaluation[_i4].weekday_1) + '</span>\n                                                <span class="p_number">' + course_evaluation[_i4].start_time_1.substr(0, 5) + '</span><span> \u062A\u0627 </span><span class="p_number">' + course_evaluation[_i4].end_time_1.substr(0, 5) + '</span>\n                                                <span> \u0628\u0647 </span>\n                                                <span>' + persian_weekday(course_evaluation[_i4].suggested_weekday_1) + '</span>\n                                                <span class="p_number">' + course_evaluation[_i4].suggested_start_time_1.substr(0, 5) + '</span><span> \u062A\u0627 </span><span class="p_number">' + course_evaluation[_i4].suggested_end_time_1.substr(0, 5) + '</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">\u062F\u0644\u06CC\u0644</div>\n                                                    <span style="line-height: 2rem">' + course_evaluation[_i4].suggestion_reason_1 + '</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        ';
+                            }
+                            if (course_evaluation[_i4].suggested_weekday_2 !== null) {
+                                course_evaluation_tab_content += '\n                                        <a class="item">\n                                            <div class="ui blue large horizontal label fw-400" style="padding: 1rem">\u062A\u063A\u06CC\u06CC\u0631 \u062C\u0644\u0633\u0647 \u0627\u0648\u0644</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>\u0627\u0632 </span>\n                                                <span>' + persian_weekday(course_evaluation[_i4].weekday_2) + '</span>\n                                                <span class="p_number">' + course_evaluation[_i4].start_time_2.substr(0, 5) + '</span><span> \u062A\u0627 </span><span class="p_number">' + course_evaluation[_i4].end_time_2.substr(0, 5) + '</span>\n                                                <span> \u0628\u0647 </span>\n                                                <span>' + persian_weekday(course_evaluation[_i4].suggested_weekday_2) + '</span>\n                                                <span class="p_number">' + course_evaluation[_i4].suggested_start_time_2.substr(0, 5) + '</span><span> \u062A\u0627 </span><span class="p_number">' + course_evaluation[_i4].suggested_end_time_2.substr(0, 5) + '</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">\u062F\u0644\u06CC\u0644</div>\n                                                    <span style="line-height: 2rem">' + course_evaluation[_i4].suggestion_reason_2 + '</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        ';
+                            }
+                            if (course_evaluation[_i4].suggested_exam_date !== null) {
+                                course_evaluation_tab_content += '\n                                        <a class="item">\n                                            <div class="ui red large horizontal label fw-400" style="padding: 1rem">\u062A\u063A\u06CC\u06CC\u0631 \u0627\u0645\u062A\u062D\u0627\u0646</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>\u0627\u0632 </span>\n                                                <span>' + course_evaluation[_i4].exam_date + '</span>\n                                                <span> \u0633\u0627\u0639\u062A </span><span class="p_number">' + course_evaluation[_i4].exam_time.substr(0, 5) + '</span>\n                                                <span> \u0628\u0647 </span>\n                                                <span>' + course_evaluation[_i4].suggested_exam_date + '</span>\n                                                <span> \u0633\u0627\u0639\u062A </span><span class="p_number">' + course_evaluation[_i4].suggested_exam_time.substr(0, 5) + '</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">\u062F\u0644\u06CC\u0644</div>\n                                                    <span style="line-height: 2rem">' + course_evaluation[_i4].exam_suggestion_reason + '</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        ';
+                            }
+                            course_evaluation_tab_content += '</div></div>';
+                            if (course_evaluation[_i4].privacy === 'public') {
+                                var upvotes_color = '';
+                                var downvotes_color = '';
+                                if (course_evaluation[_i4].upvotes > 0) {
+                                    upvotes_color = ' blue-color';
+                                }
+                                if (course_evaluation[_i4].downvotes < 0) {
+                                    downvotes_color = ' red-color';
+                                }
+                                course_evaluation_tab_content += '\n                                            <div class="extra content">\n                                                <div class="left floated' + upvotes_color + '" style="direction: ltr">\n                                                    <i class="thumbs outline up big icon"></i>\n                                                    <span>' + course_evaluation[_i4].upvotes + '</span>\n                                                </div>\n                                                <div class="right floated' + downvotes_color + '" style="direction: ltr">\n                                                    <i class="thumbs outline down big icon"></i>\n                                                    <span>' + course_evaluation[_i4].downvotes + '</span>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        ';
+                            } else {
+                                course_evaluation_tab_content += '\n                                            <div class="extra content" style="text-align: center">\n                                                <span>\u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0634\u062E\u0635\u06CC</span>\n                                            </div>\n                                        </div>\n                                        ';
+                            }
+                        }
+                        course_evaluation_tab_content += '</div></div>';
+
+                        add_schedule_modal.find('#course_info').append(course_evaluation_tab_content);
+                        add_schedule_modal.find('#course_info .menu .item').tab();
+                        fix_persian_numbers('.p_number');
+                    }
+                }
+                //
+                approve_btn.find('span').html('ویرایش برنامه');
+                approve_btn.find('i').removeClass('checkmark').addClass('write');
+                remove_schedule_btn.show();
+                return_btn.hide();
+                //
+                lecture_blocks_dimmer.dimmer('toggle');
+                add_schedule_modal.modal('show');
+            },
+            error: function error(xhr, status, _error) {
+                // TODO error handling logic
+                lecture_blocks_dimmer.dimmer('toggle');
+            }
+        });
+    });
+}
+function draw_schedule(lectures_container, course_group_tab_btns, course_groups_tab, approve_btn, remove_schedule_btn, add_schedule_modal, return_btn, position_info, scheduling_stage) {
+    var lectures_log = {
+        saturday: [],
+        sunday: [],
+        monday: [],
+        tuesday: [],
+        wednesday: []
+    };
+    lectures_container.html('');
+    for (var i = 0; i < schedule_data.length; i++) {
+        add_to_schedule(lectures_container, schedule_data[i].lecture_info, schedule_data[i].weekday, schedule_data[i].start_time, schedule_data[i].end_time, schedule_data[i].course_color, position_info, lectures_log);
+    }
+    if (window.$.inArray(scheduling_stage, ['1st', '2nd']) !== -1) {
+        lectures_container.find('.course.lecture').each(function (index, item) {
+            lecture_blocks_click($(item), course_group_tab_btns, course_groups_tab, approve_btn, remove_schedule_btn, add_schedule_modal, return_btn, scheduling_stage);
+        });
+    }
+}
+function init_message_cards(messages_list, formURL) {
+    var $msg_cards = messages_list.find('.msg.card');
+    $msg_cards.find('.star-bt').hover(function () {
+        $(this).toggleClass('yellow');
+    }, function () {
+        $(this).toggleClass('yellow');
+    });
+    $msg_cards.find('.archive-bt').hover(function () {
+        $(this).toggleClass('brown');
+    }, function () {
+        $(this).toggleClass('brown');
+    });
+    $msg_cards.find('.later-bt').hover(function () {
+        $(this).toggleClass('orange');
+    }, function () {
+        $(this).toggleClass('orange');
+    });
+    $msg_cards.find('.trash-bt').hover(function () {
+        $(this).toggleClass('black');
+    }, function () {
+        $(this).toggleClass('black');
+    });
+    $msg_cards.find('.left.floated .icon').on('click', function () {
+        var message_id = $(this).attr('data-id');
+        var message_state = $(this).attr('data-state');
+        var message_color = $(this).attr('data-color');
+        var nextState = void 0;
+        if ($(this).hasClass(message_color)) {
+            nextState = message_state;
+        } else {
+            nextState = 'inbox';
+        }
+        var postData = $(this).find('input').serializeArray();
+        window.$.ajax({
+            url: formURL + '/' + message_id + '/' + nextState,
+            type: "PATCH",
+            data: postData,
+            success: function success() {
+                window.$('#messages_menu .item.active').trigger('click');
+            },
+            error: function error() {}
+        });
+    });
+    $msg_cards.find('.trash.icon').on('click', function () {
+        var message_id = $(this).attr('data-id');
+        window.$('.small.modal .content').html(window.$('#message_' + message_id).clone());
+        var postData = window.$('.small.modal' + ' :input').serializeArray();
+        window.$('.small.modal').modal({
+            onApprove: function onApprove() {
+                window.$.ajax({
+                    url: formURL + '/' + message_id,
+                    type: "DELETE",
+                    data: postData,
+                    success: function success() {
+                        window.$('#messages_menu .item.active').trigger('click');
+                    }
+                });
+            }
+        }).modal('show');
+    });
+}
+function init_session_date_inputs(evaluation_sessions_modal) {
+    evaluation_sessions_modal.find('[id^=session_]').each(function (index, item) {
+        var session_number = $(item).attr('data-number');
+        var dp1 = $(item).find('[name=start_date_p_' + session_number + ']').persianDatepicker({
+            initialValue: false,
+            observer: true,
+            autoClose: true,
+            format: 'YYYY/MM/DD',
+            altField: '#evaluation_sessions.modal tbody #session_' + session_number + ' [name=start_date_' + session_number + ']',
+            'toolbox': {
+                'enabled': false
+            }
+        });
+        if ($(item).find('[name=start_date_' + session_number + ']').val() !== '') {
+            dp1.setDate(parseInt($(item).find('[name=start_date_' + session_number + ']').val()));
+        }
+        var dp2 = $(item).find('[name=end_date_p_' + session_number + ']').persianDatepicker({
+            initialValue: false,
+            observer: true,
+            autoClose: true,
+            format: 'YYYY/MM/DD',
+            altField: '#evaluation_sessions.modal tbody #session_' + session_number + ' [name=end_date_' + session_number + ']',
+            'toolbox': {
+                'enabled': false
+            }
+        });
+        if ($(item).find('[name=end_date_' + session_number + ']').val() !== '') {
+            dp2.setDate(parseInt($(item).find('[name=end_date_' + session_number + ']').val()));
+        }
+    });
+}
+function calculate_column_btn_positions(add_column_btn, remove_column_btn, query_columns) {
+    add_column_btn.css('top', query_columns.find('div:last')[0].offsetTop);
+    remove_column_btn.css('top', query_columns.find('div:last')[0].offsetTop);
+    add_column_btn.css('left', query_columns.find('div:last')[0].offsetLeft);
+    remove_column_btn.css('left', query_columns.find('div:last')[0].offsetLeft);
+}
+function initialize_query_builder_form(create_query_form, add_column_btn, remove_column_btn, query_columns, add_parameter_btn, remove_parameter_btn, parameters_list) {
+    var modal = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : [];
+
+    calculate_column_btn_positions(add_column_btn, remove_column_btn, query_columns);
+    add_column_btn.on('click', function () {
+        var column_number = (parseInt(query_columns.find('div:last').attr('data-number')) + 1).toString();
+        create_query_form.find('[name=number_of_columns]').val(column_number);
+        query_columns.append('\n            <div class="column" data-number="' + column_number + '">\n                <input type="text" name="column_id_' + column_number + '" placeholder="\'id\' of column ' + column_number + '"  style="direction: ltr" required>\n                <input type="text" name="column_name_' + column_number + '" placeholder="\'\u0646\u0627\u0645 \u0641\u0627\u0631\u0633\u06CC\' \u0633\u062A\u0648\u0646 ' + column_number + '" required>\n            </div>\n            ');
+        calculate_column_btn_positions(add_column_btn, remove_column_btn, query_columns);
+        if (modal.length != 0) {
+            modal.modal('refresh');
+        }
+    });
+    remove_column_btn.on('click', function () {
+        if (query_columns.find('div').length > 1) {
+            create_query_form.find('[name=number_of_columns]').val((parseInt(query_columns.find('div:last').attr('data-number')) - 1).toString());
+            query_columns.find('div:last').remove();
+        }
+        calculate_column_btn_positions(add_column_btn, remove_column_btn, query_columns);
+        if (modal.length != 0) {
+            modal.modal('refresh');
+        }
+    });
+    add_parameter_btn.on('click', function () {
+        var parameter_number = 1;
+        if (parameters_list.find('.fields').length > 0) {
+            parameter_number = (parseInt(parameters_list.find('.fields:last').attr('data-number')) + 1).toString();
+        }
+        create_query_form.find('[name=number_of_parameters]').val(parameter_number);
+        parameters_list.append('\n            <div class="fields" data-number="' + parameter_number + '">\n                <div class="two wide field">\n                    <label class="fw-400">\'id\' \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '</label>\n                    <input type="text" name="p_id_' + parameter_number + '" placeholder="\'p\' in ${p}" style="direction: ltr" required>\n                </div>\n                <div class="three wide field">\n                    <label class="fw-400">\u0646\u0627\u0645 \u0641\u0627\u0631\u0633\u06CC \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '</label>\n                    <input type="text" name="p_name_' + parameter_number + '" placeholder="\u0646\u0627\u0645 \u0641\u0627\u0631\u0633\u06CC \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '" required>\n                </div>\n                <div class="two wide field">\n                    <label class="fw-400">\u0646\u0648\u0639 \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '</label>\n                    <select class="ui fluid dropdown" name="p_type_' + parameter_number + '" required>\n                        <option value="textbox">Textbox</option>\n                        <option value="dropdown">Dropdown</option>\n                    </select>\n                </div>\n                <div id="p_query" class="seven wide field disabled">\n                    <label class="fw-400">\u067E\u0631\u0633 \u0648 \u062C\u0648\u06CC \u067E\u0627\u0631\u0627\u0645\u062A\u0631 ' + parameter_number + '</label>\n                    <input type="text" name="p_query_' + parameter_number + '" placeholder="SELECT statement for dropdown parameter" style="direction: ltr">\n                </div>\n                <div id="p_query_column" class="two wide field disabled">\n                    <label class="fw-400">\'id\' \u067E\u0631\u0633 \u0648 \u062C\u0648</label>\n                    <input type="text" name="p_query_column_' + parameter_number + '" placeholder="column id" style="direction: ltr">\n                </div>\n            </div>\n            ');
+        parameters_list.find('.ui.dropdown').dropdown({
+            onChange: function onChange(value, text, $choice) {
+                if (value === 'textbox') {
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled').addClass('disabled');
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').removeAttr('required');
+                } else if (value === 'dropdown') {
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled');
+                    $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').attr('required', 'required');
+                }
+            }
+        });
+        if (modal.length != 0) {
+            modal.modal('refresh');
+        }
+    });
+    remove_parameter_btn.on('click', function () {
+        if (parameters_list.find('.fields').length !== 0) {
+            create_query_form.find('[name=number_of_parameters]').val((parseInt(parameters_list.find('.fields:last').attr('data-number')) - 1).toString());
+        }
+        parameters_list.find('.fields:last').remove();
+        if (modal.length != 0) {
+            modal.modal('refresh');
+        }
+    });
+}
+
+function pagesInit() {
+    // initialize footer date
+    window.$('#month_year').html(new persianDate().format("MMMM YYYY"));
+    // setup csrf token for ajax
+    window.$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+        }
+    });
+    init_menu_btns();
+    // home page logic
+    if (elementExist('#p_admin_home')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(0)').addClass('blue');
+        window.$('.vertical.menu a i:eq(0)').removeClass('grey').addClass('blue');
+        //
+        fix_persian_numbers('.p_number');
+        window.$('.ui.indicating.progress').progress({
+            label: 'ratio',
+            text: {
+                ratio: '{value}/{total}'
+            }
+        });
+        //
+        if (elementExist('#feedback_chart canvas')) {
+            var feedback_chart_config = {
+                type: 'pie',
+                data: feedback_data,
+                options: {
+                    tooltips: {
+                        enabled: false
+                    },
+                    responsive: true,
+                    legend: {
+                        display: false
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+            var feedback_chart = window.$('#feedback_chart canvas')[0].getContext("2d");
+            new Chart(feedback_chart, feedback_chart_config);
+        }
+        if (elementExist('#students_chart canvas')) {
+            var students_chart_config = {
+                type: 'pie',
+                data: students_data,
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 14,
+                            fontSize: 14
+                        }
+                    },
+                    tooltips: {
+                        displayColors: false,
+                        bodyFontSize: 14
+                    }
+                }
+            };
+            var students_chart = window.$('#students_chart canvas')[0].getContext("2d");
+            new Chart(students_chart, students_chart_config);
+        }
+        // init unix timestamps
+        window.$('.unix.date').each(function (index, item) {
+            var date = new persianDate(parseInt($(item).html()));
+            $(item).html(date.format('D MMMM'));
+        });
+    }
+    // course page logic
+    if (elementExist('#p_admin_courses')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(1)').addClass('green');
+        window.$('.vertical.menu a i:eq(1)').removeClass('grey').addClass('green');
+
+        // edit course logic
+        var edit_btns = window.$('.grey.segment table tr .orange.button');
+        var edit_course_modal = window.$('#edit_course.modal');
+        var edit_course_form = edit_course_modal.find('form');
+        var edit_course_form_action = edit_course_form.attr('action');
+        edit_btns.on('click', function () {
+            var course_id = $(this).data('id');
+            var course_row = window.$('#course_' + course_id);
+            // clear the form
+            window.$('#edit_course .ui.form').form('reset');
+            window.$('#edit_course .ui.form .error.message').html('');
+            // fill it with prev info
+            edit_course_form.find('[name=course_name]').val(course_row.find('td:nth-child(1)').html());
+            edit_course_form.find('[name=course_code]').val(course_row.find('td:nth-child(2)').html());
+            edit_course_form.find('[name=units]').val(course_row.find('td:nth-child(3)').html());
+            edit_course_form.find('[name=default_min_capacity_fall]').val(course_row.find('td:nth-child(4)').html());
+            edit_course_form.find('[name=default_min_capacity_spring]').val(course_row.find('td:nth-child(5)').html());
+            edit_course_form.find('[name=category]').val(course_row.find('td:nth-child(6)').html());
+            edit_course_form.find('[name=planned_semester]').val(course_row.find('td:nth-child(7)').html());
+            window.$('.ui.dropdown').dropdown();
+            edit_course_form.attr('action', edit_course_form_action + '/' + course_id);
+            edit_course_modal.modal({
+                onApprove: function onApprove() {
+                    return window.$('#edit_course .ui.form').form('is valid');
+                }
+            }).modal('show');
+        });
+        if (window.$('#edit_course.modal').data('error') === true) {
+            edit_course_modal.modal('show');
+        }
+
+        // delete course logic
+        var delete_btns = window.$('.grey.segment table tr .red.button');
+        var delete_course_modal = window.$('#delete_course.modal');
+        var delete_preview_row = delete_course_modal.find('table tbody tr');
+        var delete_course_form = delete_course_modal.find('form');
+        var delete_course_form_action = delete_course_form.attr('action');
+        delete_btns.on('click', function () {
+            var course_id = $(this).data('id');
+            var course_row = window.$('#course_' + course_id);
+            delete_preview_row.find('td:nth-child(1)').html(course_row.find('td:nth-child(1)').html());
+            delete_preview_row.find('td:nth-child(2)').html(course_row.find('td:nth-child(2)').html());
+            delete_preview_row.find('td:nth-child(3)').html(course_row.find('td:nth-child(3)').html());
+            delete_course_form.attr('action', delete_course_form_action + '/' + course_id);
+            delete_course_modal.modal('show');
+        });
+
+        // validations
+        add_course_validation();
+        edit_course_validation();
+
+        // init dropdowns
+        window.$('.ui.dropdown').dropdown();
+
+        // init messages
+        if (elementExist('.grey.segment .message')) {
+            window.$('.grey.segment .message .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.grey.segment .message').hasClass('hidden')) window.$('.grey.segment .message').transition('fade');
+            }, 4000);
+        }
+    }
+    // instructor page logic
+    if (elementExist('#p_admin_instructors')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(2)').addClass('violet');
+        window.$('.vertical.menu a i:eq(2)').removeClass('grey').addClass('violet');
+
+        // edit instructor logic
+        var _edit_btns = window.$('.grey.segment table tr .orange.button');
+        var edit_instructor_modal = window.$('#edit_instructor.modal');
+        var edit_instructor_form = edit_instructor_modal.find('form');
+        var edit_instructor_form_action = edit_instructor_form.attr('action');
+        _edit_btns.on('click', function () {
+            var instructor_id = $(this).data('id');
+            var instructor_row = window.$('#instructor_' + instructor_id);
+            // clear the form
+            window.$('#edit_instructor .ui.form').form('reset');
+            window.$('#edit_instructor .ui.form .error.message').html('');
+            // fill it with prev info
+            edit_instructor_form.find('[name=instructor_name]').val(instructor_row.find('td:nth-child(1)').html());
+            edit_instructor_form.find('[name=sex]').val(instructor_row.find('td:nth-child(2)').html());
+            if (instructor_row.find('td:nth-child(3) a').html() !== '') {
+                edit_instructor_form.find('[name=profile_link]').val(instructor_row.find('td:nth-child(3) a').html());
+            }
+            window.$('.ui.dropdown').dropdown();
+            edit_instructor_form.attr('action', edit_instructor_form_action + '/' + instructor_id);
+            edit_instructor_modal.modal({
+                onApprove: function onApprove() {
+                    return window.$('#edit_instructor .ui.form').form('is valid');
+                }
+            }).modal('show');
+        });
+        if (window.$('#edit_instructor.modal').data('error') === true) {
+            edit_instructor_modal.modal('show');
+        }
+
+        // delete instructor logic
+        var _delete_btns = window.$('.grey.segment table tr .red.button');
+        var delete_instructor_modal = window.$('#delete_instructor.modal');
+        var _delete_preview_row = delete_instructor_modal.find('table tbody tr');
+        var delete_instructor_form = delete_instructor_modal.find('form');
+        var delete_instructor_form_action = delete_instructor_form.attr('action');
+        _delete_btns.on('click', function () {
+            var instructor_id = $(this).data('id');
+            var instructor_row = window.$('#instructor_' + instructor_id);
+            _delete_preview_row.find('td:nth-child(1)').html(instructor_row.find('td:nth-child(1)').html());
+            _delete_preview_row.find('td:nth-child(2)').html(instructor_row.find('td:nth-child(2)').html());
+            _delete_preview_row.find('td:nth-child(3)').html(instructor_row.find('td:nth-child(3)').html());
+            _delete_preview_row.find('td:nth-child(4)').html(instructor_row.find('td:nth-child(4)').html());
+            delete_instructor_form.attr('action', delete_instructor_form_action + '/' + instructor_id);
+            delete_instructor_modal.modal('show');
+        });
+
+        // validations
+        add_instructor_validation();
+        edit_instructor_validation();
+
+        // init dropdowns
+        window.$('.ui.dropdown').dropdown();
+
+        // init messages
+        if (elementExist('.grey.segment .message')) {
+            window.$('.grey.segment .message .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.grey.segment .message').hasClass('hidden')) window.$('.grey.segment .message').transition('fade');
+            }, 4000);
+        }
+    }
+    // semester page logic
+    if (elementExist('#p_admin_semesters')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(3)').addClass('brown');
+        window.$('.vertical.menu a i:eq(3)').removeClass('grey').addClass('brown');
+
+        // edit semester logic
+        var _edit_btns2 = window.$('.grey.segment table tr .orange.button');
+        var edit_semester_modal = window.$('#edit_semester.modal');
+        var edit_semester_form = edit_semester_modal.find('form');
+        var edit_semester_form_action = edit_semester_form.attr('action');
+        _edit_btns2.on('click', function () {
+            var semester_id = $(this).data('id');
+            var semester_row = window.$('#semester_' + semester_id);
+            // clear the form
+            window.$('#edit_semester .ui.form').form('reset');
+            window.$('#edit_semester .ui.form .error.message').html('');
+            // fill it with prev info
+            edit_semester_form.find('[name=semester]').val(semester_row.find('td:nth-child(1)').html());
+            edit_semester_form.find('[name=year]').val(semester_row.find('td:nth-child(2)').html());
+            window.$('.ui.dropdown').dropdown();
+            edit_semester_form.attr('action', edit_semester_form_action + '/' + semester_id);
+            edit_semester_modal.modal({
+                onApprove: function onApprove() {
+                    return window.$('#edit_semester .ui.form').form('is valid');
+                }
+            }).modal('show');
+        });
+        if (window.$('#edit_semester.modal').data('error') === true) {
+            edit_semester_modal.modal('show');
+        }
+
+        // delete semester logic
+        var _delete_btns2 = window.$('.grey.segment table tr .red.button');
+        var delete_semester_modal = window.$('#delete_semester.modal');
+        var _delete_preview_row2 = delete_semester_modal.find('table tbody tr');
+        var delete_semester_form = delete_semester_modal.find('form');
+        var delete_semester_form_action = delete_semester_form.attr('action');
+        _delete_btns2.on('click', function () {
+            var semester_id = $(this).data('id');
+            var semester_row = window.$('#semester_' + semester_id);
+            _delete_preview_row2.find('td:nth-child(1)').html(semester_row.find('td:nth-child(1)').html());
+            _delete_preview_row2.find('td:nth-child(2)').html(semester_row.find('td:nth-child(2)').html());
+            delete_semester_form.attr('action', delete_semester_form_action + '/' + semester_id);
+            delete_semester_modal.modal('show');
+        });
+        // validations
+        add_semester_validation();
+        edit_semester_validation();
+
+        // init dropdowns
+        window.$('.ui.dropdown').dropdown();
+
+        // init messages
+        if (elementExist('.grey.segment .message')) {
+            window.$('.grey.segment .message .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.grey.segment .message').hasClass('hidden')) window.$('.grey.segment .message').transition('fade');
+            }, 4000);
+        }
+    }
+    if (elementExist('#p_admin_semester_courses')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(3)').addClass('brown');
+        window.$('.vertical.menu a i:eq(3)').removeClass('grey').addClass('brown');
+        // on check and unckeck events
+        window.$('.ui.checkbox').checkbox({
+            onChecked: function onChecked() {
+                $(this).parents('tr').find('.ui.input').removeClass('disabled');
+            },
+            onUnchecked: function onUnchecked() {
+                $(this).parents('tr').find('.ui.input').addClass('disabled');
+            }
+        });
+        // select and deselect all buttons
+        window.$('#select_all').on('click', function () {
+            window.$('.ui.checkbox').checkbox('check');
+        });
+        window.$('#deselect_all').on('click', function () {
+            window.$('.ui.checkbox').checkbox('uncheck');
+        });
+        // submit changes button
+        window.$('#submit_changes').on('click', function () {
+            // TODO validation logic
+            var rows = window.$('tbody tr');
+            var course_data = [];
+            for (var i = 0; i < rows.length; i++) {
+                var _course_id = rows[i].id;
+                course_data.push({
+                    id: _course_id,
+                    checked: window.$('#' + _course_id + ' .ui.checkbox').checkbox('is checked'),
+                    min_capacity: window.$('#' + _course_id + ' .ui.input input').val()
+                });
+            }
+            window.$.ajax({
+                url: document.location.href + '/updatecourses',
+                type: "POST",
+                data: JSON.stringify(course_data),
+                contentType: "application/json",
+                success: function success(result, status, xhr) {
+                    // TODO show success before redirect
+                    window.location = window.$('.ui.breadcrumb a').attr('href');
+                },
+                error: function error(xhr, status, _error2) {
+                    // TODO error handling logic
+                }
+            });
+        });
+    }
+    // student page logic
+    if (elementExist('#p_admin_students')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(4)').addClass('teal');
+        window.$('.vertical.menu a i:eq(4)').removeClass('grey').addClass('teal');
+        // delete student logic
+        var _delete_btns3 = window.$('.grey.segment table tr .red.button');
+        var delete_student_modal = window.$('#delete_student.modal');
+        var _delete_preview_row3 = delete_student_modal.find('table tbody tr');
+        var delete_student_form = delete_student_modal.find('form');
+        var delete_student_form_action = delete_student_form.attr('action');
+        _delete_btns3.on('click', function () {
+            var student_id = $(this).data('id');
+            var student_row = window.$('#student_' + student_id);
+            _delete_preview_row3.find('td:nth-child(1)').html(student_row.find('td:nth-child(1)').html());
+            _delete_preview_row3.find('td:nth-child(2)').html(student_row.find('td:nth-child(2)').html());
+            _delete_preview_row3.find('td:nth-child(3)').html(student_row.find('td:nth-child(3)').html());
+            _delete_preview_row3.find('td:nth-child(4)').html(student_row.find('td:nth-child(4)').html());
+            _delete_preview_row3.find('td:nth-child(5)').html(student_row.find('td:nth-child(5)').html());
+            delete_student_form.attr('action', delete_student_form_action + '/' + student_id);
+            delete_student_modal.modal('show');
+        });
+        // init messages
+        if (elementExist('.grey.segment .message')) {
+            window.$('.grey.segment .message .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.grey.segment .message').hasClass('hidden')) window.$('.grey.segment .message').transition('fade');
+            }, 4000);
+        }
+    }
+    if (elementExist('#p_admin_student_courses')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(4)').addClass('teal');
+        window.$('.vertical.menu a i:eq(4)').removeClass('grey').addClass('teal');
+
+        window.$('.menu .item').tab();
+    }
+    // report page logic
+    if (elementExist('#p_admin_reports')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(5)').addClass('red');
+        window.$('.vertical.menu a i:eq(5)').removeClass('grey').addClass('red');
+
+        var load_btn = window.$('.blue.segment .basic.query.label .green.icon.button');
+        var query_view = window.$('#query_view');
+        var query_result_modal = window.$('#query_result.modal');
+        load_btn.on('click', function () {
+            var query_id = $(this).attr('data-id');
+            var dimmer = $(this).parent().siblings('.dimmer');
+            dimmer.dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + '/admin/query/' + query_id,
+                type: "get",
+                success: function success(result, status, xhr) {
+                    query_view.html(result);
+                    query_view.find('.ui.dropdown').dropdown();
+                    query_view.find('form').on('submit', function () {
+                        var url = $(this).attr('action');
+                        var data = $(this).serializeArray();
+                        var dimmer = $(this).find('.dimmer');
+                        dimmer.dimmer('toggle');
+                        window.$.ajax({
+                            url: url,
+                            type: "post",
+                            data: data,
+                            success: function success(result, status, xhr) {
+                                query_result_modal.find('.scrolling.content').html(result);
+                                query_result_modal.modal('show');
+                                dimmer.dimmer('toggle');
+                            },
+                            error: function error(xhr, status, erro) {
+                                // TODO error handling logic
+                                dimmer.dimmer('toggle');
+                            }
+                        });
+                        return false;
+                    });
+                    dimmer.dimmer('toggle');
+                },
+                error: function error(xhr, status, _error3) {
+                    // TODO error handling logic
+                    dimmer.dimmer('toggle');
+                }
+            });
+        });
+        var delete_btn = window.$('.blue.segment .basic.query.label .red.icon.button');
+        var delete_query_modal = window.$('#delete_query.modal');
+        delete_btn.on('click', function () {
+            var query_id = $(this).attr('data-id');
+            var query_name = $(this).parent().siblings('span').find('span').html();
+            delete_query_modal.find('.content span span').html(query_name);
+            var from_action = document.location.origin + '/admin/query/' + query_id;
+            delete_query_modal.find('form').attr('action', from_action);
+            delete_query_modal.modal('show');
+        });
+        delete_query_modal.modal({
+            onApprove: function onApprove() {
+                delete_query_modal.find('form').submit();
+            }
+        });
+        var edit_btn = window.$('.blue.segment .basic.query.label .orange.icon.button');
+        var edit_query_modal = window.$('#edit_query.modal');
+        edit_btn.on('click', function () {
+            var query_id = $(this).attr('data-id');
+            var dimmer = $(this).parent().siblings('.dimmer');
+            dimmer.dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + '/admin/query/' + query_id + '/edit',
+                type: 'get',
+                success: function success(result, status, xhr) {
+                    edit_query_modal.find('.content').html(result);
+                    var create_query_form = edit_query_modal.find('form');
+                    var add_column_btn = edit_query_modal.find('#add_column');
+                    var remove_column_btn = edit_query_modal.find('#remove_column');
+                    var query_columns = edit_query_modal.find('#query_columns');
+                    var add_parameter_btn = edit_query_modal.find('#add_parameter');
+                    var remove_parameter_btn = edit_query_modal.find('#remove_parameter');
+                    var parameters_list = edit_query_modal.find('#parameters');
+                    parameters_list.find('.ui.dropdown').dropdown({
+                        onChange: function onChange(value, text, $choice) {
+                            if (value === 'textbox') {
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled').addClass('disabled');
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').removeAttr('required');
+                            } else if (value === 'dropdown') {
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').removeClass('disabled');
+                                $choice.parents('.field').siblings('#p_query,#p_query_column').find('input').attr('required', 'required');
+                            }
+                        }
+                    });
+                    var update_url = document.location.origin + '/admin/query/' + query_id;
+                    create_query_form.attr('action', update_url);
+                    edit_query_modal.modal({
+                        onApprove: function onApprove() {
+                            var form_is_valid = false;
+                            create_query_form.find('input,select').each(function (index, item) {
+                                if (!$(item)[0].checkValidity()) {
+                                    form_is_valid = false;
+                                }
+                            });
+                            if (form_is_valid) {
+                                create_query_form.submit();
+                            } else {
+                                create_query_form.find('input[type=submit]').click();
+                                return false;
+                            }
+                        }
+                    });
+                    edit_query_modal.modal('show');
+                    initialize_query_builder_form(create_query_form, add_column_btn, remove_column_btn, query_columns, add_parameter_btn, remove_parameter_btn, parameters_list, edit_query_modal);
+                    dimmer.dimmer('toggle');
+                },
+                error: function error(xhr, status, erro) {
+                    // TODO error handling logic
+                    dimmer.dimmer('toggle');
+                }
+            });
+        });
+        // init messages
+        if (elementExist('.message.session')) {
+            window.$('.message.session .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.message.session').hasClass('hidden')) window.$('.message.session').transition('fade');
+            }, 4000);
+        }
+    }
+    if (elementExist('#p_admin_query_builder')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(5)').addClass('red');
+        window.$('.vertical.menu a i:eq(5)').removeClass('grey').addClass('red');
+
+        var create_query_form = window.$('#create_query');
+        var add_column_btn = window.$('#create_query #add_column');
+        var remove_column_btn = window.$('#create_query #remove_column');
+        var query_columns = window.$('#create_query #query_columns');
+        var add_parameter_btn = window.$('#create_query #add_parameter');
+        var remove_parameter_btn = window.$('#create_query #remove_parameter');
+        var parameters_list = window.$('#create_query #parameters');
+        initialize_query_builder_form(create_query_form, add_column_btn, remove_column_btn, query_columns, add_parameter_btn, remove_parameter_btn, parameters_list);
+        var view_database_btn = window.$('#create_query #view_database');
+        var database_map_modal = window.$('#database_map.modal');
+        view_database_btn.on('click', function () {
+            database_map_modal.modal('show');
+        });
+
+        // init messages
+        if (elementExist('.message.session')) {
+            window.$('.message.session .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('.message.session').hasClass('hidden')) window.$('.message.session').transition('fade');
+            }, 4000);
+        }
+    }
+    // scheduling page logic
+    if (elementExist('#p_admin_scheduling')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(6)').addClass('orange');
+        window.$('.vertical.menu a i:eq(6)').removeClass('grey').addClass('orange');
+
+        // selectors
+        var add_schedule_modal = window.$('#add_schedule.modal');
+        var remove_schedule_btn = add_schedule_modal.find('.actions .orange.right.labeled.icon.button');
+        var return_btn = window.$('#add_schedule.modal .actions .blue.labeled.icon.button');
+        var course_groups_tab = window.$('#add_schedule.modal .scrolling.content #course_groups');
+        var course_group_tab_btns = course_groups_tab.find('.top.attached.menu .left.menu');
+        var approve_btn = add_schedule_modal.find('.actions .positive.right.labeled.icon.button');
+
+        var scheduling_stage = window.$('#p_admin_scheduling').attr('data-stage');
+        if (window.$.inArray(scheduling_stage, ['1st', '2nd']) !== -1) {
+            // show courses
+            var courses_modal = window.$('#courses.modal');
+            var menu_add_btn = window.$('#add_to_schedule_btn.large.labeled.icon.button');
+            menu_add_btn.on('click', function () {
+                courses_modal.modal('show');
+            });
+
+            // click on each course card
+            var course_cards = window.$('.ui.course.card');
+            course_cards.on('click', function () {
+                var course_id = $(this).attr('data-id');
+                var card_dimmer = $(this).find('.ui.inverted.dimmer');
+                //
+                add_schedule_modal.find('#course_info .top.attached.tabular.menu a').removeClass('active');
+                add_schedule_modal.find('#course_info .top.attached.tabular.menu a:first').addClass('active');
+                add_schedule_modal.find('#course_info .bottom.attached.tab.segment').removeClass('active');
+                add_schedule_modal.find('#course_info .bottom.attached.tab.segment:first').addClass('active');
+                //
+                return_btn.show();
+                if ($(this).attr('data-state') === 'notscheduled') {
+                    approve_btn.find('span').html('ثبت در برنامه');
+                    approve_btn.find('i').removeClass('write').addClass('checkmark');
+                    remove_schedule_btn.hide();
+                    //
+                    course_group_tab_btns.find('a.new').remove();
+                    course_group_tab_btns.find('a:first-child').removeClass('active').addClass('active');
+                    course_groups_tab.find('.top.attached.menu .right.menu .red.labeled.icon.button').addClass('disabled');
+                    course_groups_tab.find('.bottom.attached.tab.segment.new').remove();
+                    course_groups_tab.find('.bottom.attached.tab.segment').removeClass('active').addClass('active');
+                    //
+                    window.$('#add_schedule.modal .scrolling.content form').form('clear');
+                    fix_persian_numbers('#add_schedule.modal .scrolling.content .menu .item');
+                    window.$('#add_schedule.modal .scrolling.content .menu .item').tab();
+                    window.$('#add_schedule.modal .scrolling.content .ui.dropdown').dropdown();
+                    //
+                    course_groups_tab.find('.bottom.attached.tab.segment form input[name=course_id]').val(course_id);
+                    course_groups_tab.find('.bottom.attached.tab.segment form input[name=group_number]').val(1);
+                    //
+                    var course_color_preview = window.$('#add_schedule.modal .scrolling.content .tab.segment .block.preview');
+                    var _random_color = randomColor();
+                    course_color_preview.css('background-color', _random_color);
+                    course_color_preview.siblings('input').val(_random_color);
+                    course_color_preview.on('click', function () {
+                        _random_color = randomColor();
+                        $(this).css('background-color', _random_color);
+                        $(this).siblings('input').val(_random_color);
+                    });
+                    //
+                    course_color_preview.html($(this).find('.content .header').html());
+                    window.$('#add_schedule.modal .scrolling.content input.timepicker').timepicker({
+                        timeFormat: 'HH:mm:ss',
+                        interval: 15,
+                        minTime: '08:00',
+                        maxTime: '20:00',
+                        dynamic: false,
+                        dropdown: true,
+                        scrollbar: true
+                    });
+                    window.$('#add_schedule.modal .scrolling.content input[name=exam_date]').persianDatepicker({
+                        initialValue: false,
+                        observer: true,
+                        autoClose: true,
+                        format: 'YYYY/MM/DD',
+                        altField: '#add_schedule.modal .scrolling.content form:eq(0) input[name=exam_date_unix]',
+                        'toolbox': {
+                            'enabled': false
+                        }
+                    });
+                    //
+                    card_dimmer.dimmer('toggle');
+                    window.$.ajax({
+                        url: document.location.origin + '/admin/scheduling/' + course_id + '/information',
+                        type: "GET",
+                        success: function success(result, status, xhr) {
+                            //
+                            var instructors_info = result.instructors_info;
+                            var instructors_info_rows = '';
+                            for (var i = 0; i < instructors_info.length; i++) {
+                                if (instructors_info[i].photo === null) {
+                                    if (instructors_info[i].sex === 'مرد') {
+                                        instructors_info[i].photo = 'instructor_photos/img_male.png';
+                                    } else {
+                                        instructors_info[i].photo = 'instructor_photos/img_female.png';
+                                    }
+                                }
+                                instructors_info_rows += '\n                            <div class="row">\n                                <div class="photo" data-tooltip="' + instructors_info[i].name + '" data-position="right center">\n                                    <img class="ui mini circular image" src="/storage/' + instructors_info[i].photo + '">\n                                </div>\n                                <div class="progress">\n                                    <div class="ui indicating progress" data-value="' + instructors_info[i].votes + '" data-total="' + instructors_info[0].votes + '">\n                                        <div class="bar"></div>\n                                    </div>\n                                </div>\n                                <div class="votes">\n                                    ' + instructors_info[i].votes + '\n                                </div>\n                            </div>\n                        ';
+                            }
+                            if (instructors_info_rows !== '') {
+                                window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors').html(instructors_info_rows);
+                                window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors .progress').progress();
+                            } else {
+                                window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors').html('برای این درس استادی پیشنهاد نشده است.');
+                            }
+                            //
+                            var course_conflicts = result.course_conflicts;
+                            var course_conflicts_tbody = '';
+                            for (var _i5 = 0; _i5 < course_conflicts.length; _i5++) {
+                                course_conflicts_tbody += '<tr><td>' + (_i5 + 1) + '</td><td>' + course_conflicts[_i5].code + '</td><td>' + course_conflicts[_i5].name + '</td><td>' + course_conflicts[_i5].count + '</td></tr>';
+                            }
+                            if (course_conflicts_tbody !== '') {
+                                window.$('#add_schedule.modal .scrolling.content table.conflicts tbody').html(course_conflicts_tbody);
+                            } else {
+                                window.$('#add_schedule.modal .scrolling.content table.conflicts tbody').html('<tr><td colspan="4">برای این درس تداخلی وجود ندارد.</td></tr>');
+                            }
+                            //
+                            var course_students = result.course_students;
+                            var course_students_tbody = '';
+                            for (var _i6 = 0; _i6 < course_students.length; _i6++) {
+                                course_students_tbody += '<tr><td>' + (_i6 + 1) + '</td><td>' + course_students[_i6].first_name + '</td><td>' + course_students[_i6].last_name + '</td><td>' + course_students[_i6].student_id + '</td><td>' + course_students[_i6].entry_year + '</td></tr>';
+                            }
+                            if (course_students_tbody !== '') {
+                                window.$('#add_schedule.modal .scrolling.content table.students tbody').html(course_students_tbody);
+                            } else {
+                                window.$('#add_schedule.modal .scrolling.content table.students tbody').html('<tr><td colspan="5">دانشجویی این درس را اخذ نکرده است.</td></tr>');
+                            }
+                            //
+                            card_dimmer.dimmer('toggle');
+                            add_schedule_modal.modal('show');
+                        },
+                        error: function error(xhr, status, _error4) {
+                            // TODO error handling logic
+                        }
+                    });
+                } else {
+                    card_dimmer.dimmer('toggle');
+                    window.$.ajax({
+                        url: document.location.origin + '/admin/scheduling/' + course_id + '/information',
+                        type: "GET",
+                        success: function success(result, status, xhr) {
+                            //
+                            course_group_tab_btns.find('a.new').remove();
+                            var tab_btn = course_group_tab_btns.find('a:first-child');
+                            tab_btn.removeClass('active').addClass('active');
+                            course_groups_tab.find('.top.attached.menu .right.menu .red.labeled.icon.button').addClass('disabled');
+                            course_groups_tab.find('.bottom.attached.tab.segment.new').remove();
+                            var tab_content = course_groups_tab.find('.bottom.attached.tab.segment');
+                            tab_content.removeClass('active').addClass('active');
+
+                            var schedule_info = result.schedule_info;
+                            for (var i = 0; i < schedule_info.length; i++) {
+                                if (i == 0) {
+                                    tab_content.find('form').form('clear');
+                                    tab_content.find('form input[name=course_id]').val(schedule_info[i].course_id);
+                                    tab_content.find('form input[name=group_number]').val(schedule_info[i].group_number);
+                                    tab_content.find('form select[name=instructor_id]').val(schedule_info[i].instructor_id);
+                                    tab_content.find('form input[name=course_color]').val(schedule_info[i].course_color);
+                                    tab_content.find('form select[name=weekday_1]').val(schedule_info[i].weekday_1);
+                                    tab_content.find('form input[name=classroom_1]').val(schedule_info[i].classroom_1);
+                                    tab_content.find('form input[name=start_time_1]').val(schedule_info[i].start_time_1);
+                                    tab_content.find('form input[name=end_time_1]').val(schedule_info[i].end_time_1);
+                                    tab_content.find('form select[name=weekday_2]').val(schedule_info[i].weekday_2);
+                                    tab_content.find('form input[name=classroom_2]').val(schedule_info[i].classroom_2);
+                                    tab_content.find('form input[name=start_time_2]').val(schedule_info[i].start_time_2);
+                                    tab_content.find('form input[name=end_time_2]').val(schedule_info[i].end_time_2);
+                                    tab_content.find('form input[name=exam_time]').val(schedule_info[i].exam_time);
+                                    var _course_color_preview2 = tab_content.find('.block.preview');
+                                    _course_color_preview2.html(schedule_info[i].course_name);
+                                    _course_color_preview2.css('background-color', schedule_info[i].course_color);
+                                    _course_color_preview2.on('click', function () {
+                                        random_color = randomColor();
+                                        $(this).css('background-color', random_color);
+                                        $(this).siblings('input').val(random_color);
+                                    });
+                                    var dp = tab_content.find('form input[name=exam_date]').persianDatepicker({
+                                        initialValue: false,
+                                        observer: true,
+                                        autoClose: true,
+                                        format: 'YYYY/MM/DD',
+                                        altField: '#add_schedule.modal .scrolling.content form:eq(' + (parseInt(schedule_info[i].group_number) - 1).toString() + ') input[name=exam_date_unix]',
+                                        'toolbox': {
+                                            'enabled': false
+                                        }
+                                    });
+                                    if (schedule_info[i].exam_date_unix !== null) dp.setDate(parseInt(schedule_info[i].exam_date_unix));
+                                } else {
+                                    var new_tab_btn = tab_btn.clone().removeClass('active').addClass('new');
+                                    new_tab_btn.attr('data-tab', (i + 1).toString());
+                                    new_tab_btn.html('گروه ' + (i + 1).toString());
+                                    course_group_tab_btns.append(new_tab_btn);
+                                    course_groups_tab.find('.top.attached.menu .right.menu .red.labeled.icon.button').removeClass('disabled');
+
+                                    var new_tab_content = tab_content.clone().removeClass('active').addClass('new');
+                                    new_tab_content.attr('data-tab', (i + 1).toString());
+                                    new_tab_content.find('form').form('clear');
+                                    new_tab_content.find('form input[name=course_id]').val(schedule_info[i].course_id);
+                                    new_tab_content.find('form input[name=group_number]').val(schedule_info[i].group_number);
+                                    new_tab_content.find('form select[name=instructor_id]').val(schedule_info[i].instructor_id);
+                                    new_tab_content.find('form input[name=course_color]').val(schedule_info[i].course_color);
+                                    new_tab_content.find('form select[name=weekday_1]').val(schedule_info[i].weekday_1);
+                                    new_tab_content.find('form input[name=classroom_1]').val(schedule_info[i].classroom_1);
+                                    new_tab_content.find('form input[name=start_time_1]').val(schedule_info[i].start_time_1);
+                                    new_tab_content.find('form input[name=end_time_1]').val(schedule_info[i].end_time_1);
+                                    new_tab_content.find('form select[name=weekday_2]').val(schedule_info[i].weekday_2);
+                                    new_tab_content.find('form input[name=classroom_2]').val(schedule_info[i].classroom_2);
+                                    new_tab_content.find('form input[name=start_time_2]').val(schedule_info[i].start_time_2);
+                                    new_tab_content.find('form input[name=end_time_2]').val(schedule_info[i].end_time_2);
+                                    new_tab_content.find('form input[name=exam_time]').val(schedule_info[i].exam_time);
+                                    var _course_color_preview3 = new_tab_content.find('.block.preview');
+                                    _course_color_preview3.html(schedule_info[i].course_name);
+                                    _course_color_preview3.css('background-color', schedule_info[i].course_color);
+                                    _course_color_preview3.on('click', function () {
+                                        random_color = randomColor();
+                                        $(this).css('background-color', random_color);
+                                        $(this).siblings('input').val(random_color);
+                                    });
+                                    var _dp2 = new_tab_content.find('form input[name=exam_date]').persianDatepicker({
+                                        initialValue: false,
+                                        observer: true,
+                                        autoClose: true,
+                                        format: 'YYYY/MM/DD',
+                                        altField: '#add_schedule.modal .scrolling.content form:eq(' + (parseInt(schedule_info[i].group_number) - 1).toString() + ') input[name=exam_date_unix]',
+                                        'toolbox': {
+                                            'enabled': false
+                                        }
+                                    });
+                                    if (schedule_info[i].exam_date_unix !== null) _dp2.setDate(parseInt(schedule_info[i].exam_date_unix));
+                                    course_groups_tab.append(new_tab_content);
+                                }
+                            }
+                            window.$('#add_schedule.modal .scrolling.content .menu .item').tab();
+                            window.$('#add_schedule.modal .scrolling.content .ui.dropdown').dropdown();
+                            window.$('#add_schedule.modal .scrolling.content input.timepicker').timepicker({
+                                timeFormat: 'HH:mm:ss',
+                                interval: 15,
+                                minTime: '08:00',
+                                maxTime: '20:00',
+                                dynamic: false,
+                                dropdown: true,
+                                scrollbar: true
+                            });
+                            fix_persian_numbers('#add_schedule.modal .scrolling.content .menu .item');
+
+                            //
+                            var instructors_info = result.instructors_info;
+                            var instructors_info_rows = '';
+                            for (var _i7 = 0; _i7 < instructors_info.length; _i7++) {
+                                if (instructors_info[_i7].photo === null) {
+                                    if (instructors_info[_i7].sex === 'مرد') {
+                                        instructors_info[_i7].photo = 'instructor_photos/img_male.png';
+                                    } else {
+                                        instructors_info[_i7].photo = 'instructor_photos/img_female.png';
+                                    }
+                                }
+                                instructors_info_rows += '\n                            <div class="row">\n                                <div class="photo" data-tooltip="' + instructors_info[_i7].name + '" data-position="right center">\n                                    <img class="ui mini circular image" src="/storage/' + instructors_info[_i7].photo + '">\n                                </div>\n                                <div class="progress">\n                                    <div class="ui indicating progress" data-value="' + instructors_info[_i7].votes + '" data-total="' + instructors_info[0].votes + '">\n                                        <div class="bar"></div>\n                                    </div>\n                                </div>\n                                <div class="votes">\n                                    ' + instructors_info[_i7].votes + '\n                                </div>\n                            </div>\n                        ';
+                            }
+                            if (instructors_info_rows !== '') {
+                                window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors').html(instructors_info_rows);
+                                window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors .progress').progress();
+                            } else {
+                                window.$('#add_schedule.modal .scrolling.content .bottom.attached.tab .instructors').html('برای این درس استادی پیشنهاد نشده است.');
+                            }
+                            //
+                            var course_conflicts = result.course_conflicts;
+                            var course_conflicts_tbody = '';
+                            for (var _i8 = 0; _i8 < course_conflicts.length; _i8++) {
+                                course_conflicts_tbody += '<tr><td>' + (_i8 + 1) + '</td><td>' + course_conflicts[_i8].code + '</td><td>' + course_conflicts[_i8].name + '</td><td>' + course_conflicts[_i8].count + '</td></tr>';
+                            }
+                            if (course_conflicts_tbody !== '') {
+                                window.$('#add_schedule.modal .scrolling.content table.conflicts tbody').html(course_conflicts_tbody);
+                            } else {
+                                window.$('#add_schedule.modal .scrolling.content table.conflicts tbody').html('<tr><td colspan="4">برای این درس تداخلی وجود ندارد.</td></tr>');
+                            }
+                            //
+                            var course_students = result.course_students;
+                            var course_students_tbody = '';
+                            for (var _i9 = 0; _i9 < course_students.length; _i9++) {
+                                course_students_tbody += '<tr><td>' + (_i9 + 1) + '</td><td>' + course_students[_i9].first_name + '</td><td>' + course_students[_i9].last_name + '</td><td>' + course_students[_i9].student_id + '</td><td>' + course_students[_i9].entry_year + '</td></tr>';
+                            }
+                            if (course_students_tbody !== '') {
+                                window.$('#add_schedule.modal .scrolling.content table.students tbody').html(course_students_tbody);
+                            } else {
+                                window.$('#add_schedule.modal .scrolling.content table.students tbody').html('<tr><td colspan="5">دانشجویی این درس را اخذ نکرده است.</td></tr>');
+                            }
+                            //
+                            if (scheduling_stage === '2nd') {
+                                var course_evaluation = result.course_evaluation;
+                                if (course_evaluation.length > 0) {
+                                    add_schedule_modal.find('#course_info .top.attached.tabular.menu').append('\n                                    <a class="item fw-400" data-tab="evaluations">\u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0647\u0627\u06CC \u062F\u0627\u0646\u0634\u062C\u0648\u06CC\u0627\u0646</a>\n                                ');
+                                    var course_evaluation_tab_content = '';
+                                    course_evaluation_tab_content += '<div class="ui bottom attached tab segment" data-tab="evaluations"><div class="ui text container">';
+                                    for (var _i10 = 0; _i10 < course_evaluation.length; _i10++) {
+                                        course_evaluation_tab_content += '\n                                    <div class="ui fluid inverted card">\n                                        <div class="ui inverted dimmer">\n                                            <div class="ui loader"></div>\n                                        </div>\n                                        <div class="content">\n                                            <div class="ui divided selection list">\n                                    ';
+                                        if (course_evaluation[_i10].suggested_weekday_1 !== null) {
+                                            course_evaluation_tab_content += '\n                                        <a class="item">\n                                            <div class="ui blue large horizontal label fw-400" style="padding: 1rem">\u062A\u063A\u06CC\u06CC\u0631 \u062C\u0644\u0633\u0647 \u0627\u0648\u0644</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>\u0627\u0632 </span>\n                                                <span>' + persian_weekday(course_evaluation[_i10].weekday_1) + '</span>\n                                                <span class="p_number">' + course_evaluation[_i10].start_time_1.substr(0, 5) + '</span><span> \u062A\u0627 </span><span class="p_number">' + course_evaluation[_i10].end_time_1.substr(0, 5) + '</span>\n                                                <span> \u0628\u0647 </span>\n                                                <span>' + persian_weekday(course_evaluation[_i10].suggested_weekday_1) + '</span>\n                                                <span class="p_number">' + course_evaluation[_i10].suggested_start_time_1.substr(0, 5) + '</span><span> \u062A\u0627 </span><span class="p_number">' + course_evaluation[_i10].suggested_end_time_1.substr(0, 5) + '</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">\u062F\u0644\u06CC\u0644</div>\n                                                    <span style="line-height: 2rem">' + course_evaluation[_i10].suggestion_reason_1 + '</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        ';
+                                        }
+                                        if (course_evaluation[_i10].suggested_weekday_2 !== null) {
+                                            course_evaluation_tab_content += '\n                                        <a class="item">\n                                            <div class="ui blue large horizontal label fw-400" style="padding: 1rem">\u062A\u063A\u06CC\u06CC\u0631 \u062C\u0644\u0633\u0647 \u0627\u0648\u0644</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>\u0627\u0632 </span>\n                                                <span>' + persian_weekday(course_evaluation[_i10].weekday_2) + '</span>\n                                                <span class="p_number">' + course_evaluation[_i10].start_time_2.substr(0, 5) + '</span><span> \u062A\u0627 </span><span class="p_number">' + course_evaluation[_i10].end_time_2.substr(0, 5) + '</span>\n                                                <span> \u0628\u0647 </span>\n                                                <span>' + persian_weekday(course_evaluation[_i10].suggested_weekday_2) + '</span>\n                                                <span class="p_number">' + course_evaluation[_i10].suggested_start_time_2.substr(0, 5) + '</span><span> \u062A\u0627 </span><span class="p_number">' + course_evaluation[_i10].suggested_end_time_2.substr(0, 5) + '</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">\u062F\u0644\u06CC\u0644</div>\n                                                    <span style="line-height: 2rem">' + course_evaluation[_i10].suggestion_reason_2 + '</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        ';
+                                        }
+                                        if (course_evaluation[_i10].suggested_exam_date !== null) {
+                                            course_evaluation_tab_content += '\n                                        <a class="item">\n                                            <div class="ui red large horizontal label fw-400" style="padding: 1rem">\u062A\u063A\u06CC\u06CC\u0631 \u0627\u0645\u062A\u062D\u0627\u0646</div>\n                                            <span style="font-size: 1.2rem">\n                                                <span>\u0627\u0632 </span>\n                                                <span>' + course_evaluation[_i10].exam_date + '</span>\n                                                <span> \u0633\u0627\u0639\u062A </span><span class="p_number">' + course_evaluation[_i10].exam_time.substr(0, 5) + '</span>\n                                                <span> \u0628\u0647 </span>\n                                                <span>' + course_evaluation[_i10].suggested_exam_date + '</span>\n                                                <span> \u0633\u0627\u0639\u062A </span><span class="p_number">' + course_evaluation[_i10].suggested_exam_time.substr(0, 5) + '</span>\n                                            </span>\n                                            <div style="margin-top: .5rem">\n                                                <div class="ui green fluid basic label">\n                                                    <div class="ui green horizontal label fw-400" style="padding: .5rem">\u062F\u0644\u06CC\u0644</div>\n                                                    <span style="line-height: 2rem">' + course_evaluation[_i10].exam_suggestion_reason + '</span>\n                                                </div>\n                                            </div>\n                                        </a>\n                                        ';
+                                        }
+                                        course_evaluation_tab_content += '</div></div>';
+                                        if (course_evaluation[_i10].privacy === 'public') {
+                                            var upvotes_color = '';
+                                            var downvotes_color = '';
+                                            if (course_evaluation[_i10].upvotes > 0) {
+                                                upvotes_color = ' blue-color';
+                                            }
+                                            if (course_evaluation[_i10].downvotes < 0) {
+                                                downvotes_color = ' red-color';
+                                            }
+                                            course_evaluation_tab_content += '\n                                            <div class="extra content">\n                                                <div class="left floated' + upvotes_color + '" style="direction: ltr">\n                                                    <i class="thumbs outline up big icon"></i>\n                                                    <span>' + course_evaluation[_i10].upvotes + '</span>\n                                                </div>\n                                                <div class="right floated' + downvotes_color + '" style="direction: ltr">\n                                                    <i class="thumbs outline down big icon"></i>\n                                                    <span>' + course_evaluation[_i10].downvotes + '</span>\n                                                </div>\n                                            </div>\n                                        </div>\n                                        ';
+                                        } else {
+                                            course_evaluation_tab_content += '\n                                            <div class="extra content" style="text-align: center">\n                                                <span>\u062F\u0631\u062E\u0648\u0627\u0633\u062A \u0634\u062E\u0635\u06CC</span>\n                                            </div>\n                                        </div>\n                                        ';
+                                        }
+                                    }
+                                    course_evaluation_tab_content += '</div></div>';
+
+                                    add_schedule_modal.find('#course_info').append(course_evaluation_tab_content);
+                                    add_schedule_modal.find('#course_info .menu .item').tab();
+                                    fix_persian_numbers('.p_number');
+                                }
+                            }
+                            //
+                            approve_btn.find('span').html('ویرایش برنامه');
+                            approve_btn.find('i').removeClass('checkmark').addClass('write');
+                            remove_schedule_btn.show();
+                            //
+                            card_dimmer.dimmer('toggle');
+                            add_schedule_modal.modal('show');
+                        },
+                        error: function error(xhr, status, _error5) {
+                            // TODO error handling logic
+                        }
+                    });
+                }
+            });
+            course_cards.hover(function () {
+                if ($(this).attr('data-state') === 'scheduled') {
+                    $(this).find('.right.corner.label i').transition('flash');
+                } else {
+                    $(this).find('.right.corner.label i').addClass('checkmark');
+                }
+            }, function () {
+                if ($(this).attr('data-state') === 'notscheduled') {
+                    $(this).find('.right.corner.label i').removeClass('checkmark');
+                }
+            });
+            // add new group
+            course_groups_tab.find('.top.attached.menu .right.menu .green.labeled.icon.button').on('click', function () {
+                //
+                var new_tab_btn = course_group_tab_btns.find('a:last-child').clone().removeClass('active').addClass('new');
+                var group_counter = parseInt(new_tab_btn.attr('data-tab'));
+                new_tab_btn.html('گروه ' + (group_counter + 1).toString());
+                new_tab_btn.attr('data-tab', (group_counter + 1).toString());
+                course_group_tab_btns.append(new_tab_btn);
+                course_groups_tab.find('.top.attached.menu .right.menu .red.labeled.icon.button').removeClass('disabled');
+                //
+                var new_tab_content = course_groups_tab.find('.bottom.attached.tab.segment:last-child').clone().removeClass('active').addClass('new');
+                new_tab_content.attr('data-tab', (group_counter + 1).toString());
+                var course_id = new_tab_content.find('form input[name=course_id]').val();
+                new_tab_content.find('form').form('clear');
+                new_tab_content.find('form input[name=course_id]').val(course_id);
+                new_tab_content.find('form input[name=group_number]').val((group_counter + 1).toString());
+                course_groups_tab.append(new_tab_content);
+                //
+                course_group_tab_btns.find('a').removeClass('active');
+                course_group_tab_btns.find('a:last-child').addClass('active');
+                course_groups_tab.find('.bottom.attached.tab.segment').removeClass('active');
+                course_groups_tab.find('.bottom.attached.tab.segment:last-child').addClass('active');
+                window.$('#add_schedule.modal .scrolling.content .menu .item').tab();
+                new_tab_content.find('.ui.dropdown').dropdown();
+                //
+                var course_color_preview = new_tab_content.find('.block.preview');
+                course_color_preview.siblings('input').val(rgb2hex(course_color_preview.css('background-color')));
+                course_color_preview.on('click', function () {
+                    var random_color = randomColor();
+                    $(this).css('background-color', random_color);
+                    $(this).siblings('input').val(random_color);
+                });
+                //
+                fix_persian_numbers('#add_schedule.modal .scrolling.content .menu .item');
+                window.$('#add_schedule.modal .scrolling.content input.timepicker').timepicker({
+                    timeFormat: 'HH:mm:ss',
+                    interval: 15,
+                    minTime: '08:00',
+                    maxTime: '20:00',
+                    dynamic: false,
+                    dropdown: true,
+                    scrollbar: true
+                });
+                window.$('#add_schedule.modal .scrolling.content input[name=exam_date]').persianDatepicker({
+                    initialValue: false,
+                    observer: true,
+                    autoClose: true,
+                    format: 'YYYY/MM/DD',
+                    altField: '#add_schedule.modal .scrolling.content form:eq(' + group_counter.toString() + ') input[name=exam_date_unix]',
+                    'toolbox': {
+                        'enabled': false
+                    }
+                });
+            });
+            // remove group btn
+            course_groups_tab.find('.top.attached.menu .right.menu .red.labeled.icon.button').on('click', function () {
+                course_group_tab_btns.find('a.new:last').remove();
+                if (elementExist(course_group_tab_btns.find('a.new:last'))) {
+                    course_group_tab_btns.find('a.new:last').addClass('active');
+                } else {
+                    course_group_tab_btns.find('a:first').addClass('active');
+                    course_groups_tab.find('.top.attached.menu .right.menu .red.labeled.icon.button').addClass('disabled');
+                }
+                course_groups_tab.find('.bottom.attached.tab.segment.new:last').remove();
+                if (elementExist(course_groups_tab.find('.bottom.attached.tab.segment.new:last'))) {
+                    course_groups_tab.find('.bottom.attached.tab.segment.new:last').addClass('active');
+                } else {
+                    course_groups_tab.find('.bottom.attached.tab.segment:first').addClass('active');
+                }
+            });
+            // return button
+            return_btn.on('click', function () {
+                add_schedule_modal.find('#course_info .top.attached.tabular.menu a[data-tab=evaluations]').remove();
+                add_schedule_modal.find('#course_info .bottom.attached.tab.segment[data-tab=evaluations]').remove();
+                courses_modal.modal('show');
+            });
+
+            // add to schedule btn
+            add_schedule_modal.modal({
+                onApprove: function onApprove() {
+                    var schedule_data = [];
+                    var forms_are_valid = true;
+                    course_groups_tab.find('form').each(function (index, item) {
+                        $(item).form({
+                            fields: {
+                                instructor_id: 'empty',
+                                weekday_1: 'empty',
+                                start_time_1: 'empty',
+                                end_time_1: 'empty'
+                            }
+                        });
+                        if (!$(item).form('is valid')) {
+                            $(item).submit();
+                            forms_are_valid = false;
+                        } else {
+                            $(item).removeClass('error');
+                            $(item).find('.field').removeClass('error');
+                        }
+                        var form_data = $(item).serializeArray();
+                        var form_object = {};
+                        for (var i = 0; i < form_data.length; i++) {
+                            form_object[[form_data[i]['name']]] = form_data[i]['value'];
+                        }
+                        schedule_data[index] = form_object;
+                    });
+                    if (!forms_are_valid) {
+                        return false;
+                    }
+                    window.$.ajax({
+                        url: document.location.origin + '/admin/scheduling/store',
+                        type: "POST",
+                        data: JSON.stringify(schedule_data),
+                        contentType: "application/json",
+                        success: function success(result, status, xhr) {
+                            document.location = document.location.origin + '/admin/scheduling';
+                        },
+                        error: function error(xhr, status, _error6) {
+                            // TODO error handling logic
+                            document.location = document.location.origin + '/admin/scheduling';
+                        }
+                    });
+                }
+            });
+            // remove schedule btn
+            remove_schedule_btn.on('click', function () {
+                var course_id = course_groups_tab.find('form:first input[name=course_id]').val();
+                window.$.ajax({
+                    url: document.location.origin + '/admin/scheduling/' + course_id + '/destroy',
+                    type: "POST",
+                    success: function success(result, status, xhr) {
+                        document.location = document.location.origin + '/admin/scheduling/';
+                    },
+                    error: function error(xhr, status, _error7) {
+                        document.location = document.location.origin + '/admin/scheduling';
+                    }
+                });
+            });
+
+            // evaluation sessions
+            var evaluation_sessions_modal = window.$('#evaluation_sessions.modal');
+            evaluation_sessions_modal.find('#add_session').on('click', function () {
+                var last_session_number = evaluation_sessions_modal.find('[id^=session_]:last').attr('data-number');
+                last_session_number = (parseInt(last_session_number) + 1).toString();
+                evaluation_sessions_modal.find('table tbody').append('\n                <tr id="session_' + last_session_number + '" data-number="' + last_session_number + '">\n                    <td class="collapsing">\n                        <div class="ui toggle checkbox" style="display: block;">\n                            <input name="session_enable" type="radio" value="' + last_session_number + '">\n                            <label style="padding-right: 3.5rem;"></label>\n                        </div>\n                    </td>\n                    <td>\u0645\u0631\u062D\u0644\u0647 <span class="p_number">' + last_session_number + '</span>\n                        <input type="hidden" name="session_number_' + last_session_number + '" value="' + last_session_number + '">\n                    </td>\n                    <td>\n                        <div class="fluid field">\n                            <input type="text" name="start_date_p_' + last_session_number + '" placeholder="\u062A\u0627\u0631\u06CC\u062E \u0634\u0631\u0648\u0639" style="text-align: center">\n                            <input type="hidden" name="start_date_' + last_session_number + '">\n                        </div>\n                    </td>\n                    <td>\n                        <div class="fluid field">\n                            <input type="text" name="end_date_p_' + last_session_number + '" placeholder="\u062A\u0627\u0631\u06CC\u062E \u067E\u0627\u06CC\u0627\u0646" style="text-align: center">\n                            <input type="hidden" name="end_date_' + last_session_number + '">\n                        </div>\n                    </td>\n                </tr>\n                ');
+                evaluation_sessions_modal.find('table tbody input[name=number_of_sessions]').val(last_session_number);
+                evaluation_sessions_modal.find('#remove_session').removeClass('disabled');
+                init_session_date_inputs(evaluation_sessions_modal);
+            });
+            init_session_date_inputs(evaluation_sessions_modal);
+            evaluation_sessions_modal.find('#remove_session').on('click', function () {
+                var evaluation_sessions_rows = evaluation_sessions_modal.find('[id^=session_]');
+                if (evaluation_sessions_rows.length > 1) {
+                    if (evaluation_sessions_rows.length === 2) $(this).addClass('disabled');
+                    evaluation_sessions_modal.find('table tbody input[name=number_of_sessions]').val(evaluation_sessions_rows.length - 1);
+                    var last_session_row = evaluation_sessions_modal.find('[id^=session_]:last');
+                    if (last_session_row.find('input[name=session_enable]').is(':checked')) {
+                        evaluation_sessions_modal.find('[id^=session_]:eq(' + (evaluation_sessions_rows.length - 2).toString() + ') .ui.toggle.checkbox').checkbox('check');
+                    }
+                    last_session_row.remove();
+                }
+            });
+            var evaluation_sessions_btn = window.$('#evaluation_sessions_btn.labeled.button');
+            evaluation_sessions_btn.on('click', function () {
+                evaluation_sessions_modal.modal('show');
+            });
+            evaluation_sessions_modal.modal({
+                onApprove: function onApprove() {
+                    var number_of_sessions = parseInt(evaluation_sessions_modal.find('form input[name=number_of_sessions]').val());
+                    var fields_validation = {};
+                    for (var i = 0; i < number_of_sessions; i++) {
+                        fields_validation['start_date_p_' + (i + 1)] = 'empty';
+                        fields_validation['start_date_' + (i + 1)] = 'empty';
+                        fields_validation['end_date_p_' + (i + 1)] = 'empty';
+                        fields_validation['end_date_' + (i + 1)] = 'empty';
+                    }
+                    evaluation_sessions_modal.find('form').form({ fields: fields_validation });
+                    if (!evaluation_sessions_modal.find('form').form('is valid')) {
+                        evaluation_sessions_modal.find('form').submit();
+                        return false;
+                    }
+                    evaluation_sessions_modal.find('form').submit();
+                },
+                onDeny: function onDeny() {
+                    document.location = document.location.origin + '/admin/scheduling';
+                }
+            });
+        }
+        // scheduler info
+        var position_info = {
+            top_offset: window.$('#schedule_table table')[0].offsetTop,
+            header_h: window.$('#schedule_table table thead tr')[0].offsetHeight,
+            tblock_h: window.$('#schedule_table table tbody tr')[0].offsetHeight / 2,
+            timecol_w: window.$('#schedule_table table tbody tr td:first-child')[0].offsetWidth,
+            weekday_w: window.$('#schedule_table table thead tr th:last-child')[0].offsetWidth
+        };
+        var lectures_container = window.$('#schedule_table .schedule');
+        // draw schedule on page load
+        draw_schedule(lectures_container, course_group_tab_btns, course_groups_tab, approve_btn, remove_schedule_btn, add_schedule_modal, return_btn, position_info, scheduling_stage);
+    }
+    // message page logic
+    if (elementExist('#p_admin_messages')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(7)').addClass('olive');
+        window.$('.vertical.menu a i:eq(7)').removeClass('grey').addClass('olive');
+
+        var formURL = document.location.origin + '/admin/messages';
+        var menu_items = window.$('#messages_menu .item');
+        var messages_dimmer = window.$('#messages_dimmer');
+        var messages_list = window.$('#messages_list');
+        var no_messages = window.$('#no_messages');
+        init_message_cards(messages_list, formURL);
+        menu_items.on('click', function () {
+            menu_items.removeClass('active');
+            $(this).addClass('active');
+            var bt_state = $(this).attr('data-state');
+            if (bt_state === 'inbox') {
+                messages_dimmer.dimmer('toggle');
+                window.$.ajax({
+                    url: formURL + '/getinbox',
+                    type: "GET",
+                    success: function success(data) {
+                        if (data === '') {
+                            no_messages.show();
+                        } else {
+                            no_messages.hide();
+                        }
+                        messages_list.html(data);
+                        init_message_cards(messages_list, formURL);
+                        messages_dimmer.dimmer('toggle');
+                    },
+                    error: function error() {
+                        messages_dimmer.dimmer('toggle');
+                    }
+                });
+            } else if (bt_state === 'star') {
+                messages_dimmer.dimmer('toggle');
+                window.$.ajax({
+                    url: formURL + '/getstar',
+                    type: "GET",
+                    success: function success(data) {
+                        if (data === '') {
+                            no_messages.show();
+                        } else {
+                            no_messages.hide();
+                        }
+                        messages_list.html(data);
+                        init_message_cards(messages_list, formURL);
+                        messages_dimmer.dimmer('toggle');
+                    },
+                    error: function error() {
+                        messages_dimmer.dimmer('toggle');
+                    }
+                });
+            } else if (bt_state === 'later') {
+                messages_dimmer.dimmer('toggle');
+                window.$.ajax({
+                    url: formURL + '/getlater',
+                    type: "GET",
+                    success: function success(data) {
+                        if (data === '') {
+                            no_messages.show();
+                        } else {
+                            no_messages.hide();
+                        }
+                        messages_list.html(data);
+                        init_message_cards(messages_list, formURL);
+                        messages_dimmer.dimmer('toggle');
+                    },
+                    error: function error() {
+                        messages_dimmer.dimmer('toggle');
+                    }
+                });
+            } else if (bt_state === 'archive') {
+                messages_dimmer.dimmer('toggle');
+                window.$.ajax({
+                    url: formURL + '/getarchive',
+                    type: "GET",
+                    success: function success(data) {
+                        if (data === '') {
+                            no_messages.show();
+                        } else {
+                            no_messages.hide();
+                        }
+                        messages_list.html(data);
+                        init_message_cards(messages_list, formURL);
+                        messages_dimmer.dimmer('toggle');
+                    },
+                    error: function error() {
+                        messages_dimmer.dimmer('toggle');
+                    }
+                });
+            }
+        });
+    }
+    // setting page logic
+    if (elementExist('#p_admin_settings')) {
+        // active menu icon
+        window.$('.computer.menu .basic.icon.button:eq(8)').addClass('black');
+        window.$('.vertical.menu a i:eq(8)').removeClass('grey').addClass('black');
+
+        window.$('.ui.dropdown').dropdown();
+
+        var delete_admin_modal = window.$('#delete_admin.modal');
+        var delete_admin_btn = window.$('#registered_admin_list tr .red.button');
+        var delete_admin_form = delete_admin_modal.find('form');
+        delete_admin_btn.on('click', function () {
+            var admin_id = $(this).attr('data-id');
+            delete_admin_modal.find('table tbody td:eq(0)').html(window.$('#registered_admin_list #admin_' + admin_id + ' td:eq(0)').html());
+            delete_admin_modal.find('table tbody td:eq(1)').html(window.$('#registered_admin_list #admin_' + admin_id + ' td:eq(1)').html());
+            delete_admin_form.attr('action', delete_admin_form.attr('action') + '/' + admin_id + '/unregisteradmin');
+            delete_admin_modal.modal('show');
+        });
+        delete_admin_modal.modal({
+            onApprove: function onApprove() {
+                delete_admin_form.submit();
+            }
+        });
+
+        var date_input_names = ['prereg_start_date', 'prereg_end_date', 'eval_start_date', 'eval_end_date', 'final_date'];
+        var semester_options_form = window.$('#p_admin_settings form:eq(0)');
+        for (var i = 0; i < date_input_names.length; i++) {
+            var dp = semester_options_form.find('input[name=' + date_input_names[i] + '_p]').persianDatepicker({
+                initialValue: false,
+                observer: true,
+                autoClose: true,
+                format: 'YYYY/MM/DD',
+                altField: '#p_admin_settings form input[name=' + date_input_names[i] + ']',
+                'toolbox': {
+                    'enabled': false
+                }
+            });
+            if (semester_options_form.find('input[name=' + date_input_names[i] + ']').val() !== '') {
+                dp.setDate(parseInt(semester_options_form.find('input[name=' + date_input_names[i] + ']').val()));
+            }
+        }
+
+        // init messages
+        if (elementExist('#manage_admin_panel .message.session')) {
+            window.$('#manage_admin_panel .message.session .close').on('click', function () {
+                $(this).closest('.message').transition('fade');
+            });
+            setTimeout(function () {
+                if (!window.$('#manage_admin_panel .message.session').hasClass('hidden')) window.$('#manage_admin_panel .message.session').transition('fade');
+            }, 4000);
+        }
+    }
+}
+
+window.$(function () {
+    pagesInit();
+    window.$(window).resize(function () {
+        adjust_to_screen_size();
+    });
+});
+
+/***/ })
+
+/******/ });
