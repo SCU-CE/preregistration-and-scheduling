@@ -531,7 +531,7 @@ function lecture_blocks_click(selector,course_group_tab_btns,course_groups_tab,a
         add_schedule_modal.find('#course_info .bottom.attached.tab.segment').removeClass('active');
         add_schedule_modal.find('#course_info .bottom.attached.tab.segment:first').addClass('active');
         window.$.ajax({
-            url: document.location.origin + '/admin/scheduling/' + course_id + '/information',
+            url: document.location.origin + document.location.pathname + '/' + course_id + '/information',
             type: "GET",
             success: function (result,status,xhr) {
                 //
@@ -1362,7 +1362,7 @@ function pagesInit() {
                 });
             }
             window.$.ajax({
-                url: document.location.href + '/updatecourses',
+                url: document.location.origin + document.location.pathname + '/updatecourses',
                 type: "POST",
                 data: JSON.stringify(course_data),
                 contentType: "application/json",
@@ -1430,7 +1430,7 @@ function pagesInit() {
             const dimmer = $(this).parent().siblings('.dimmer');
             dimmer.dimmer('toggle');
             window.$.ajax({
-                url: document.location.origin + '/admin/query/' + query_id,
+                url: (document.location.origin+document.location.pathname).replace('reports','query/') + query_id,
                 type: "get",
                 success: function (result,status,xhr) {
                     query_view.html(result);
@@ -1486,7 +1486,7 @@ function pagesInit() {
             const dimmer = $(this).parent().siblings('.dimmer');
             dimmer.dimmer('toggle');
             window.$.ajax({
-                url: document.location.origin + '/admin/query/' + query_id + '/edit',
+                url: (document.location.origin+document.location.pathname).replace('reports','query/') + query_id + '/edit',
                 type: 'get',
                 success: function (result,status,xhr) {
                     edit_query_modal.find('.content').html(result);
@@ -1664,7 +1664,7 @@ function pagesInit() {
                     //
                     card_dimmer.dimmer('toggle');
                     window.$.ajax({
-                        url: document.location.origin + '/admin/scheduling/' + course_id + '/information',
+                        url: document.location.origin + document.location.pathname + '/' + course_id + '/information',
                         type: "GET",
                         success: function (result,status,xhr) {
                             //
@@ -1733,7 +1733,7 @@ function pagesInit() {
                 } else {
                     card_dimmer.dimmer('toggle');
                     window.$.ajax({
-                        url: document.location.origin + '/admin/scheduling/' + course_id + '/information',
+                        url: document.location.origin + document.location.pathname + '/' + course_id + '/information',
                         type: "GET",
                         success: function (result,status,xhr) {
                             //
@@ -2153,16 +2153,16 @@ function pagesInit() {
                         return false;
                     }
                     window.$.ajax({
-                        url: document.location.origin + '/admin/scheduling/store',
+                        url: document.location.origin + document.location.pathname + '/store',
                         type: "POST",
                         data: JSON.stringify(schedule_data),
                         contentType: "application/json",
                         success: function (result, status, xhr) {
-                            document.location = document.location.origin + '/admin/scheduling';
+                            document.location = document.location.origin + document.location.pathname;
                         },
                         error: function (xhr, status, error) {
                             // TODO error handling logic
-                            document.location = document.location.origin + '/admin/scheduling';
+                            document.location = document.location.origin + document.location.pathname;
                         }
                     });
                 }
@@ -2171,13 +2171,13 @@ function pagesInit() {
             remove_schedule_btn.on('click', function () {
                 const course_id = course_groups_tab.find('form:first input[name=course_id]').val();
                 window.$.ajax({
-                    url: document.location.origin + '/admin/scheduling/' + course_id + '/destroy',
+                    url: document.location.origin + document.location.pathname + '/' + course_id + '/destroy',
                     type: "POST",
                     success: function (result,status,xhr) {
-                        document.location = document.location.origin + '/admin/scheduling/';
+                        document.location = document.location.origin + document.location.pathname;
                     },
                     error: function (xhr,status,error) {
-                        document.location = document.location.origin + '/admin/scheduling';
+                        document.location = document.location.origin + document.location.pathname;
                     }
                 });
             });
@@ -2274,7 +2274,7 @@ function pagesInit() {
         window.$('.computer.menu .basic.icon.button:eq(7)').addClass('olive');
         window.$('.vertical.menu a i:eq(7)').removeClass('grey').addClass('olive');
 
-        const formURL = document.location.origin + '/admin/messages';
+        const formURL = document.location.origin + document.location.pathname;
         const menu_items = window.$('#messages_menu .item');
         const messages_dimmer = window.$('#messages_dimmer');
         const messages_list = window.$('#messages_list');

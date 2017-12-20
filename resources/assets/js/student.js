@@ -290,7 +290,7 @@ function pagesInit() {
                 const current_card = $(this);
                 current_card.find('.inverted.dimmer').dimmer('toggle');
                 window.$.ajax({
-                    url: document.location.origin + '/student/' + current_card.attr('data-id') + '/unpass',
+                    url: (document.location.origin+document.location.pathname).replace('passed-courses','') + current_card.attr('data-id') + '/unpass',
                     type: "POST",
                     success: function (result,status,xhr) {
                         current_card.attr('data-state', 'nottaken');
@@ -308,7 +308,7 @@ function pagesInit() {
                 const current_card = $(this);
                 current_card.find('.inverted.dimmer').dimmer('toggle');
                 window.$.ajax({
-                    url: document.location.origin + '/student/' + current_card.attr('data-id') + '/pass',
+                    url: (document.location.origin+document.location.pathname).replace('passed-courses','') + current_card.attr('data-id') + '/pass',
                     type: "POST",
                     success: function (result,status,xhr) {
                         current_card.attr('data-state', 'taken');
@@ -372,7 +372,7 @@ function pagesInit() {
                 const current_card = $(this);
                 current_card.find('.inverted.dimmer').dimmer('toggle');
                 window.$.ajax({
-                    url: document.location.origin + '/student/' + current_card.attr('data-id') + '/untake',
+                    url: (document.location.origin+document.location.pathname).replace('semester-courses','') + current_card.attr('data-id') + '/untake',
                     type: "POST",
                     success: function (result,status,xhr) {
                         // fix course card state and view
@@ -429,7 +429,7 @@ function pagesInit() {
                 const current_card = $(this);
                 current_card.find('.inverted.dimmer').dimmer('toggle');
                 window.$.ajax({
-                    url: document.location.origin + '/student/' + current_card.attr('data-id') + '/take',
+                    url: (document.location.origin+document.location.pathname).replace('semester-courses','') + current_card.attr('data-id') + '/take',
                     type: "POST",
                     success: function (result,status,xhr) {
                         if(result === 'UNITS_RANGE_ERROR'){
@@ -595,7 +595,7 @@ function pagesInit() {
             const current_card = $(this);
             current_card.find('.inverted.dimmer').dimmer('toggle');
             window.$.ajax({
-                url: document.location.origin + '/student/' + current_card.attr('data-id') + '/votes',
+                url: (document.location.origin+document.location.pathname).replace('instructor-suggestion','') + current_card.attr('data-id') + '/votes',
                 type: "GET",
                 success: function (result, status, xhr) {
                     instructor_cards.each(function(index,item){
@@ -670,7 +670,7 @@ function pagesInit() {
                     });
                 });
                 window.$.ajax({
-                    url: document.location.origin + '/student/' + instructor_suggest_modal.attr('data-id') + '/vote',
+                    url: (document.location.origin+document.location.pathname).replace('instructor-suggestion','') + instructor_suggest_modal.attr('data-id') + '/vote',
                     type: "POST",
                     data: JSON.stringify(instructor_data),
                     contentType: "application/json",
@@ -710,7 +710,7 @@ function pagesInit() {
             const lecture_blocks_dimmer = $(this).find('.ui.inverted.dimmer');
             lecture_blocks_dimmer.dimmer('toggle');
             window.$.ajax({
-                url: document.location.origin + '/student/evaluate-schedule/' + schedule_id + '/modal',
+                url: document.location.origin + document.location.pathname + '/' + schedule_id + '/modal',
                 type: "GET",
                 success: function (result,status,xhr) {
                     evaluate_lecture_modal.html(result);
@@ -869,7 +869,7 @@ function pagesInit() {
                         let this_upvote = $(this);
                         card_dimmer.dimmer('toggle');
                         window.$.ajax({
-                            url: document.location.origin + '/student/evaluation/' + evaluation_id + '/upvote/' + value,
+                            url: (document.location.origin+document.location.pathname).replace('evaluate-schedule','evaluation/') + evaluation_id + '/upvote/' + value,
                             type: "POST",
                             success: function (result,status,xhr) {
                                 this_upvote.find('span').html(result[0]);
@@ -902,7 +902,7 @@ function pagesInit() {
                         let this_downvote = $(this);
                         card_dimmer.dimmer('toggle');
                         window.$.ajax({
-                            url: document.location.origin + '/student/evaluation/' + evaluation_id + '/downvote/' + value,
+                            url: (document.location.origin+document.location.pathname).replace('evaluate-schedule','evaluation/') + evaluation_id + '/downvote/' + value,
                             type: "POST",
                             success: function (result,status,xhr) {
                                 this_downvote.find('span').html(result[1]);
