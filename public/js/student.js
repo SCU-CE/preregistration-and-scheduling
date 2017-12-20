@@ -450,6 +450,7 @@ function pagesInit() {
     init_menu_btns();
     init_position();
     adjust_to_screen_size();
+
     if (elementExist('#p_student_home')) {
         window.$('#p_student_home .unix.date').each(function (index, item) {
             var date = new persianDate(parseInt($(item).html()));

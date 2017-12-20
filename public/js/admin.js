@@ -911,6 +911,61 @@ function pagesInit() {
         // active menu icon
         window.$('.computer.menu .basic.icon.button:eq(0)').addClass('blue');
         window.$('.vertical.menu a i:eq(0)').removeClass('grey').addClass('blue');
+        //
+        fix_persian_numbers('.p_number');
+        window.$('.ui.indicating.progress').progress({
+            label: 'ratio',
+            text: {
+                ratio: '{value}/{total}'
+            }
+        });
+        //
+        var feedback_chart_config = {
+            type: 'pie',
+            data: feedback_data,
+            options: {
+                tooltips: {
+                    enabled: false
+                },
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        };
+        var feedback_chart = window.$('#feedback_chart canvas')[0].getContext("2d");
+        new Chart(feedback_chart, feedback_chart_config);
+
+        window.random_colors = randomColor({ luminosity: 'bright', count: 25 });
+        var students_chart_config = {
+            type: 'pie',
+            data: students_data,
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 14,
+                        fontSize: 14
+                    }
+                },
+                tooltips: {
+                    displayColors: false,
+                    bodyFontSize: 14
+                }
+            }
+        };
+        var students_chart = window.$('#students_chart canvas')[0].getContext("2d");
+        new Chart(students_chart, students_chart_config);
+        // init unix timestamps
+        window.$('.unix.date').each(function (index, item) {
+            var date = new persianDate(parseInt($(item).html()));
+            $(item).html(date.format('D MMMM'));
+        });
     }
     // course page logic
     if (elementExist('#p_admin_courses')) {

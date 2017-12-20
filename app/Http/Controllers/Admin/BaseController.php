@@ -24,7 +24,28 @@ class BaseController extends Controller
     }
     public function home()
     {
-        return view('admin.home');
+        $options = Option::all();
+        $currentStep = Option::find(5)->value;
+        $recent_users = User::where('role','=','student')->orderBy('last_visit_time','desc')->take(16)->get();
+        $semester = Semester::find(Option::find(1)->value);
+        $courses = DB::table('course_student')
+                        ->where('course_student.semester_id','=',$semester->id)
+                        ->join('courses', 'course_student.course_id', '=', 'courses.id')
+                        ->join('course_semester', function ($join) use ($semester){
+                            $join->on('course_student.course_id', '=', 'course_semester.course_id')
+                                ->where('course_semester.semester_id', '=', $semester->id);
+                        })
+                        ->groupby('courses.id', 'courses.code', 'courses.name', 'courses.units', 'courses.category', 'courses.planned_semester', 'course_semester.min_capacity')
+                        ->select(DB::raw('courses.id, courses.name, courses.code, courses.units, courses.category, courses.planned_semester, course_semester.min_capacity, count(*) as count'))
+                        ->orderby('count','desc')
+                        ->get();
+        $feedback_summery = [
+            'smile' => DB::table('feedbacks')->where('type','=','smile')->count(),
+            'frown' => DB::table('feedbacks')->where('type','=','frown')->count(),
+            'heart' => DB::table('feedbacks')->where('type','=','heart')->count()
+        ];
+        $entry_year_count = DB::table('students')->orderBy('entry_year')->select('entry_year', DB::raw('count(*) as total'))->groupBy('entry_year')->get();
+        return view('admin.home', compact('currentStep','options', 'recent_users', 'courses', 'semester', 'feedback_summery', 'entry_year_count'));
     }
     public function courses()
     {

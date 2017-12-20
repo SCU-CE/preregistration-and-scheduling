@@ -92,7 +92,75 @@ body {
     text-align: center;
   }
 }
-
+#p_admin_home{
+  .steps .step .content {
+    margin-top: 0.5em;
+  }
+  .steps .step .content .description {
+    margin-top: .85em;
+    color: lightgray;
+    font-size: .75rem;
+  }
+  .huge.blue.basic.button {
+    padding: 0.5em;
+    line-height: 1.75em;
+  }
+  .student.symbol{
+    text-align: center;
+    float: right;
+    i {
+      display: block;
+    }
+    .year{
+      font-size: .6rem;
+    }
+  }
+  .student.count{
+    float: right;
+    margin-top: 4px;
+    font-size: .9rem;
+    margin-left: 6px;
+  }
+  .green{
+    color: #21ba45;
+  }
+  .green-dark{
+    color: #14692a;
+  }
+  .teal{
+    color: #00b5ad;
+  }
+  .teal-dark{
+    color: #006961;
+  }
+  .grey{
+    color: #767676;
+  }
+  table .instructor{
+    display: inline-block;
+    margin: 0 8px;
+    .photo{
+      display: inline-block;
+      img {
+        display: block;
+        width: 28px;
+      }
+    }
+    .votes{
+      display: inline-block;
+      .bar{
+        width: 4px;
+        height: 26px;
+        border-radius: 1px;
+        margin: 0 auto;
+      }
+      .number{
+        margin: 0 auto;
+        font-size: .75em;
+      }
+    }
+  }
+}
 #logout_form {
   display: none;
 }

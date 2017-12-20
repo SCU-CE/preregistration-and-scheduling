@@ -210,6 +210,91 @@ body {
   text-align: center;
 }
 
+#p_admin_home .steps .step .content {
+  margin-top: 0.5em;
+}
+
+#p_admin_home .steps .step .content .description {
+  margin-top: .85em;
+  color: lightgray;
+  font-size: .75rem;
+}
+
+#p_admin_home .huge.blue.basic.button {
+  padding: 0.5em;
+  line-height: 1.75em;
+}
+
+#p_admin_home .student.symbol {
+  text-align: center;
+  float: right;
+}
+
+#p_admin_home .student.symbol i {
+  display: block;
+}
+
+#p_admin_home .student.symbol .year {
+  font-size: .6rem;
+}
+
+#p_admin_home .student.count {
+  float: right;
+  margin-top: 4px;
+  font-size: .9rem;
+  margin-left: 6px;
+}
+
+#p_admin_home .green {
+  color: #21ba45;
+}
+
+#p_admin_home .green-dark {
+  color: #14692a;
+}
+
+#p_admin_home .teal {
+  color: #00b5ad;
+}
+
+#p_admin_home .teal-dark {
+  color: #006961;
+}
+
+#p_admin_home .grey {
+  color: #767676;
+}
+
+#p_admin_home table .instructor {
+  display: inline-block;
+  margin: 0 8px;
+}
+
+#p_admin_home table .instructor .photo {
+  display: inline-block;
+}
+
+#p_admin_home table .instructor .photo img {
+  display: block;
+  width: 28px;
+}
+
+#p_admin_home table .instructor .votes {
+  display: inline-block;
+}
+
+#p_admin_home table .instructor .votes .bar {
+  width: 4px;
+  height: 26px;
+  border-radius: 1px;
+  margin: 0 auto;
+}
+
+#p_admin_home table .instructor .votes .number {
+  margin: 0 auto;
+  font-size: .75em;
+}
+
 #logout_form {
   display: none;
 }
