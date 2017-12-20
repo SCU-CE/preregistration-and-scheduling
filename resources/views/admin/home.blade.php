@@ -39,7 +39,7 @@
                     </span>
                 </span>
                 <span style="float: left; direction: ltr; color: lightgrey">
-                    1 week before
+                    {{\Carbon\Carbon::parse($user->last_visit_time)->diffForHumans()}}
                 </span>
             </div>
             @endforeach
@@ -152,7 +152,13 @@
                 </table>
             </div>
         @endif
+
+        <?php
+                $feedback_count = $feedback_summery['smile']+$feedback_summery['frown']+$feedback_summery['heart'];
+        ?>
+        @if($feedback_count > 0 || count($entry_year_count) > 0)
         <div class="ui two column grid stackable">
+            @if($feedback_count > 0)
             <div class="column">
                 <div class="ui segment">
                     <div class="ui red fluid large label fw-400" style="text-align: center">
@@ -177,6 +183,8 @@
                     </div>
                 </div>
             </div>
+            @endif
+            @if(count($entry_year_count) > 0)
             <div class="column">
                 <div class="ui segment">
                     <div class="ui teal fluid large label fw-400" style="text-align: center">
@@ -187,7 +195,9 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
+        @endif
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
                 feedback_data = {

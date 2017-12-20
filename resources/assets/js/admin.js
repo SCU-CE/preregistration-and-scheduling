@@ -1074,47 +1074,49 @@ function pagesInit() {
             }
         });
         //
-        const feedback_chart_config = {
-            type: 'pie',
-            data: feedback_data,
-            options: {
-                tooltips: {
-                    enabled: false
-                },
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                animation: {
-                    animateScale: true,
-                    animateRotate: true
-                },
-            }
-        };
-        const feedback_chart = window.$('#feedback_chart canvas')[0].getContext("2d");
-        new Chart(feedback_chart, feedback_chart_config);
-
-        window.random_colors = randomColor({luminosity: 'bright', count: 25 });
-        const students_chart_config = {
-            type: 'pie',
-            data: students_data,
-            options: {
-                responsive: true,
+        if(elementExist('#feedback_chart canvas')){
+            const feedback_chart_config = {
+                type: 'pie',
+                data: feedback_data,
+                options: {
+                    tooltips: {
+                        enabled: false
+                    },
+                    responsive: true,
                     legend: {
-                    position: 'bottom',
-                        labels: {
-                        boxWidth: 14,
-                            fontSize: 14
-                    }
-                },
-                tooltips: {
-                    displayColors: false,
-                        bodyFontSize: 14
+                        display: false
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    },
                 }
-            }
-        };
-        const students_chart = window.$('#students_chart canvas')[0].getContext("2d");
-        new Chart(students_chart, students_chart_config);
+            };
+            const feedback_chart = window.$('#feedback_chart canvas')[0].getContext("2d");
+            new Chart(feedback_chart, feedback_chart_config);
+        }
+        if(elementExist('#students_chart canvas')){
+            const students_chart_config = {
+                type: 'pie',
+                data: students_data,
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 14,
+                            fontSize: 14
+                        }
+                    },
+                    tooltips: {
+                        displayColors: false,
+                        bodyFontSize: 14
+                    }
+                }
+            };
+            const students_chart = window.$('#students_chart canvas')[0].getContext("2d");
+            new Chart(students_chart, students_chart_config);
+        }
         // init unix timestamps
         window.$('.unix.date').each(function (index,item) {
             let date = new persianDate(parseInt($(item).html()));
