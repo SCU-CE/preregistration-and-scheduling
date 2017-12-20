@@ -36,7 +36,7 @@
             @endif
             <a class="item">
                 <div class="ui orange horizontal big label fw-400" style="padding: 1rem">استاد درس</div>
-                <img class="ui mini circular image" src="{{$instructor->photo != null ? Storage::url($instructor->photo) : ( $instructor->sex == 'مرد' ? Storage::url('instructor_photos/img_male.png') : Storage::url('instructor_photos/img_female.png') )}}">
+                <img class="ui mini circular image" src="{{$instructor->photo != null ? url(Storage::url($instructor->photo)) : ( $instructor->sex == 'مرد' ? url(Storage::url('instructor_photos/img_male.png')) : url(Storage::url('instructor_photos/img_female.png')) )}}">
                 <span style="font-size: 1.5rem">
                     {{$instructor->name}}
                 </span>

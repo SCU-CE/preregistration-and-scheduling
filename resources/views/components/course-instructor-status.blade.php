@@ -20,6 +20,6 @@ $height = ($value/$max)*26;
     </div>
     <div class="photo">
         <img class="ui mini circular image"
-             src="{{$instructor->photo != null ? Storage::url($instructor->photo) : ( $instructor->sex == 'مرد' ? Storage::url('instructor_photos/img_male.png') : Storage::url('instructor_photos/img_female.png') )}}">
+             src="{{$instructor->photo != null ? url(Storage::url($instructor->photo)) : ( $instructor->sex == 'مرد' ? url(Storage::url('instructor_photos/img_male.png')) : url(Storage::url('instructor_photos/img_female.png')) )}}">
     </div>
 </div>
