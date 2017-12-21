@@ -24,12 +24,12 @@
             </div>
         @endif
         @if(count($recent_users)>0)
-            <div class="ui segment">
+        <div id="last_use_summery" class="ui segment">
             <div class="ui blue fluid large label fw-400" style="text-align: center">
                 <span>آخرین افرادی که از سایت استفاده کرده اند</span>
             </div>
             @foreach($recent_users as $user)
-            <div style="padding: 1rem 0 0">
+            <div class="list-item" style="padding: 1rem 0 0">
                 <span>
                     <i class="user teal large icon" style="margin-top: -4px"></i>
                     <span style="color: #424242">
@@ -46,7 +46,7 @@
         </div>
         @endif
         @if(count($courses)>0)
-            <div class="ui segment">
+            <div id="course_summery" class="ui segment">
                 <div class="ui fluid large label fw-400{{$semester->semester == 'بهار' ? ' green' : ' orange'}}" style="text-align: center">
                     <span>وضعیت درس های ارائه شده ترم جاری </span><span>({{$semester->semester}} </span><span class="p_number">{{$semester->year}})</span>
                 </div>
@@ -71,7 +71,8 @@
                                 <i class="user teal icon"></i>
                                 <span class="teal-dark" style="margin-right: -8px;">{{$course->count}}</span>
                             </td>
-                            <td style="width: 200px">
+                            <td style="width: 200px; height: 52px">
+                                <div style="display: inline-block">
                                 @for($i=(int)$semester->year-1; $i>(int)$semester->year-6; $i--)
                                     <?php
                                     $student_course_count = DB::table('course_student')
@@ -97,6 +98,7 @@
                                         <div class="student count{{$student_semester == $course->planned_semester ? ' green-dark' : ' grey'}}">{{$student_course_count}}</div>
                                     @endif
                                 @endfor
+                                </div>
                             </td>
                             <td style="width: 220px">
                                 <?php
@@ -154,10 +156,10 @@
         @endif
 
         <?php
-                $feedback_count = $feedback_summery['smile']+$feedback_summery['frown']+$feedback_summery['heart'];
+            $feedback_count = $feedback_summery['smile']+$feedback_summery['frown']+$feedback_summery['heart'];
         ?>
         @if($feedback_count > 0 || count($entry_year_count) > 0)
-        <div class="ui two column grid stackable">
+        <div id="pie_charts" class="ui two column grid stackable">
             @if($feedback_count > 0)
             <div class="column">
                 <div class="ui segment">

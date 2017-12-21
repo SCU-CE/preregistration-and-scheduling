@@ -81,7 +81,39 @@ body {
   #p_admin_messages #no_messages h1 {
     font-size: 1rem;
   }
+  #p_admin_home {
+    #last_use_summery{
+      .list-item{
+        > span:last-child{
+          float: none !important;
+          display: block;
+          margin-bottom: .5rem;
+        }
+      }
+    }
+    #pie_charts {
+      > .column {
+        padding: 1rem 0 !important;
+      }
+    }
+  }
+
 }
+// smaller that 1200px
+@media only screen and (max-width: 1199px){
+ #p_admin_home #course_summery tbody tr{
+   td{
+     display: block;
+     text-align: center;
+     width: 100% !important;
+     border: none;
+   }
+   td:last-child{
+      border-bottom: 1px solid rgba(34,36,38,.1);
+    }
+ }
+}
+
 
 .five-px-element {
   width: 5px;
