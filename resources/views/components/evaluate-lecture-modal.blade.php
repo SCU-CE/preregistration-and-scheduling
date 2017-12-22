@@ -1,13 +1,14 @@
 <div class="header fw-400" style="text-align: center">
-<span>{{$course->name}}</span><span> (گروه </span><span class="p_number">{{$schedule->group_number}}</span><span>)</span>
+    <span>{{$course->name}}</span><span> (گروه </span><span class="p_number">{{$schedule->group_number}}</span><span>)</span>
 </div>
-
 <div class="scrolling content">
     <div class="ui top attached tabular menu">
         <a class="active item" data-tab="1">اطلاعات درس</a>
         <a class="item" data-tab="2">درخواست شما</a>
         @if(count($public_evaluations) > 0)
-            <a class="item" data-tab="3">درخواست های عمومی</a>
+            <a class="item" data-tab="3">
+                <span>درخواست های عمومی</span>
+            </a>
         @endif
     </div>
     <div class="ui bottom attached active tab segment" data-tab="1">
@@ -18,21 +19,21 @@
                     <span>{{str_replace(array('saturday','sunday','monday','tuesday','wednesday'),array('شنبه','یکشنبه','دوشنبه','سه شنبه','چهارشنبه'),$schedule->weekday_1)}}</span>
                     <span class="p_number"> {{substr($schedule->start_time_1,0,5)}}</span><span> تا </span><span class="p_number">{{substr($schedule->end_time_1,0,5)}}</span>
                     @if($schedule->classroom_1 != '')
-                    <span>کلاس </span><span class="p_number">{{$schedule->classroom_1}}</span>
+                        <span>کلاس </span><span class="p_number">{{$schedule->classroom_1}}</span>
                     @endif
                 </span>
             </a>
             @if($schedule->weekday_2 != '')
-                <a class="item">
-                    <div class="ui purple big horizontal label fw-400" style="padding: 1rem">جلسه دوم</div>
-                    <span style="font-size: 1.5rem">
+            <a class="item">
+                <div class="ui purple big horizontal label fw-400" style="padding: 1rem">جلسه دوم</div>
+                <span style="font-size: 1.5rem">
                     <span>{{str_replace(array('saturday','sunday','monday','tuesday','wednesday'),array('شنبه','یکشنبه','دوشنبه','سه شنبه','چهارشنبه'),$schedule->weekday_2)}}</span>
                     <span class="p_number"> {{substr($schedule->start_time_2,0,5)}}</span><span> تا </span><span class="p_number">{{substr($schedule->end_time_2,0,5)}}</span>
                     @if($schedule->classroom_2 != '')
                     <span>کلاس </span><span class="p_number">{{$schedule->classroom_2}}</span>
                     @endif
                 </span>
-                </a>
+            </a>
             @endif
             <a class="item">
                 <div class="ui orange horizontal big label fw-400" style="padding: 1rem">استاد درس</div>

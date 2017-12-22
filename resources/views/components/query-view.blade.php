@@ -27,7 +27,7 @@
         @endif
         <button class="ui right labeled green icon button fw-400">
             <i class="lightning icon"></i>
-            <span>اجرای پرس جو</span>
+            <span>اجرای پرس و جو</span>
         </button>
     </form>
 </div>

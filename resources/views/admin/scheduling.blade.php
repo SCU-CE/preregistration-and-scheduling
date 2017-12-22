@@ -164,12 +164,17 @@
                             @endforeach
                         @endif
                     </div>
+                    @if(!$any_eval_session)
+                        @include('components.warning-message', ['message' => 'لطفا به کمک بخش مراحل ارزیابی حداقل یک مرحله ی ارزیابی برای برنامه تعریف کنید.'])
+                    @endif
                 </div>
                 <div class="actions">
+                    @if($any_eval_session)
                     <div style="float:right;">
                         <span class="ui green large tag label fw-400">درس های به حد نصاب رسیده</span>
                         <span class="ui red large tag label fw-400">درس های به حد نصاب نرسیده</span>
                     </div>
+                    @endif
                     <div class="ui negative right labeled icon button fw-300">
                         <span>انصراف</span>
                         <i class="remove icon"></i>

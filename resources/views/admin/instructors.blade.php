@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="eight wide field{{ $errors->store->has('photo') ? ' error' : '' }}">
-                        <label for="photo">تصویر</label>
+                        <label for="photo">تصویر (نسبت 3X4)</label>
                         <input type="file" name="photo" data-tooltip="این فیلد می تواند خالی باشد" data-position="left center">
                     </div>
                 </div>

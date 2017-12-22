@@ -53,6 +53,10 @@
             </div>
         </div>
 
+        <div class="ui dimmer modals page transition hidden">
+            <div id="schedule_preview" class="ui longer modal transition hidden"></div>
+        </div>
+
         <script>
             var schedule_data = [
                     @foreach($schedules as $schedule)

@@ -258,6 +258,13 @@ function pagesInit() {
             let date = new persianDate(parseInt($(item).html()));
             $(item).html(date.format('D MMMM'));
         });
+        fix_persian_numbers('.p_number');
+        window.$('.ui.indicating.progress').progress({
+            label: 'ratio',
+            text: {
+                ratio: '{value}/{total}'
+            }
+        });
     }
     if(elementExist('#p_student_passedcourses')){
         // pass and unpass course
@@ -960,6 +967,28 @@ function pagesInit() {
         };
         const lectures_container = window.$('#schedule_table .schedule');
         draw_schedule(lectures_container,position_info);
+
+        const lecture_blocks = lectures_container.find('.course.lecture');
+        const schedule_preview_modal = window.$('#schedule_preview');
+        lecture_blocks.on('click', function () {
+            const schedule_id = $(this).attr('data-schedule-id');
+            const lecture_blocks_dimmer = $(this).find('.ui.inverted.dimmer');
+            lecture_blocks_dimmer.dimmer('toggle');
+            window.$.ajax({
+                url: document.location.origin + document.location.pathname + '/' + schedule_id + '/modal',
+                type: "GET",
+                success: function (result,status,xhr) {
+                    schedule_preview_modal.html(result);
+                    fix_persian_numbers('.p_number');
+                    schedule_preview_modal.modal('show');
+                    lecture_blocks_dimmer.dimmer('toggle');
+                },
+                error: function (xhr,status,error) {
+                    // TODO error handling logic
+                    lecture_blocks_dimmer.dimmer('toggle');
+                }
+            });
+        });
     }
     if(elementExist('#p_student_edit_information')){
         window.$('.ui.dropdown').dropdown();

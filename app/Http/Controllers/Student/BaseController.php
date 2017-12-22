@@ -22,7 +22,34 @@ class BaseController extends Controller
         if(in_array($currentStep,['1st','2nd','3rd'])){
             $stepState = Option::find(12)->value;
             $options = Option::all();
-            return view('student.home', compact('currentStep', 'stepState','options'));
+
+            $semester = Semester::find(Option::find(1)->value);
+            $any_eval_session = false;
+            $active_eval_session = Option::find(13)->value;
+            if(DB::table('evaluation_sessions')->where('semester_id','=',$semester->id)->count()>0 && $active_eval_session != '0'){
+                $any_eval_session = true;
+            }
+            $active_eval_session_record = null;
+            if($any_eval_session){
+                $active_eval_session_record = DB::table('evaluation_sessions')
+                    ->where('semester_id','=',$semester->id)
+                    ->where('session_number','=',Option::find(13)->value)
+                    ->first();
+            }
+
+            $courses = DB::table('course_student')
+                ->where('course_student.semester_id','=',$semester->id)
+                ->join('courses', 'course_student.course_id', '=', 'courses.id')
+                ->join('course_semester', function ($join) use ($semester){
+                    $join->on('course_student.course_id', '=', 'course_semester.course_id')
+                        ->where('course_semester.semester_id', '=', $semester->id);
+                })
+                ->groupby('courses.id', 'courses.code', 'courses.name', 'courses.units', 'courses.category', 'courses.planned_semester', 'course_semester.min_capacity')
+                ->select(DB::raw('courses.id, courses.name, courses.code, courses.units, courses.category, courses.planned_semester, course_semester.min_capacity, count(*) as count'))
+                ->orderby('count','desc')
+                ->get();
+
+            return view('student.home', compact('currentStep', 'stepState','options', 'any_eval_session', 'courses', 'semester', 'active_eval_session_record'));
         }else{
             return view('student.home', compact('currentStep'));
         }
@@ -118,7 +145,15 @@ class BaseController extends Controller
     {
         $currentStep = Option::find(5)->value;
         $stepState = Option::find(12)->value;
-        if($currentStep == '2nd' && $stepState == 'enable'){
+
+        $semester_id = Option::find(1)->value;
+        $any_eval_session = false;
+        $active_eval_session = Option::find(13)->value;
+        if(DB::table('evaluation_sessions')->where('semester_id','=',$semester_id)->count()>0 && $active_eval_session != '0'){
+            $any_eval_session = true;
+        }
+
+        if($currentStep == '2nd' && $stepState == 'enable' && $any_eval_session){
             $semester = Semester::find(Option::find(1)->value);
             $schedules = DB::table('course_schedule')
                                 ->where('semester_id','=',$semester->id)

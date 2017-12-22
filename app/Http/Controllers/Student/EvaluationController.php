@@ -59,6 +59,14 @@ class EvaluationController extends Controller
 
         return view('components.evaluate-lecture-modal', compact('schedule_evaluation', 'schedule', 'course', 'instructor', 'public_evaluations', 'public_evaluations_notvoted', 'student'));
     }
+    public function final_schedule_modal($schedule_id){
+
+        $schedule = DB::table('course_schedule')->find($schedule_id);
+        $course = Course::find($schedule->course_id);
+        $instructor = Instructor::find($schedule->instructor_id);
+
+        return view('components.schedule-preview-modal', compact('schedule', 'course', 'instructor'));
+    }
     public function evaluation_upvote($evaluation_id, $value)
     {
         $student = Auth::user()->student;

@@ -45,6 +45,7 @@ Route::group([
     Route::post('evaluation/{evaluation}/downvote/{value}', 'EvaluationController@evaluation_downvote');
 
     Route::get('final-schedule', 'BaseController@final_schedule');
+    Route::get('final-schedule/{schedule}/modal', 'EvaluationController@final_schedule_modal');
 
     Route::get('edit-information', 'StudentController@edit_information');
     Route::patch('update-information', 'StudentController@update_information');
