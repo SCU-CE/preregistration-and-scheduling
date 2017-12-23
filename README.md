@@ -11,7 +11,8 @@ Desktop                    |  Mobile
 2. run `composer install` in the root of project
 3. copy `.env.example.dev` to `.env` and set values
 4. run `php artisan key:generate` and `php artisan storage:link`
-5. run `php artisan serve` and view on `http://127.0.0.1:8000`
+5. run `php artisan migrate` and `php artisan db:seed`
+6. run `php artisan serve` and view on `http://127.0.0.1:8000`
 
 ## نقشه دیتابیس
 
