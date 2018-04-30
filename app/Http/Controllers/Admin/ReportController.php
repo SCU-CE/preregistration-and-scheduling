@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-
+use Log;
 class ReportController extends Controller
 {
     public function __construct()
@@ -24,6 +24,7 @@ class ReportController extends Controller
         $query = unserialize($row->query);
         return view('components.query-view', compact('row','query'));
     }
+
     public function store(Request $request)
     {
         $name = $request->input('name');
@@ -84,19 +85,26 @@ class ReportController extends Controller
 
         return redirect('admin/reports');
     }
+
     public function execute(Request $request, $id)
     {
-        $row = DB::table('sql_queries')->find($id);
-        $query = unserialize($row->query);
-        $query_statement = $query['query'];
-        foreach ($query['parameters'] as $parameter){
-            $search = '${'.$parameter['id'].'}';
-            $replace = '"'.$request->input($parameter['id']).'"';
-            $query_statement = str_replace($search,$replace,$query_statement);
+        Log::debug("Execution started.");
+        try {
+            $row = DB::table('sql_queries')->find($id);
+            $query = unserialize($row->query);
+            $query_statement = $query['query'];
+            foreach ($query['parameters'] as $parameter) {
+                $search = '${' . $parameter['id'] . '}';
+                $replace = '"' . $request->input($parameter['id']) . '"';
+                $query_statement = str_replace($search, $replace, $query_statement);
+            }
+            $results = DB::select($query_statement);
+            $columns = $query['columns'];
+            return view('components.query-result', compact('results', 'columns'));
         }
-        $results = DB::select($query_statement);
-        $columns = $query['columns'];
-        return view('components.query-result', compact('results','columns'));
+        catch(\Illuminate\Database\QueryException $ex){
+            Log::debug("Error in query string:\n$query_statement");
+        }
     }
     public function edit($id)
     {
